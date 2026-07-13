@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>⏰ Smart Scheduler</title>
   <style>
+    /* ---------- RESET & BASE ---------- */
     *,
     *::before,
     *::after {
@@ -43,6 +44,7 @@
       width: 100%;
       margin: 0 auto;
     }
+    /* ----- HEADER ----- */
     .header {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -155,6 +157,7 @@
       padding: 4px 12px;
       font-size: 12px;
     }
+    /* ----- GRID ----- */
     .grid {
       display: grid;
       grid-template-columns: 1.6fr 1fr;
@@ -166,6 +169,7 @@
         grid-template-columns: 1fr;
       }
     }
+    /* ----- CARDS ----- */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -196,6 +200,7 @@
       border-radius: 20px;
       color: var(--text-secondary);
     }
+    /* ----- FORMS ----- */
     .schedule-form,
     .todo-form {
       background: var(--bg);
@@ -265,10 +270,7 @@
       margin: 0;
       accent-color: var(--primary);
     }
-    .schedule-form .btn,
-    .todo-form .btn {
-      flex-shrink: 0;
-    }
+    /* ----- TASK ITEMS ----- */
     .task-item {
       display: flex;
       align-items: flex-start;
@@ -376,6 +378,7 @@
       margin-bottom: 10px;
       display: block;
     }
+    /* ----- TODO ITEMS ----- */
     .todo-item {
       display: flex;
       align-items: center;
@@ -451,37 +454,37 @@
       background: var(--border);
       border-radius: 10px;
     }
-    .scroll-area::-webkit-scrollbar-thumb:hover {
-      background: var(--primary-light);
-    }
+    /* ----- NOTIFICATION BANNER (FORCED VISIBLE) ----- */
     .notification-banner {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--card-bg);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-      border-radius: var(--radius);
-      padding: 16px 24px;
-      max-width: 560px;
-      width: 92%;
-      z-index: 999;
-      border-left: 6px solid var(--secondary);
-      animation: slideDown 0.4s ease;
+      display: none !important;
+      position: fixed !important;
+      top: 20px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      background: var(--card-bg) !important;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+      border-radius: var(--radius) !important;
+      padding: 20px 28px !important;
+      max-width: 600px !important;
+      width: 94% !important;
+      z-index: 9999 !important;
+      border-left: 6px solid var(--secondary) !important;
+      animation: slideDown 0.4s ease !important;
+      border: 3px solid #FF6584 !important;
+      box-shadow: 0 0 30px rgba(255, 101, 132, 0.4) !important;
+    }
+    .notification-banner.show {
+      display: block !important;
     }
     @keyframes slideDown {
       from {
         opacity: 0;
-        transform: translateX(-50%) translateY(-30px);
+        transform: translateX(-50%) translateY(-40px);
       }
       to {
         opacity: 1;
         transform: translateX(-50%) translateY(0);
       }
-    }
-    .notification-banner.show {
-      display: block;
     }
     .notification-banner .notif-content {
       display: flex;
@@ -489,7 +492,7 @@
       gap: 14px;
     }
     .notification-banner .notif-icon {
-      font-size: 28px;
+      font-size: 32px;
       flex-shrink: 0;
     }
     .notification-banner .notif-text {
@@ -497,28 +500,32 @@
     }
     .notification-banner .notif-text strong {
       display: block;
-      font-size: 16px;
+      font-size: 18px;
     }
     .notification-banner .notif-text p {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-secondary);
-      margin-top: 2px;
+      margin-top: 4px;
     }
     .notification-banner .notif-actions {
       display: flex;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 12px;
       flex-wrap: wrap;
     }
     .notification-banner .notif-close {
       background: none;
       border: none;
-      font-size: 22px;
+      font-size: 24px;
       color: var(--text-muted);
       cursor: pointer;
       padding: 0 4px;
       line-height: 1;
+      position: absolute;
+      top: 12px;
+      right: 16px;
     }
+    /* ----- PERMISSION TOAST ----- */
     .perm-toast {
       background: var(--card-bg);
       border-radius: var(--radius-sm);
@@ -536,9 +543,6 @@
       color: var(--text-secondary);
       flex: 1;
     }
-    .perm-toast .btn {
-      flex-shrink: 0;
-    }
     .perm-toast .diagnostic {
       font-size: 13px;
       color: var(--text-muted);
@@ -547,6 +551,20 @@
       border-radius: 8px;
       width: 100%;
       margin-top: 4px;
+    }
+    /* ----- LAST NOTIFICATION DISPLAY (Debug) ----- */
+    .last-notif {
+      background: var(--card-bg);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      margin-top: 20px;
+      border: 2px dashed var(--border);
+      font-size: 14px;
+      color: var(--text-secondary);
+      box-shadow: var(--shadow);
+    }
+    .last-notif strong {
+      color: var(--text);
     }
     .hidden {
       display: none !important;
@@ -598,8 +616,8 @@
         justify-content: flex-end;
       }
       .notification-banner {
-        padding: 14px 18px;
-        top: 10px;
+        padding: 14px 16px !important;
+        top: 10px !important;
       }
     }
   </style>
@@ -632,17 +650,20 @@
 
     <!-- NOTIFICATION BANNER -->
     <div class="notification-banner" id="notifBanner">
+      <button class="notif-close" id="notifClose">✕</button>
       <div class="notif-content">
         <span class="notif-icon" id="notifIcon">⏰</span>
         <div class="notif-text">
           <strong id="notifTitle">Reminder</strong>
           <p id="notifDesc">Task details</p>
-          <div class="notif-actions" id="notifActions">
-            <!-- dynamic buttons -->
-          </div>
+          <div class="notif-actions" id="notifActions"></div>
         </div>
-        <button class="notif-close" id="notifClose">✕</button>
       </div>
+    </div>
+
+    <!-- LAST NOTIFICATION (DEBUG) -->
+    <div class="last-notif" id="lastNotif">
+      <strong>📢 Last notification:</strong> <span id="lastNotifText">None yet</span>
     </div>
 
     <!-- GRID -->
@@ -749,6 +770,7 @@
       const toggleCompletedBtn = $('toggleCompletedTasks');
       const resetDayBtn = $('resetDayBtn');
       const testNotifBtn = $('testNotifBtn');
+      const lastNotifText = $('lastNotifText');
       const daysCheckboxes = document.querySelectorAll('#daysCheckboxes input[type="checkbox"]');
       const todoDaysCheckboxes = document.querySelectorAll('#todoDaysCheckboxes input[type="checkbox"]');
 
@@ -1083,14 +1105,12 @@
         } catch (_) {}
       }
 
-      // ---------- REMINDER CHECKER (FIXED) ----------
+      // ---------- REMINDER CHECKER ----------
       let reminderInterval = null;
 
       function startReminderChecker() {
         if (reminderInterval) clearInterval(reminderInterval);
-        // Check every 5 seconds for precision
         reminderInterval = setInterval(checkReminders, 5000);
-        // Also check immediately on page load
         setTimeout(checkReminders, 500);
       }
 
@@ -1108,8 +1128,6 @@
           const startMinutes = sh * 60 + sm;
           const endMinutes = eh * 60 + em;
 
-          // ---- START NOTIFICATION ----
-          // Trigger if we are between start and end, and haven't notified start yet
           if (nowMinutes >= startMinutes && nowMinutes < endMinutes && !task.startNotifiedToday) {
             task.startNotifiedToday = true;
             saveState();
@@ -1117,8 +1135,6 @@
             showNotification('start', task);
           }
 
-          // ---- END NOTIFICATION ----
-          // Trigger if we have passed end time, and haven't notified end yet
           if (nowMinutes >= endMinutes && !task.endNotifiedToday) {
             task.endNotifiedToday = true;
             saveState();
@@ -1128,13 +1144,16 @@
         });
       }
 
-      // ---------- SHOW NOTIFICATION (FORCED BANNER) ----------
+      // ---------- SHOW NOTIFICATION (FORCED BANNER + ALERT) ----------
       function showNotification(type, task) {
         const title = type === 'start' ? `▶️ Started: ${task.title}` : `⏹️ Ended: ${task.title}`;
         const timeRange = `${formatTime(task.startTime)} – ${formatTime(task.endTime)}`;
         const desc = type === 'start' ?
           `📅 ${timeRange}\n${task.description || ''}` :
           `⏰ Time is up! (${timeRange})\n${task.description || ''}`;
+
+        // --- Update last notification display ---
+        lastNotifText.textContent = `${title} – ${desc.replace(/\n/g, ' ')}`;
 
         // --- ALWAYS show in-page banner ---
         notifIcon.textContent = type === 'start' ? '▶️' : '⏹️';
@@ -1163,6 +1182,13 @@
 
         // Force banner to show
         notifBanner.classList.add('show');
+        console.log('✅ Banner should be visible now.');
+
+        // Also show an alert as fallback (if banner is hidden)
+        if (!notifBanner.classList.contains('show')) {
+          alert(`🔔 ${title}\n${desc}`);
+        }
+
         if (window.notifTimeout) clearTimeout(window.notifTimeout);
         window.notifTimeout = setTimeout(() => {
           notifBanner.classList.remove('show');
@@ -1429,7 +1455,6 @@
         updatePermissionUI();
         startReminderChecker();
 
-        // Re-check when tab becomes visible
         document.addEventListener('visibilitychange', () => {
           if (!document.hidden) {
             resetDailyIfNeeded();
