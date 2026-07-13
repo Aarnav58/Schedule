@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>⏰ Smart Scheduler & Todos</title>
+  <title>⏰ Smart Scheduler</title>
   <style>
-    /* ---------- RESET & BASE ---------- */
     *,
     *::before,
     *::after {
@@ -13,7 +12,6 @@
       margin: 0;
       padding: 0;
     }
-
     :root {
       --primary: #6C63FF;
       --primary-dark: #5a52d5;
@@ -30,7 +28,6 @@
       --transition: 0.25s ease;
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
     }
-
     body {
       font-family: var(--font);
       background: var(--bg);
@@ -41,14 +38,11 @@
       justify-content: center;
       align-items: flex-start;
     }
-
     .app {
       max-width: 1400px;
       width: 100%;
       margin: 0 auto;
     }
-
-    /* ---------- HEADER ---------- */
     .header {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -61,13 +55,11 @@
       flex-wrap: wrap;
       gap: 16px;
     }
-
     .header-left {
       display: flex;
       align-items: center;
       gap: 14px;
     }
-
     .header-left h1 {
       font-size: 26px;
       font-weight: 700;
@@ -76,7 +68,6 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
     .header-left .date-badge {
       background: var(--bg);
       padding: 6px 16px;
@@ -86,14 +77,12 @@
       color: var(--text-secondary);
       -webkit-text-fill-color: var(--text-secondary);
     }
-
     .header-actions {
       display: flex;
       align-items: center;
       gap: 14px;
       flex-wrap: wrap;
     }
-
     .header-actions .stats {
       font-size: 14px;
       color: var(--text-secondary);
@@ -104,12 +93,10 @@
       align-items: center;
       gap: 12px;
     }
-
     .header-actions .stats span {
       font-weight: 600;
       color: var(--text);
     }
-
     .btn {
       padding: 8px 20px;
       border: none;
@@ -125,7 +112,6 @@
       gap: 6px;
       border: 2px solid transparent;
     }
-
     .btn-primary {
       background: var(--primary);
       color: #fff;
@@ -141,7 +127,6 @@
       transform: none !important;
       box-shadow: none !important;
     }
-
     .btn-danger {
       background: #fee2e2;
       color: #dc2626;
@@ -150,7 +135,6 @@
     .btn-danger:hover {
       background: #fecaca;
     }
-
     .btn-success {
       background: #dcfce7;
       color: #16a34a;
@@ -159,7 +143,6 @@
     .btn-success:hover {
       background: #bbf7d0;
     }
-
     .btn-outline {
       background: transparent;
       border: 2px solid var(--border);
@@ -168,31 +151,21 @@
       border-color: var(--primary);
       color: var(--primary);
     }
-
     .btn-sm {
       padding: 4px 12px;
       font-size: 12px;
     }
-    .btn-xs {
-      padding: 2px 8px;
-      font-size: 11px;
-    }
-
-    /* ---------- GRID ---------- */
     .grid {
       display: grid;
       grid-template-columns: 1.6fr 1fr;
       gap: 28px;
       align-items: start;
     }
-
     @media (max-width: 1000px) {
       .grid {
         grid-template-columns: 1fr;
       }
     }
-
-    /* ---------- CARDS ---------- */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -200,7 +173,6 @@
       padding: 24px 28px;
       transition: var(--transition);
     }
-
     .card-header {
       display: flex;
       justify-content: space-between;
@@ -209,7 +181,6 @@
       flex-wrap: wrap;
       gap: 8px;
     }
-
     .card-header h2 {
       font-size: 20px;
       font-weight: 700;
@@ -217,7 +188,6 @@
       align-items: center;
       gap: 10px;
     }
-
     .card-header h2 .badge {
       font-size: 13px;
       font-weight: 600;
@@ -226,8 +196,6 @@
       border-radius: 20px;
       color: var(--text-secondary);
     }
-
-    /* ---------- FORMS ---------- */
     .schedule-form,
     .todo-form {
       background: var(--bg);
@@ -238,14 +206,12 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-
     .schedule-form .field-group {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       flex: 1 1 100%;
     }
-
     .schedule-form input,
     .schedule-form textarea,
     .schedule-form select,
@@ -261,7 +227,6 @@
       flex: 1;
       min-width: 100px;
     }
-
     .schedule-form input:focus,
     .schedule-form textarea:focus,
     .schedule-form select:focus,
@@ -269,13 +234,11 @@
       border-color: var(--primary);
       box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
     }
-
     .schedule-form textarea {
       flex-basis: 100%;
       resize: vertical;
       min-height: 40px;
     }
-
     .schedule-form .days-checkboxes {
       display: flex;
       flex-wrap: wrap;
@@ -283,7 +246,6 @@
       align-items: center;
       flex: 1 1 100%;
     }
-
     .schedule-form .days-checkboxes label {
       display: flex;
       align-items: center;
@@ -296,42 +258,17 @@
       cursor: pointer;
       transition: var(--transition);
     }
-
     .schedule-form .days-checkboxes label:hover {
       border-color: var(--primary);
     }
-
     .schedule-form .days-checkboxes input[type="checkbox"] {
       margin: 0;
       accent-color: var(--primary);
     }
-
     .schedule-form .btn,
     .todo-form .btn {
       flex-shrink: 0;
     }
-
-    /* ---------- TASK LIST ---------- */
-    .task-group {
-      margin-bottom: 20px;
-    }
-
-    .task-group:last-child {
-      margin-bottom: 0;
-    }
-
-    .task-group-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-      padding-bottom: 4px;
-      border-bottom: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
     .task-item {
       display: flex;
       align-items: flex-start;
@@ -342,14 +279,7 @@
       margin-bottom: 8px;
       transition: var(--transition);
       border-left: 4px solid var(--primary);
-      position: relative;
     }
-
-    .task-item:hover {
-      transform: translateX(4px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    }
-
     .task-item.completed {
       opacity: 0.6;
       border-left-color: #16a34a;
@@ -357,16 +287,13 @@
     .task-item.completed .task-title {
       text-decoration: line-through;
     }
-
     .task-item.ongoing {
       border-left-color: #f59e0b;
       background: #fffbeb;
     }
-
     .task-item.ended {
       border-left-color: #dc2626;
     }
-
     .task-item .task-status {
       font-size: 11px;
       font-weight: 600;
@@ -375,7 +302,6 @@
       background: #fff;
       margin-left: 6px;
     }
-
     .task-check {
       margin-top: 2px;
       flex-shrink: 0;
@@ -391,7 +317,6 @@
       transition: var(--transition);
       flex-shrink: 0;
     }
-
     .task-check:hover {
       border-color: var(--primary);
     }
@@ -405,25 +330,21 @@
       font-size: 13px;
       font-weight: 700;
     }
-
     .task-info {
       flex: 1;
       min-width: 0;
     }
-
     .task-title {
       font-weight: 600;
       font-size: 15px;
       word-break: break-word;
     }
-
     .task-desc {
       font-size: 13px;
       color: var(--text-secondary);
       margin-top: 2px;
       word-break: break-word;
     }
-
     .task-meta {
       display: flex;
       align-items: center;
@@ -431,7 +352,6 @@
       margin-top: 6px;
       flex-wrap: wrap;
     }
-
     .task-time {
       font-size: 13px;
       font-weight: 500;
@@ -440,27 +360,22 @@
       align-items: center;
       gap: 4px;
     }
-
     .task-actions {
       display: flex;
       gap: 6px;
       flex-shrink: 0;
       align-items: center;
     }
-
     .empty-state {
       text-align: center;
       padding: 32px 16px;
       color: var(--text-muted);
     }
-
     .empty-state .icon {
       font-size: 40px;
       margin-bottom: 10px;
       display: block;
     }
-
-    /* ---------- TODO LIST ---------- */
     .todo-item {
       display: flex;
       align-items: center;
@@ -471,11 +386,9 @@
       margin-bottom: 6px;
       transition: var(--transition);
     }
-
     .todo-item:hover {
       background: #e8eaf0;
     }
-
     .todo-item .todo-check {
       width: 20px;
       height: 20px;
@@ -489,7 +402,6 @@
       transition: var(--transition);
       flex-shrink: 0;
     }
-
     .todo-item .todo-check:hover {
       border-color: var(--primary);
     }
@@ -503,18 +415,15 @@
       font-size: 13px;
       font-weight: 700;
     }
-
     .todo-item .todo-text {
       flex: 1;
       font-size: 15px;
       word-break: break-word;
     }
-
     .todo-item .todo-text.done {
       text-decoration: line-through;
       color: var(--text-muted);
     }
-
     .todo-item .todo-days {
       font-size: 11px;
       color: var(--text-muted);
@@ -522,13 +431,29 @@
       padding: 0 8px;
       border-radius: 12px;
     }
-
     .todo-item .todo-actions {
       display: flex;
       gap: 4px;
     }
-
-    /* ---------- NOTIFICATION BANNER ---------- */
+    .scroll-area {
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .scroll-area::-webkit-scrollbar {
+      width: 5px;
+    }
+    .scroll-area::-webkit-scrollbar-track {
+      background: var(--bg);
+      border-radius: 10px;
+    }
+    .scroll-area::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
+    }
+    .scroll-area::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-light);
+    }
     .notification-banner {
       display: none;
       position: fixed;
@@ -545,7 +470,6 @@
       border-left: 6px solid var(--secondary);
       animation: slideDown 0.4s ease;
     }
-
     @keyframes slideDown {
       from {
         opacity: 0;
@@ -556,22 +480,18 @@
         transform: translateX(-50%) translateY(0);
       }
     }
-
     .notification-banner.show {
       display: block;
     }
-
     .notification-banner .notif-content {
       display: flex;
       align-items: flex-start;
       gap: 14px;
     }
-
     .notification-banner .notif-icon {
       font-size: 28px;
       flex-shrink: 0;
     }
-
     .notification-banner .notif-text {
       flex: 1;
     }
@@ -584,14 +504,12 @@
       color: var(--text-secondary);
       margin-top: 2px;
     }
-
     .notification-banner .notif-actions {
       display: flex;
       gap: 8px;
       margin-top: 10px;
       flex-wrap: wrap;
     }
-
     .notification-banner .notif-close {
       background: none;
       border: none;
@@ -601,8 +519,6 @@
       padding: 0 4px;
       line-height: 1;
     }
-
-    /* ---------- PERMISSION TOAST ---------- */
     .perm-toast {
       background: var(--card-bg);
       border-radius: var(--radius-sm);
@@ -615,17 +531,14 @@
       border: 1px solid var(--border);
       flex-wrap: wrap;
     }
-
     .perm-toast p {
       font-size: 14px;
       color: var(--text-secondary);
       flex: 1;
     }
-
     .perm-toast .btn {
       flex-shrink: 0;
     }
-
     .perm-toast .diagnostic {
       font-size: 13px;
       color: var(--text-muted);
@@ -635,38 +548,8 @@
       width: 100%;
       margin-top: 4px;
     }
-
-    /* ---------- SCROLL ---------- */
-    .scroll-area {
-      max-height: 500px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .scroll-area::-webkit-scrollbar {
-      width: 5px;
-    }
-    .scroll-area::-webkit-scrollbar-track {
-      background: var(--bg);
-      border-radius: 10px;
-    }
-    .scroll-area::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 10px;
-    }
-    .scroll-area::-webkit-scrollbar-thumb:hover {
-      background: var(--primary-light);
-    }
-
-    /* ---------- UTILITIES ---------- */
     .hidden {
       display: none !important;
-    }
-    .mt-8 {
-      margin-top: 8px;
-    }
-    .text-center {
-      text-align: center;
     }
     .fade-in {
       animation: fadeIn 0.25s ease;
@@ -681,7 +564,6 @@
         transform: translateY(0);
       }
     }
-
     @media (max-width: 600px) {
       body {
         padding: 12px;
@@ -723,9 +605,7 @@
   </style>
 </head>
 <body>
-
   <div class="app" id="app">
-
     <!-- HEADER -->
     <header class="header">
       <div class="header-left">
@@ -767,19 +647,15 @@
 
     <!-- GRID -->
     <div class="grid">
-
-      <!-- SCHEDULE CARD -->
+      <!-- SCHEDULE -->
       <section class="card">
         <div class="card-header">
           <h2>📅 Schedule <span class="badge" id="scheduleBadge">Today</span></h2>
           <button class="btn btn-sm btn-outline" id="toggleCompletedTasks">Show completed</button>
         </div>
-
-        <!-- Add Schedule Form -->
         <form class="schedule-form" id="scheduleForm">
           <input type="text" id="taskTitle" placeholder="Task title *" required />
           <textarea id="taskDesc" placeholder="Description (optional)" rows="1"></textarea>
-
           <div class="field-group">
             <select id="taskRepeat">
               <option value="none">No repeat</option>
@@ -801,20 +677,16 @@
             <button type="submit" class="btn btn-primary">➕ Add Task</button>
           </div>
         </form>
-
-        <!-- Task List -->
         <div class="scroll-area" id="taskListContainer">
           <div id="taskList"></div>
         </div>
       </section>
 
-      <!-- TODO CARD -->
+      <!-- TODO -->
       <section class="card">
         <div class="card-header">
           <h2>✅ Daily Todos <span class="badge" id="todoBadge">0</span></h2>
         </div>
-
-        <!-- Add Todo Form -->
         <form class="todo-form" id="todoForm">
           <input type="text" id="todoInput" placeholder="Todo text..." required />
           <div class="days-checkboxes" id="todoDaysCheckboxes" style="flex:1; display:flex; gap:4px; flex-wrap:wrap; align-items:center;">
@@ -829,13 +701,10 @@
           </div>
           <button type="submit" class="btn btn-primary">➕ Add</button>
         </form>
-
-        <!-- Todo List -->
         <div class="scroll-area" id="todoListContainer">
           <div id="todoList"></div>
         </div>
       </section>
-
     </div>
   </div>
 
@@ -893,19 +762,7 @@
       }
 
       function getTodayDay() {
-        return new Date().getDay(); // 0=Sun
-      }
-
-      function formatDate(dateStr) {
-        const d = new Date(dateStr + 'T00:00:00');
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const dDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-        if (dDate.getTime() === today.getTime()) return 'Today';
-        if (dDate.getTime() === tomorrow.getTime()) return 'Tomorrow';
-        return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        return new Date().getDay();
       }
 
       function formatTime(timeStr) {
@@ -916,15 +773,11 @@
         return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
       }
 
-      function getDayName(dayNum) {
-        const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        return names[dayNum];
-      }
-
       function getDaysLabel(days) {
         if (!days || days.length === 0) return 'All days';
         if (days.length === 7) return 'Every day';
-        return days.map(d => getDayName(d)).join(', ');
+        const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        return days.map(d => names[d]).join(', ');
       }
 
       function isTodayTask(task) {
@@ -1013,12 +866,7 @@
         todayTasks.sort((a, b) => a.startTime.localeCompare(b.startTime));
 
         if (todayTasks.length === 0) {
-          taskList.innerHTML = `
-            <div class="empty-state">
-              <span class="icon">📋</span>
-              <p>No scheduled tasks for today.<br />Add one above!</p>
-            </div>
-          `;
+          taskList.innerHTML = `<div class="empty-state"><span class="icon">📋</span><p>No scheduled tasks for today.<br />Add one above!</p></div>`;
           return;
         }
 
@@ -1061,7 +909,6 @@
             </div>
           `;
         });
-
         taskList.innerHTML = html;
       }
 
@@ -1071,23 +918,15 @@
           if (!t.days || t.days.length === 0) return true;
           return t.days.includes(today);
         });
-
         if (!showCompleted) {
           todayTodos = todayTodos.filter(t => !t.completedToday);
         }
-
         todayTodos.sort((a, b) => a.text.localeCompare(b.text));
 
         if (todayTodos.length === 0) {
-          todoList.innerHTML = `
-            <div class="empty-state">
-              <span class="icon">✅</span>
-              <p>No todos for today.<br />Add one above!</p>
-            </div>
-          `;
+          todoList.innerHTML = `<div class="empty-state"><span class="icon">✅</span><p>No todos for today.<br />Add one above!</p></div>`;
           return;
         }
-
         let html = '';
         todayTodos.forEach(todo => {
           html += `
@@ -1101,7 +940,6 @@
             </div>
           `;
         });
-
         todoList.innerHTML = html;
       }
 
@@ -1114,8 +952,7 @@
 
       function updateDate() {
         const now = new Date();
-        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        currentDateEl.textContent = now.toLocaleDateString('en-US', opts);
+        currentDateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
       }
 
       function updateBadges() {
@@ -1133,7 +970,7 @@
         return div.innerHTML;
       }
 
-      // ---------- CRUD TASKS ----------
+      // ---------- CRUD ----------
       function addTask(title, description, repeat, days, startTime, endTime) {
         const task = {
           id: generateId(),
@@ -1187,7 +1024,6 @@
         }
       }
 
-      // ---------- CRUD TODOS ----------
       function addTodo(text, days) {
         const todo = {
           id: generateId(),
@@ -1219,7 +1055,7 @@
         render();
       }
 
-      // ---------- SOUND (louder, longer, higher pitch) ----------
+      // ---------- SOUND ----------
       function playNotificationSound() {
         try {
           if (!audioCtx) {
@@ -1228,11 +1064,9 @@
           if (audioCtx.state === 'suspended') {
             audioCtx.resume();
           }
-
           const now = audioCtx.currentTime;
           const frequency = 1200;
           const gainValue = 0.4;
-
           for (let i = 0; i < 3; i++) {
             const startTime = now + i * 0.25;
             const osc = audioCtx.createOscillator();
@@ -1249,13 +1083,15 @@
         } catch (_) {}
       }
 
-      // ---------- REMINDER SYSTEM ----------
+      // ---------- REMINDER CHECKER (FIXED) ----------
       let reminderInterval = null;
 
       function startReminderChecker() {
         if (reminderInterval) clearInterval(reminderInterval);
-        reminderInterval = setInterval(checkReminders, 15000);
-        setTimeout(checkReminders, 1000);
+        // Check every 5 seconds for precision
+        reminderInterval = setInterval(checkReminders, 5000);
+        // Also check immediately on page load
+        setTimeout(checkReminders, 500);
       }
 
       function checkReminders() {
@@ -1272,21 +1108,27 @@
           const startMinutes = sh * 60 + sm;
           const endMinutes = eh * 60 + em;
 
+          // ---- START NOTIFICATION ----
+          // Trigger if we are between start and end, and haven't notified start yet
           if (nowMinutes >= startMinutes && nowMinutes < endMinutes && !task.startNotifiedToday) {
             task.startNotifiedToday = true;
             saveState();
+            console.log('🔔 START notification triggered for:', task.title);
             showNotification('start', task);
           }
 
+          // ---- END NOTIFICATION ----
+          // Trigger if we have passed end time, and haven't notified end yet
           if (nowMinutes >= endMinutes && !task.endNotifiedToday) {
             task.endNotifiedToday = true;
             saveState();
+            console.log('⏹️ END notification triggered for:', task.title);
             showNotification('end', task);
           }
         });
       }
 
-      // ---------- NOTIFICATION DISPLAY ----------
+      // ---------- SHOW NOTIFICATION (FORCED BANNER) ----------
       function showNotification(type, task) {
         const title = type === 'start' ? `▶️ Started: ${task.title}` : `⏹️ Ended: ${task.title}`;
         const timeRange = `${formatTime(task.startTime)} – ${formatTime(task.endTime)}`;
@@ -1294,7 +1136,7 @@
           `📅 ${timeRange}\n${task.description || ''}` :
           `⏰ Time is up! (${timeRange})\n${task.description || ''}`;
 
-        // In-page banner (ALWAYS shown)
+        // --- ALWAYS show in-page banner ---
         notifIcon.textContent = type === 'start' ? '▶️' : '⏹️';
         notifTitle.textContent = title;
         notifDesc.textContent = desc.replace(/\n/g, ' ');
@@ -1319,16 +1161,16 @@
         });
         notifActions.appendChild(dismissBtn);
 
+        // Force banner to show
         notifBanner.classList.add('show');
         if (window.notifTimeout) clearTimeout(window.notifTimeout);
         window.notifTimeout = setTimeout(() => {
           notifBanner.classList.remove('show');
         }, 15000);
 
-        // Desktop notification - ONLY if permission granted
+        // --- Desktop notification if granted ---
         if ('Notification' in window && Notification.permission === 'granted') {
           try {
-            // Build notification with actions if 'end' type
             const options = {
               body: desc,
               icon: '📋',
@@ -1337,67 +1179,38 @@
               silent: false,
               data: { taskId: task.id, type: type }
             };
-
             if (type === 'end') {
               options.actions = [
                 { action: 'done', title: '✅ Mark Done' }
               ];
             }
-
             const n = new Notification(title, options);
-
-            n.onclick = function(event) {
-              window.focus();
-              n.close();
-            };
-
+            n.onclick = function() { window.focus(); n.close(); };
             n.onaction = function(event) {
               if (event.action === 'done') {
                 const taskId = event.target.data?.taskId;
-                if (taskId) {
-                  toggleTask(taskId);
-                }
+                if (taskId) toggleTask(taskId);
                 event.target.close();
                 notifBanner.classList.remove('show');
               }
             };
-
             setTimeout(() => n.close(), 15000);
           } catch (_) {}
-        } else if ('Notification' in window && Notification.permission === 'default') {
-          // Hint for enabling
-          const hint = document.createElement('div');
-          hint.style.cssText =
-          'font-size:12px;color:var(--text-muted);margin-top:6px;background:#f0f0f0;padding:4px 10px;border-radius:12px;';
-          hint.textContent = '💡 Click "Enable" in the top toast for desktop notifications.';
-          notifActions.appendChild(hint);
-        } else if ('Notification' in window && Notification.permission === 'denied') {
-          // Show a hint that notifications are blocked
-          const hint = document.createElement('div');
-          hint.style.cssText =
-          'font-size:12px;color:#dc2626;margin-top:6px;background:#fee2e2;padding:4px 10px;border-radius:12px;';
-          hint.textContent = '🚫 Notifications blocked. Enable in browser/OS settings.';
-          notifActions.appendChild(hint);
         }
 
-        // Sound - ALWAYS play
+        // --- Always play sound ---
         playNotificationSound();
       }
 
-      // ---------- PERMISSION MANAGEMENT ----------
+      // ---------- PERMISSION UI ----------
       function updatePermissionUI() {
         if (!('Notification' in window)) {
           permToast.innerHTML = '<p>🔔 Notifications not supported.</p>';
           enableNotifBtn.disabled = true;
           enableNotifBtn.textContent = 'Unsupported';
-          permDiagnostic.textContent = 'Your browser does not support the Notification API.';
           return;
         }
-
-        const permission = Notification.permission;
-        const diagnostics = [];
-
-        switch (permission) {
+        switch (Notification.permission) {
           case 'granted':
             permToast.classList.add('hidden');
             enableNotifBtn.disabled = true;
@@ -1407,25 +1220,16 @@
             permToast.classList.remove('hidden');
             enableNotifBtn.disabled = true;
             enableNotifBtn.textContent = '🚫 Blocked';
-            // Show detailed diagnostic
-            diagnostics.push(
-              '⚠️ Notifications are blocked in your browser.',
-              '👉 To fix:',
-              '• Chrome/Edge: Click the lock icon in address bar → Site settings → Notifications → Allow',
-              '• Firefox: Click the shield icon → Disable tracking protection for this site, or',
-              '• Go to browser settings and allow notifications for this site.',
-              '• Also check your OS notification settings (Windows: Action Center, macOS: Notifications).'
-            );
-            permDiagnostic.textContent = diagnostics.join(' ');
+            permDiagnostic.textContent =
+              '⚠️ Notifications are blocked in your browser. To fix: Click the lock icon in the address bar → Site settings → Notifications → Allow. Then refresh.';
             break;
-          case 'default':
           default:
             permToast.classList.remove('hidden');
             enableNotifBtn.disabled = false;
             enableNotifBtn.textContent = '🔔 Enable';
             const toastP = permToast.querySelector('p');
             if (toastP) toastP.textContent = '🔔 Enable notifications to get desktop reminders.';
-            permDiagnostic.textContent = 'Click "Enable" to request permission. If no prompt appears, check your browser/OS notification settings.';
+            permDiagnostic.textContent = 'Click "Enable" to request permission. If no prompt appears, check your browser settings.';
             break;
         }
       }
@@ -1436,8 +1240,6 @@
           updatePermissionUI();
           return;
         }
-
-        // This is the ONLY place we call requestPermission
         Notification.requestPermission().then(perm => {
           updatePermissionUI();
           if (perm === 'granted') {
@@ -1448,9 +1250,7 @@
               });
             } catch (_) {}
           } else if (perm === 'denied') {
-            // Show diagnostic
-            permDiagnostic.textContent =
-              '🚫 You blocked notifications. To re-enable, go to browser site settings and change permission to Allow.';
+            permDiagnostic.textContent = '🚫 You blocked notifications. To re-enable, go to browser site settings and change permission to Allow.';
           }
         });
       }
@@ -1462,10 +1262,8 @@
           if (!target) return;
           const action = target.dataset.action;
           const id = target.dataset.id;
-
-          if (action === 'toggle-task') {
-            toggleTask(id);
-          } else if (action === 'delete-task') {
+          if (action === 'toggle-task') toggleTask(id);
+          else if (action === 'delete-task') {
             if (confirm('Delete this task?')) deleteTask(id);
           } else if (action === 'edit-task') {
             const task = tasks.find(t => t.id === id);
@@ -1476,7 +1274,7 @@
             const newRepeat = prompt('Repeat (none/daily/weekly):', task.repeat) || 'none';
             let newDays = task.days;
             if (newRepeat === 'weekly') {
-              const daysInput = prompt('Days (0-6, comma-separated, e.g. 1,3,5):', task.days.join(','));
+              const daysInput = prompt('Days (0-6, comma-separated):', task.days.join(','));
               if (daysInput !== null) {
                 newDays = daysInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
               }
@@ -1498,12 +1296,8 @@
           if (!target) return;
           const action = target.dataset.action;
           const id = target.dataset.id;
-
-          if (action === 'toggle-todo') {
-            toggleTodo(id);
-          } else if (action === 'delete-todo') {
-            deleteTodo(id);
-          }
+          if (action === 'toggle-todo') toggleTodo(id);
+          else if (action === 'delete-todo') deleteTodo(id);
         });
 
         notifClose.addEventListener('click', () => {
@@ -1632,12 +1426,10 @@
         render();
         setupForms();
         setupEventDelegation();
-
-        // Initialize permission UI state (read-only, no requests)
         updatePermissionUI();
-
         startReminderChecker();
 
+        // Re-check when tab becomes visible
         document.addEventListener('visibilitychange', () => {
           if (!document.hidden) {
             resetDailyIfNeeded();
@@ -1662,7 +1454,6 @@
       }
 
       document.addEventListener('DOMContentLoaded', init);
-
     })();
   </script>
 </body>
