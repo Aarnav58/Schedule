@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⏰ Smart Scheduler & Todos</title>
+  <style>
+    /* ---------- RESET & BASE ---------- */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #6C63FF;
+      --primary-dark: #5a52d5;
+      --secondary: #FF6584;
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #555;
+      --text-muted: #888;
+      --border: #e2e8f0;
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: 0.25s ease;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .app {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ---------- HEADER ---------- */
+    .header {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 28px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .header-left h1 {
+      font-size: 26px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-left .date-badge {
+      background: var(--bg);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      -webkit-text-fill-color: var(--text-secondary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .header-actions .stats {
+      font-size: 14px;
+      color: var(--text-secondary);
+      background: var(--bg);
+      padding: 6px 16px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-actions .stats span {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .btn {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35);
+    }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: default;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+    .btn-danger:hover {
+      background: #fecaca;
+    }
+
+    .btn-success {
+      background: #dcfce7;
+      color: #16a34a;
+      border-color: #bbf7d0;
+    }
+    .btn-success:hover {
+      background: #bbf7d0;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--border);
+    }
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-sm {
+      padding: 4px 12px;
+      font-size: 12px;
+    }
+    .btn-xs {
+      padding: 2px 8px;
+      font-size: 11px;
+    }
+
+    /* ---------- GRID ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1000px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---------- CARDS ---------- */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 28px;
+      transition: var(--transition);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-header h2 .badge {
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--bg);
+      padding: 2px 12px;
+      border-radius: 20px;
+      color: var(--text-secondary);
+    }
+
+    /* ---------- FORMS ---------- */
+    .schedule-form,
+    .todo-form {
+      background: var(--bg);
+      padding: 16px 18px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .schedule-form .field-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex: 1 1 100%;
+    }
+
+    .schedule-form input,
+    .schedule-form textarea,
+    .schedule-form select,
+    .todo-form input {
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 14px;
+      font-family: var(--font);
+      background: #fff;
+      transition: var(--transition);
+      outline: none;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .schedule-form input:focus,
+    .schedule-form textarea:focus,
+    .schedule-form select:focus,
+    .todo-form input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
+    }
+
+    .schedule-form textarea {
+      flex-basis: 100%;
+      resize: vertical;
+      min-height: 40px;
+    }
+
+    .schedule-form .days-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+      flex: 1 1 100%;
+    }
+
+    .schedule-form .days-checkboxes label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      background: #fff;
+      padding: 2px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .schedule-form .days-checkboxes label:hover {
+      border-color: var(--primary);
+    }
+
+    .schedule-form .days-checkboxes input[type="checkbox"] {
+      margin: 0;
+      accent-color: var(--primary);
+    }
+
+    .schedule-form .btn,
+    .todo-form .btn {
+      flex-shrink: 0;
+    }
+
+    /* ---------- TASK LIST ---------- */
+    .task-group {
+      margin-bottom: 20px;
+    }
+
+    .task-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .task-group-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      margin-bottom: 8px;
+      transition: var(--transition);
+      border-left: 4px solid var(--primary);
+      position: relative;
+    }
+
+    .task-item:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .task-item.completed {
+      opacity: 0.6;
+      border-left-color: #16a34a;
+    }
+    .task-item.completed .task-title {
+      text-decoration: line-through;
+    }
+
+    .task-item.ongoing {
+      border-left-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .task-item.ended {
+      border-left-color: #dc2626;
+    }
+
+    .task-item .task-status {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: #fff;
+      margin-left: 6px;
+    }
+
+    .task-check {
+      margin-top: 2px;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .task-check:hover {
+      border-color: var(--primary);
+    }
+    .task-check.checked {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .task-check.checked::after {
+      content: "✓";
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .task-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-title {
+      font-weight: 600;
+      font-size: 15px;
+      word-break: break-word;
+    }
+
+    .task-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      word-break: break-word;
+    }
+
+    .task-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .task-time {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+      align-items: center;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--text-muted);
+    }
+
+    .empty-state .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* ---------- TODO LIST ---------- */
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      margin-bottom: 6px;
+      transition: var(--transition);
+    }
+
+    .todo-item:hover {
+      background: #e8eaf0;
+    }
+
+    .todo-item .todo-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .todo-item .todo-check:hover {
+      border-color: var(--primary);
+    }
+    .todo-item .todo-check.checked {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .todo-item .todo-check.checked::after {
+      content: "✓";
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .todo-item .todo-text {
+      flex: 1;
+      font-size: 15px;
+      word-break: break-word;
+    }
+
+    .todo-item .todo-text.done {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .todo-item .todo-days {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #fff;
+      padding: 0 8px;
+      border-radius: 12px;
+    }
+
+    .todo-item .todo-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    /* ---------- NOTIFICATION BANNER ---------- */
+    .notification-banner {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card-bg);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      max-width: 560px;
+      width: 92%;
+      z-index: 999;
+      border-left: 6px solid var(--secondary);
+      animation: slideDown 0.4s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    .notification-banner.show {
+      display: block;
+    }
+
+    .notification-banner .notif-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .notification-banner .notif-icon {
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .notification-banner .notif-text {
+      flex: 1;
+    }
+    .notification-banner .notif-text strong {
+      display: block;
+      font-size: 16px;
+    }
+    .notification-banner .notif-text p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .notification-banner .notif-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .notification-banner .notif-close {
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0 4px;
+      line-height: 1;
+    }
+
+    /* ---------- PERMISSION TOAST ---------- */
+    .perm-toast {
+      background: var(--card-bg);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .perm-toast p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .perm-toast .btn {
+      flex-shrink: 0;
+    }
+
+    .perm-toast .diagnostic {
+      font-size: 13px;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 6px 12px;
+      border-radius: 8px;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    /* ---------- SCROLL ---------- */
+    .scroll-area {
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .scroll-area::-webkit-scrollbar {
+      width: 5px;
+    }
+    .scroll-area::-webkit-scrollbar-track {
+      background: var(--bg);
+      border-radius: 10px;
+    }
+    .scroll-area::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
+    }
+    .scroll-area::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-light);
+    }
+
+    /* ---------- UTILITIES ---------- */
+    .hidden {
+      display: none !important;
+    }
+    .mt-8 {
+      margin-top: 8px;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .fade-in {
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 12px;
+      }
+      .header {
+        padding: 14px 16px;
+      }
+      .header-left h1 {
+        font-size: 20px;
+      }
+      .card {
+        padding: 16px 14px;
+      }
+      .schedule-form,
+      .todo-form {
+        padding: 12px;
+        flex-direction: column;
+      }
+      .schedule-form .field-group {
+        flex-direction: column;
+      }
+      .schedule-form .days-checkboxes {
+        justify-content: center;
+      }
+      .task-item {
+        flex-wrap: wrap;
+        padding: 10px 12px;
+      }
+      .task-actions {
+        margin-top: 6px;
+        width: 100%;
+        justify-content: flex-end;
+      }
+      .notification-banner {
+        padding: 14px 18px;
+        top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app" id="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <h1>⏰ Smart Scheduler</h1>
+        <span class="date-badge" id="currentDate"></span>
+      </div>
+      <div class="header-actions">
+        <div class="stats">
+          <span>📌 <span id="taskCount">0</span></span>
+          <span>✅ <span id="doneCount">0</span></span>
+        </div>
+        <button class="btn btn-primary btn-sm" id="testNotifBtn">🔔 Test Alert</button>
+        <button class="btn btn-outline btn-sm" id="resetDayBtn">🔄 Reset Today</button>
+      </div>
+    </header>
+
+    <!-- PERMISSION TOAST -->
+    <div class="perm-toast" id="permToast">
+      <p>🔔 Enable notifications to get desktop reminders.</p>
+      <button class="btn btn-primary btn-sm" id="enableNotifBtn">Enable</button>
+      <button class="btn btn-sm" id="dismissPermBtn">Dismiss</button>
+      <div class="diagnostic" id="permDiagnostic"></div>
+    </div>
+
+    <!-- NOTIFICATION BANNER -->
+    <div class="notification-banner" id="notifBanner">
+      <div class="notif-content">
+        <span class="notif-icon" id="notifIcon">⏰</span>
+        <div class="notif-text">
+          <strong id="notifTitle">Reminder</strong>
+          <p id="notifDesc">Task details</p>
+          <div class="notif-actions" id="notifActions">
+            <!-- dynamic buttons -->
+          </div>
+        </div>
+        <button class="notif-close" id="notifClose">✕</button>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+      <!-- SCHEDULE CARD -->
+      <section class="card">
+        <div class="card-header">
+          <h2>📅 Schedule <span class="badge" id="scheduleBadge">Today</span></h2>
+          <button class="btn btn-sm btn-outline" id="toggleCompletedTasks">Show completed</button>
+        </div>
+
+        <!-- Add Schedule Form -->
+        <form class="schedule-form" id="scheduleForm">
+          <input type="text" id="taskTitle" placeholder="Task title *" required />
+          <textarea id="taskDesc" placeholder="Description (optional)" rows="1"></textarea>
+
+          <div class="field-group">
+            <select id="taskRepeat">
+              <option value="none">No repeat</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+            </select>
+            <div class="days-checkboxes" id="daysCheckboxes">
+              <span style="font-size:13px;color:var(--text-secondary);">Days:</span>
+              <label><input type="checkbox" value="1" checked /> Mon</label>
+              <label><input type="checkbox" value="2" checked /> Tue</label>
+              <label><input type="checkbox" value="3" checked /> Wed</label>
+              <label><input type="checkbox" value="4" checked /> Thu</label>
+              <label><input type="checkbox" value="5" checked /> Fri</label>
+              <label><input type="checkbox" value="6" /> Sat</label>
+              <label><input type="checkbox" value="0" /> Sun</label>
+            </div>
+            <input type="time" id="taskStartTime" required />
+            <input type="time" id="taskEndTime" required />
+            <button type="submit" class="btn btn-primary">➕ Add Task</button>
+          </div>
+        </form>
+
+        <!-- Task List -->
+        <div class="scroll-area" id="taskListContainer">
+          <div id="taskList"></div>
+        </div>
+      </section>
+
+      <!-- TODO CARD -->
+      <section class="card">
+        <div class="card-header">
+          <h2>✅ Daily Todos <span class="badge" id="todoBadge">0</span></h2>
+        </div>
+
+        <!-- Add Todo Form -->
+        <form class="todo-form" id="todoForm">
+          <input type="text" id="todoInput" placeholder="Todo text..." required />
+          <div class="days-checkboxes" id="todoDaysCheckboxes" style="flex:1; display:flex; gap:4px; flex-wrap:wrap; align-items:center;">
+            <span style="font-size:13px;color:var(--text-secondary);">Show on:</span>
+            <label><input type="checkbox" value="1" checked /> Mon</label>
+            <label><input type="checkbox" value="2" checked /> Tue</label>
+            <label><input type="checkbox" value="3" checked /> Wed</label>
+            <label><input type="checkbox" value="4" checked /> Thu</label>
+            <label><input type="checkbox" value="5" checked /> Fri</label>
+            <label><input type="checkbox" value="6" /> Sat</label>
+            <label><input type="checkbox" value="0" /> Sun</label>
+          </div>
+          <button type="submit" class="btn btn-primary">➕ Add</button>
+        </form>
+
+        <!-- Todo List -->
+        <div class="scroll-area" id="todoListContainer">
+          <div id="todoList"></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ---------- STATE ----------
+      let tasks = [];
+      let todos = [];
+      let showCompleted = false;
+      let lastResetDate = '';
+      let audioCtx = null;
+
+      // ---------- DOM REFS ----------
+      const $ = (id) => document.getElementById(id);
+      const taskList = $('taskList');
+      const todoList = $('todoList');
+      const scheduleForm = $('scheduleForm');
+      const todoForm = $('todoForm');
+      const taskTitle = $('taskTitle');
+      const taskDesc = $('taskDesc');
+      const taskRepeat = $('taskRepeat');
+      const taskStartTime = $('taskStartTime');
+      const taskEndTime = $('taskEndTime');
+      const todoInput = $('todoInput');
+      const currentDateEl = $('currentDate');
+      const taskCountEl = $('taskCount');
+      const doneCountEl = $('doneCount');
+      const scheduleBadge = $('scheduleBadge');
+      const todoBadge = $('todoBadge');
+      const notifBanner = $('notifBanner');
+      const notifIcon = $('notifIcon');
+      const notifTitle = $('notifTitle');
+      const notifDesc = $('notifDesc');
+      const notifActions = $('notifActions');
+      const notifClose = $('notifClose');
+      const permToast = $('permToast');
+      const enableNotifBtn = $('enableNotifBtn');
+      const dismissPermBtn = $('dismissPermBtn');
+      const permDiagnostic = $('permDiagnostic');
+      const toggleCompletedBtn = $('toggleCompletedTasks');
+      const resetDayBtn = $('resetDayBtn');
+      const testNotifBtn = $('testNotifBtn');
+      const daysCheckboxes = document.querySelectorAll('#daysCheckboxes input[type="checkbox"]');
+      const todoDaysCheckboxes = document.querySelectorAll('#todoDaysCheckboxes input[type="checkbox"]');
+
+      // ---------- HELPERS ----------
+      function generateId() {
+        return Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7);
+      }
+
+      function todayStr() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function getTodayDay() {
+        return new Date().getDay(); // 0=Sun
+      }
+
+      function formatDate(dateStr) {
+        const d = new Date(dateStr + 'T00:00:00');
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const dDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        if (dDate.getTime() === today.getTime()) return 'Today';
+        if (dDate.getTime() === tomorrow.getTime()) return 'Tomorrow';
+        return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      }
+
+      function formatTime(timeStr) {
+        if (!timeStr) return '';
+        const [h, m] = timeStr.split(':').map(Number);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const h12 = h % 12 || 12;
+        return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
+      }
+
+      function getDayName(dayNum) {
+        const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        return names[dayNum];
+      }
+
+      function getDaysLabel(days) {
+        if (!days || days.length === 0) return 'All days';
+        if (days.length === 7) return 'Every day';
+        return days.map(d => getDayName(d)).join(', ');
+      }
+
+      function isTodayTask(task) {
+        const today = getTodayDay();
+        if (task.repeat === 'none') {
+          return task.date === todayStr();
+        } else if (task.repeat === 'daily') {
+          return true;
+        } else if (task.repeat === 'weekly') {
+          if (!task.days || task.days.length === 0) return false;
+          return task.days.includes(today);
+        }
+        return false;
+      }
+
+      function isTaskActiveToday(task) {
+        if (!task.active) return false;
+        return isTodayTask(task);
+      }
+
+      function getTaskStatus(task) {
+        if (task.completedToday) return 'completed';
+        const now = new Date();
+        const [sh, sm] = task.startTime.split(':').map(Number);
+        const [eh, em] = task.endTime.split(':').map(Number);
+        const nowMinutes = now.getHours() * 60 + now.getMinutes();
+        const startMinutes = sh * 60 + sm;
+        const endMinutes = eh * 60 + em;
+
+        if (nowMinutes < startMinutes) return 'waiting';
+        if (nowMinutes >= startMinutes && nowMinutes < endMinutes) return 'ongoing';
+        return 'ended';
+      }
+
+      // ---------- STORAGE ----------
+      function saveState() {
+        try {
+          localStorage.setItem('smart_tasks', JSON.stringify(tasks));
+          localStorage.setItem('smart_todos', JSON.stringify(todos));
+          localStorage.setItem('smart_lastReset', lastResetDate);
+        } catch (_) {}
+      }
+
+      function loadState() {
+        try {
+          const t = localStorage.getItem('smart_tasks');
+          const d = localStorage.getItem('smart_todos');
+          const r = localStorage.getItem('smart_lastReset');
+          if (t) tasks = JSON.parse(t);
+          if (d) todos = JSON.parse(d);
+          if (r) lastResetDate = r;
+        } catch (_) {}
+      }
+
+      // ---------- RESET DAILY ----------
+      function resetDailyIfNeeded() {
+        const today = todayStr();
+        if (lastResetDate !== today) {
+          tasks.forEach(t => {
+            t.completedToday = false;
+            t.startNotifiedToday = false;
+            t.endNotifiedToday = false;
+          });
+          todos.forEach(t => t.completedToday = false);
+          lastResetDate = today;
+          saveState();
+          render();
+        }
+      }
+
+      // ---------- RENDER ----------
+      function render() {
+        resetDailyIfNeeded();
+        renderTasks();
+        renderTodos();
+        updateStats();
+        updateDate();
+        updateBadges();
+      }
+
+      function renderTasks() {
+        let todayTasks = tasks.filter(t => isTaskActiveToday(t));
+        if (!showCompleted) {
+          todayTasks = todayTasks.filter(t => !t.completedToday);
+        }
+        todayTasks.sort((a, b) => a.startTime.localeCompare(b.startTime));
+
+        if (todayTasks.length === 0) {
+          taskList.innerHTML = `
+            <div class="empty-state">
+              <span class="icon">📋</span>
+              <p>No scheduled tasks for today.<br />Add one above!</p>
+            </div>
+          `;
+          return;
+        }
+
+        let html = '';
+        todayTasks.forEach(task => {
+          const status = getTaskStatus(task);
+          let cls = 'task-item';
+          let statusLabel = '';
+          if (task.completedToday) {
+            cls += ' completed';
+            statusLabel = '✅ Done';
+          } else if (status === 'ongoing') {
+            cls += ' ongoing';
+            statusLabel = '⏳ Ongoing';
+          } else if (status === 'ended') {
+            cls += ' ended';
+            statusLabel = '⏰ Ended';
+          } else {
+            statusLabel = '⏱ Waiting';
+          }
+
+          const timeRange = `${formatTime(task.startTime)} – ${formatTime(task.endTime)}`;
+          const repeatLabel = task.repeat === 'none' ? '' : (task.repeat === 'daily' ? '🔁 Daily' : `📅 ${getDaysLabel(task.days)}`);
+
+          html += `
+            <div class="${cls} fade-in" data-id="${task.id}">
+              <div class="task-check ${task.completedToday ? 'checked' : ''}" data-action="toggle-task" data-id="${task.id}"></div>
+              <div class="task-info">
+                <div class="task-title">${escapeHtml(task.title)} <span class="task-status">${statusLabel}</span></div>
+                ${task.description ? `<div class="task-desc">${escapeHtml(task.description)}</div>` : ''}
+                <div class="task-meta">
+                  <span class="task-time">🕐 ${timeRange}</span>
+                  ${repeatLabel ? `<span style="font-size:12px;color:var(--text-muted);">${repeatLabel}</span>` : ''}
+                </div>
+              </div>
+              <div class="task-actions">
+                <button class="btn btn-sm btn-outline" data-action="edit-task" data-id="${task.id}">✏️</button>
+                <button class="btn btn-sm btn-danger" data-action="delete-task" data-id="${task.id}">✕</button>
+              </div>
+            </div>
+          `;
+        });
+
+        taskList.innerHTML = html;
+      }
+
+      function renderTodos() {
+        const today = getTodayDay();
+        let todayTodos = todos.filter(t => {
+          if (!t.days || t.days.length === 0) return true;
+          return t.days.includes(today);
+        });
+
+        if (!showCompleted) {
+          todayTodos = todayTodos.filter(t => !t.completedToday);
+        }
+
+        todayTodos.sort((a, b) => a.text.localeCompare(b.text));
+
+        if (todayTodos.length === 0) {
+          todoList.innerHTML = `
+            <div class="empty-state">
+              <span class="icon">✅</span>
+              <p>No todos for today.<br />Add one above!</p>
+            </div>
+          `;
+          return;
+        }
+
+        let html = '';
+        todayTodos.forEach(todo => {
+          html += `
+            <div class="todo-item fade-in" data-id="${todo.id}">
+              <div class="todo-check ${todo.completedToday ? 'checked' : ''}" data-action="toggle-todo" data-id="${todo.id}"></div>
+              <span class="todo-text ${todo.completedToday ? 'done' : ''}">${escapeHtml(todo.text)}</span>
+              <span class="todo-days">${getDaysLabel(todo.days)}</span>
+              <div class="todo-actions">
+                <button class="btn btn-sm btn-danger" data-action="delete-todo" data-id="${todo.id}">✕</button>
+              </div>
+            </div>
+          `;
+        });
+
+        todoList.innerHTML = html;
+      }
+
+      function updateStats() {
+        const total = tasks.filter(t => isTaskActiveToday(t)).length;
+        const done = tasks.filter(t => isTaskActiveToday(t) && t.completedToday).length;
+        taskCountEl.textContent = total;
+        doneCountEl.textContent = done;
+      }
+
+      function updateDate() {
+        const now = new Date();
+        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        currentDateEl.textContent = now.toLocaleDateString('en-US', opts);
+      }
+
+      function updateBadges() {
+        const today = getTodayDay();
+        const pending = tasks.filter(t => isTaskActiveToday(t) && !t.completedToday).length;
+        scheduleBadge.textContent = pending + ' pending';
+        const todoPending = todos.filter(t => (t.days.length === 0 || t.days.includes(today)) && !t.completedToday).length;
+        todoBadge.textContent = todoPending;
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // ---------- CRUD TASKS ----------
+      function addTask(title, description, repeat, days, startTime, endTime) {
+        const task = {
+          id: generateId(),
+          title: title.trim(),
+          description: description.trim() || '',
+          repeat: repeat,
+          days: days || [],
+          startTime: startTime,
+          endTime: endTime,
+          active: true,
+          completedToday: false,
+          startNotifiedToday: false,
+          endNotifiedToday: false,
+          date: todayStr()
+        };
+        tasks.push(task);
+        saveState();
+        render();
+        setTimeout(() => checkReminders(), 100);
+        return task;
+      }
+
+      function toggleTask(id) {
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+          if (isTaskActiveToday(task)) {
+            task.completedToday = !task.completedToday;
+            saveState();
+            render();
+          }
+        }
+      }
+
+      function deleteTask(id) {
+        tasks = tasks.filter(t => t.id !== id);
+        saveState();
+        render();
+      }
+
+      function editTask(id, newTitle, newDesc, newRepeat, newDays, newStart, newEnd) {
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+          task.title = newTitle.trim();
+          task.description = newDesc.trim() || '';
+          task.repeat = newRepeat;
+          task.days = newDays || [];
+          task.startTime = newStart;
+          task.endTime = newEnd;
+          saveState();
+          render();
+        }
+      }
+
+      // ---------- CRUD TODOS ----------
+      function addTodo(text, days) {
+        const todo = {
+          id: generateId(),
+          text: text.trim(),
+          days: days || [],
+          completedToday: false
+        };
+        todos.push(todo);
+        saveState();
+        render();
+        return todo;
+      }
+
+      function toggleTodo(id) {
+        const todo = todos.find(t => t.id === id);
+        if (todo) {
+          const today = getTodayDay();
+          if (todo.days.length === 0 || todo.days.includes(today)) {
+            todo.completedToday = !todo.completedToday;
+            saveState();
+            render();
+          }
+        }
+      }
+
+      function deleteTodo(id) {
+        todos = todos.filter(t => t.id !== id);
+        saveState();
+        render();
+      }
+
+      // ---------- SOUND (louder, longer, higher pitch) ----------
+      function playNotificationSound() {
+        try {
+          if (!audioCtx) {
+            audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+
+          const now = audioCtx.currentTime;
+          const frequency = 1200;
+          const gainValue = 0.4;
+
+          for (let i = 0; i < 3; i++) {
+            const startTime = now + i * 0.25;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = frequency;
+            osc.type = 'square';
+            gain.gain.setValueAtTime(gainValue, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.15);
+            osc.start(startTime);
+            osc.stop(startTime + 0.15);
+          }
+        } catch (_) {}
+      }
+
+      // ---------- REMINDER SYSTEM ----------
+      let reminderInterval = null;
+
+      function startReminderChecker() {
+        if (reminderInterval) clearInterval(reminderInterval);
+        reminderInterval = setInterval(checkReminders, 15000);
+        setTimeout(checkReminders, 1000);
+      }
+
+      function checkReminders() {
+        resetDailyIfNeeded();
+        const now = new Date();
+        const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+        tasks.forEach(task => {
+          if (!isTaskActiveToday(task)) return;
+          if (task.completedToday) return;
+
+          const [sh, sm] = task.startTime.split(':').map(Number);
+          const [eh, em] = task.endTime.split(':').map(Number);
+          const startMinutes = sh * 60 + sm;
+          const endMinutes = eh * 60 + em;
+
+          if (nowMinutes >= startMinutes && nowMinutes < endMinutes && !task.startNotifiedToday) {
+            task.startNotifiedToday = true;
+            saveState();
+            showNotification('start', task);
+          }
+
+          if (nowMinutes >= endMinutes && !task.endNotifiedToday) {
+            task.endNotifiedToday = true;
+            saveState();
+            showNotification('end', task);
+          }
+        });
+      }
+
+      // ---------- NOTIFICATION DISPLAY ----------
+      function showNotification(type, task) {
+        const title = type === 'start' ? `▶️ Started: ${task.title}` : `⏹️ Ended: ${task.title}`;
+        const timeRange = `${formatTime(task.startTime)} – ${formatTime(task.endTime)}`;
+        const desc = type === 'start' ?
+          `📅 ${timeRange}\n${task.description || ''}` :
+          `⏰ Time is up! (${timeRange})\n${task.description || ''}`;
+
+        // In-page banner (ALWAYS shown)
+        notifIcon.textContent = type === 'start' ? '▶️' : '⏹️';
+        notifTitle.textContent = title;
+        notifDesc.textContent = desc.replace(/\n/g, ' ');
+
+        notifActions.innerHTML = '';
+        if (type === 'end') {
+          const doneBtn = document.createElement('button');
+          doneBtn.className = 'btn btn-success btn-sm';
+          doneBtn.textContent = '✅ Mark Done';
+          doneBtn.dataset.taskId = task.id;
+          doneBtn.addEventListener('click', () => {
+            toggleTask(task.id);
+            notifBanner.classList.remove('show');
+          });
+          notifActions.appendChild(doneBtn);
+        }
+        const dismissBtn = document.createElement('button');
+        dismissBtn.className = 'btn btn-outline btn-sm';
+        dismissBtn.textContent = 'Dismiss';
+        dismissBtn.addEventListener('click', () => {
+          notifBanner.classList.remove('show');
+        });
+        notifActions.appendChild(dismissBtn);
+
+        notifBanner.classList.add('show');
+        if (window.notifTimeout) clearTimeout(window.notifTimeout);
+        window.notifTimeout = setTimeout(() => {
+          notifBanner.classList.remove('show');
+        }, 15000);
+
+        // Desktop notification - ONLY if permission granted
+        if ('Notification' in window && Notification.permission === 'granted') {
+          try {
+            // Build notification with actions if 'end' type
+            const options = {
+              body: desc,
+              icon: '📋',
+              tag: task.id + type,
+              requireInteraction: true,
+              silent: false,
+              data: { taskId: task.id, type: type }
+            };
+
+            if (type === 'end') {
+              options.actions = [
+                { action: 'done', title: '✅ Mark Done' }
+              ];
+            }
+
+            const n = new Notification(title, options);
+
+            n.onclick = function(event) {
+              window.focus();
+              n.close();
+            };
+
+            n.onaction = function(event) {
+              if (event.action === 'done') {
+                const taskId = event.target.data?.taskId;
+                if (taskId) {
+                  toggleTask(taskId);
+                }
+                event.target.close();
+                notifBanner.classList.remove('show');
+              }
+            };
+
+            setTimeout(() => n.close(), 15000);
+          } catch (_) {}
+        } else if ('Notification' in window && Notification.permission === 'default') {
+          // Hint for enabling
+          const hint = document.createElement('div');
+          hint.style.cssText =
+          'font-size:12px;color:var(--text-muted);margin-top:6px;background:#f0f0f0;padding:4px 10px;border-radius:12px;';
+          hint.textContent = '💡 Click "Enable" in the top toast for desktop notifications.';
+          notifActions.appendChild(hint);
+        } else if ('Notification' in window && Notification.permission === 'denied') {
+          // Show a hint that notifications are blocked
+          const hint = document.createElement('div');
+          hint.style.cssText =
+          'font-size:12px;color:#dc2626;margin-top:6px;background:#fee2e2;padding:4px 10px;border-radius:12px;';
+          hint.textContent = '🚫 Notifications blocked. Enable in browser/OS settings.';
+          notifActions.appendChild(hint);
+        }
+
+        // Sound - ALWAYS play
+        playNotificationSound();
+      }
+
+      // ---------- PERMISSION MANAGEMENT ----------
+      function updatePermissionUI() {
+        if (!('Notification' in window)) {
+          permToast.innerHTML = '<p>🔔 Notifications not supported.</p>';
+          enableNotifBtn.disabled = true;
+          enableNotifBtn.textContent = 'Unsupported';
+          permDiagnostic.textContent = 'Your browser does not support the Notification API.';
+          return;
+        }
+
+        const permission = Notification.permission;
+        const diagnostics = [];
+
+        switch (permission) {
+          case 'granted':
+            permToast.classList.add('hidden');
+            enableNotifBtn.disabled = true;
+            enableNotifBtn.textContent = '✅ Enabled';
+            break;
+          case 'denied':
+            permToast.classList.remove('hidden');
+            enableNotifBtn.disabled = true;
+            enableNotifBtn.textContent = '🚫 Blocked';
+            // Show detailed diagnostic
+            diagnostics.push(
+              '⚠️ Notifications are blocked in your browser.',
+              '👉 To fix:',
+              '• Chrome/Edge: Click the lock icon in address bar → Site settings → Notifications → Allow',
+              '• Firefox: Click the shield icon → Disable tracking protection for this site, or',
+              '• Go to browser settings and allow notifications for this site.',
+              '• Also check your OS notification settings (Windows: Action Center, macOS: Notifications).'
+            );
+            permDiagnostic.textContent = diagnostics.join(' ');
+            break;
+          case 'default':
+          default:
+            permToast.classList.remove('hidden');
+            enableNotifBtn.disabled = false;
+            enableNotifBtn.textContent = '🔔 Enable';
+            const toastP = permToast.querySelector('p');
+            if (toastP) toastP.textContent = '🔔 Enable notifications to get desktop reminders.';
+            permDiagnostic.textContent = 'Click "Enable" to request permission. If no prompt appears, check your browser/OS notification settings.';
+            break;
+        }
+      }
+
+      function requestNotificationPermission() {
+        if (!('Notification' in window)) return;
+        if (Notification.permission === 'granted' || Notification.permission === 'denied') {
+          updatePermissionUI();
+          return;
+        }
+
+        // This is the ONLY place we call requestPermission
+        Notification.requestPermission().then(perm => {
+          updatePermissionUI();
+          if (perm === 'granted') {
+            try {
+              new Notification('✅ Notifications enabled!', {
+                body: 'You will now receive desktop alerts for your schedule.',
+                icon: '📋'
+              });
+            } catch (_) {}
+          } else if (perm === 'denied') {
+            // Show diagnostic
+            permDiagnostic.textContent =
+              '🚫 You blocked notifications. To re-enable, go to browser site settings and change permission to Allow.';
+          }
+        });
+      }
+
+      // ---------- EVENT DELEGATION ----------
+      function setupEventDelegation() {
+        taskList.addEventListener('click', (e) => {
+          const target = e.target.closest('[data-action]');
+          if (!target) return;
+          const action = target.dataset.action;
+          const id = target.dataset.id;
+
+          if (action === 'toggle-task') {
+            toggleTask(id);
+          } else if (action === 'delete-task') {
+            if (confirm('Delete this task?')) deleteTask(id);
+          } else if (action === 'edit-task') {
+            const task = tasks.find(t => t.id === id);
+            if (!task) return;
+            const newTitle = prompt('Title:', task.title);
+            if (newTitle === null) return;
+            const newDesc = prompt('Description:', task.description) || '';
+            const newRepeat = prompt('Repeat (none/daily/weekly):', task.repeat) || 'none';
+            let newDays = task.days;
+            if (newRepeat === 'weekly') {
+              const daysInput = prompt('Days (0-6, comma-separated, e.g. 1,3,5):', task.days.join(','));
+              if (daysInput !== null) {
+                newDays = daysInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+              }
+            } else {
+              newDays = [];
+            }
+            const newStart = prompt('Start time (HH:MM):', task.startTime);
+            if (newStart === null) return;
+            const newEnd = prompt('End time (HH:MM):', task.endTime);
+            if (newEnd === null) return;
+            if (newTitle.trim()) {
+              editTask(id, newTitle, newDesc, newRepeat, newDays, newStart, newEnd);
+            }
+          }
+        });
+
+        todoList.addEventListener('click', (e) => {
+          const target = e.target.closest('[data-action]');
+          if (!target) return;
+          const action = target.dataset.action;
+          const id = target.dataset.id;
+
+          if (action === 'toggle-todo') {
+            toggleTodo(id);
+          } else if (action === 'delete-todo') {
+            deleteTodo(id);
+          }
+        });
+
+        notifClose.addEventListener('click', () => {
+          notifBanner.classList.remove('show');
+          if (window.notifTimeout) clearTimeout(window.notifTimeout);
+        });
+
+        toggleCompletedBtn.addEventListener('click', () => {
+          showCompleted = !showCompleted;
+          toggleCompletedBtn.textContent = showCompleted ? 'Hide completed' : 'Show completed';
+          render();
+        });
+
+        resetDayBtn.addEventListener('click', () => {
+          if (confirm('Reset all completed status for today?')) {
+            tasks.forEach(t => {
+              t.completedToday = false;
+              t.startNotifiedToday = false;
+              t.endNotifiedToday = false;
+            });
+            todos.forEach(t => t.completedToday = false);
+            saveState();
+            render();
+          }
+        });
+
+        enableNotifBtn.addEventListener('click', requestNotificationPermission);
+        dismissPermBtn.addEventListener('click', () => {
+          permToast.classList.add('hidden');
+        });
+
+        testNotifBtn.addEventListener('click', () => {
+          const testTask = {
+            id: 'test_' + Date.now(),
+            title: '🔔 Test Alert',
+            description: 'Desktop notification with action button!',
+            startTime: '00:00',
+            endTime: '00:01'
+          };
+          showNotification('end', testTask);
+        });
+      }
+
+      // ---------- FORMS ----------
+      function setupForms() {
+        scheduleForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const title = taskTitle.value.trim();
+          const desc = taskDesc.value.trim();
+          const repeat = taskRepeat.value;
+          const startTime = taskStartTime.value;
+          const endTime = taskEndTime.value;
+          const days = Array.from(daysCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => parseInt(cb.value));
+
+          if (!title) { alert('Enter a title.'); return; }
+          if (!startTime || !endTime) { alert('Enter start and end time.'); return; }
+          if (startTime >= endTime) { alert('End time must be after start time.'); return; }
+          if (repeat === 'weekly' && days.length === 0) { alert('Select at least one day for weekly repeat.'); return; }
+
+          addTask(title, desc, repeat, days, startTime, endTime);
+          scheduleForm.reset();
+          const now = new Date();
+          const h = now.getHours();
+          const m = now.getMinutes();
+          const start = new Date(now);
+          start.setHours(h, m + 1, 0, 0);
+          const end = new Date(start);
+          end.setHours(start.getHours() + 1);
+          taskStartTime.value = String(start.getHours()).padStart(2, '0') + ':' + String(start.getMinutes()).padStart(2, '0');
+          taskEndTime.value = String(end.getHours()).padStart(2, '0') + ':' + String(end.getMinutes()).padStart(2, '0');
+          taskRepeat.value = 'none';
+          daysCheckboxes.forEach(cb => cb.checked = true);
+          taskTitle.focus();
+        });
+
+        todoForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const text = todoInput.value.trim();
+          if (!text) return;
+          const days = Array.from(todoDaysCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => parseInt(cb.value));
+          addTodo(text, days);
+          todoInput.value = '';
+          todoInput.focus();
+        });
+
+        function setDefaultTimes() {
+          const now = new Date();
+          const h = now.getHours();
+          const m = now.getMinutes();
+          const start = new Date(now);
+          start.setHours(h, m + 1, 0, 0);
+          const end = new Date(start);
+          end.setHours(start.getHours() + 1);
+          taskStartTime.value = String(start.getHours()).padStart(2, '0') + ':' + String(start.getMinutes()).padStart(2, '0');
+          taskEndTime.value = String(end.getHours()).padStart(2, '0') + ':' + String(end.getMinutes()).padStart(2, '0');
+        }
+        setDefaultTimes();
+      }
+
+      // ---------- INIT ----------
+      function init() {
+        loadState();
+        tasks.forEach(t => {
+          if (t.startNotifiedToday === undefined) t.startNotifiedToday = false;
+          if (t.endNotifiedToday === undefined) t.endNotifiedToday = false;
+        });
+        resetDailyIfNeeded();
+
+        if (tasks.length === 0 && todos.length === 0) {
+          const now = new Date();
+          const h = now.getHours();
+          const m = now.getMinutes();
+          const startH = (h + 1) % 24;
+          const endH = (h + 2) % 24;
+          const start = `${String(startH).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+          const end = `${String(endH).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+          addTask('Sample daily task', 'This task repeats daily', 'daily', [], start, end);
+          addTodo('Sample todo (Mon-Fri)', [1, 2, 3, 4, 5]);
+          addTodo('Weekend todo', [6, 0]);
+        }
+
+        render();
+        setupForms();
+        setupEventDelegation();
+
+        // Initialize permission UI state (read-only, no requests)
+        updatePermissionUI();
+
+        startReminderChecker();
+
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) {
+            resetDailyIfNeeded();
+            render();
+            checkReminders();
+          }
+        });
+
+        setInterval(() => {
+          updateDate();
+          resetDailyIfNeeded();
+        }, 60000);
+
+        window.addEventListener('storage', (e) => {
+          if (e.key === 'smart_tasks' || e.key === 'smart_todos' || e.key === 'smart_lastReset') {
+            loadState();
+            render();
+          }
+        });
+
+        console.log('Smart Scheduler loaded. Notification permission state:', Notification.permission);
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+
+    })();
+  </script>
+</body>
+</html>
