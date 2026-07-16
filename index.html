@@ -54,7 +54,7 @@
       border-radius: var(--radius);
     }
 
-    /* ---------- BACKGROUND THEMES (applied to body) ---------- */
+    /* ---------- BACKGROUND THEMES ---------- */
     .bg-forest .app {
       background: linear-gradient(135deg, #2d5016, #4a7c2e);
       padding: 20px;
@@ -71,7 +71,7 @@
       border-radius: var(--radius);
     }
 
-    /* ---------- HEADER (unchanged) ---------- */
+    /* ---------- HEADER ---------- */
     .header {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -677,6 +677,13 @@
     .store-item.unlocked {
       border: 2px solid #16a34a;
     }
+    .store-item.locked {
+      opacity: 0.6;
+    }
+    .store-item.locked .btn {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
     .store-top-bar {
       display: flex;
       gap: 10px;
@@ -753,6 +760,7 @@
       background: rgba(0, 0, 0, 0.5);
       border-radius: 8px 8px 0 0;
       margin-top: 4px;
+      flex-wrap: wrap;
     }
     .game-hud span {
       padding: 4px 12px;
@@ -762,6 +770,16 @@
       font-size: 13px;
       padding: 6px 0;
       text-align: center;
+    }
+    .game-locked-msg {
+      color: #FF6B6B;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.5);
+      border-radius: var(--radius-sm);
+      margin: 20px 0;
     }
 
     /* ---------- NOTIFICATION BANNER ---------- */
@@ -1201,7 +1219,20 @@
         let focusClaimed = false;
         let quickTaskClaimed = false;
 
-        let pet = { hunger: 50, happiness: 50, bananas: 0, toys: 0 };
+        // Pet city state
+        let pet = {
+          hunger: 50,
+          happiness: 50,
+          bananas: 3,
+          toys: 1,
+          coins: 10,
+          energy: 80,
+          plantsWatered: 0,
+          flowersCollected: 0,
+          petsFed: 0,
+          dailyChoresDone: false,
+          choresCompletedToday: false
+        };
 
         let stopwatchInterval = null;
         let stopwatchSeconds = 0;
@@ -1366,6 +1397,14 @@
           return div.innerHTML;
         }
 
+        // ---------- ALL TASKS DONE CHECK ----------
+        function allTasksDoneToday() {
+          const todayTasks = tasks.filter(t => isTaskActiveToday(t));
+          if (todayTasks.length === 0) return true; // No tasks = done
+          const doneTasks = todayTasks.filter(t => t.completedToday);
+          return doneTasks.length === todayTasks.length;
+        }
+
         // ---------- LEVEL HELPERS ----------
         function getLevel(xpAmount) { return Math.floor(xpAmount / 100) + 1; }
 
@@ -1458,16 +1497,14 @@
               if (task.xpAwardedToday === undefined) task.xpAwardedToday = false;
             });
             if (!weekStartDate) weekStartDate = todayStr();
-            // Apply saved theme
             applyTheme(settings.theme || 'default');
             applyBackground(settings.background || 'default');
           } catch (_) {}
         }
 
-        // ========== THEME FIX ==========
+        // ========== THEME ==========
         function applyTheme(themeName) {
           const root = document.documentElement;
-          // Define color palettes
           const themes = {
             default: { primary: '#6C63FF', primaryDark: '#5a52d5', secondary: '#FF6584' },
             gold: { primary: '#FFD700', primaryDark: '#c9a800', secondary: '#FF6B6B' },
@@ -1475,11 +1512,9 @@
             ocean: { primary: '#1ABC9C', primaryDark: '#16A085', secondary: '#3498DB' }
           };
           const theme = themes[themeName] || themes.default;
-          // Apply directly to root style
           root.style.setProperty('--primary', theme.primary);
           root.style.setProperty('--primary-dark', theme.primaryDark);
           root.style.setProperty('--secondary', theme.secondary);
-          // Save setting
           settings.theme = themeName;
           saveState();
         }
@@ -1510,6 +1545,12 @@
             giftClaimed = false;
             focusClaimed = false;
             quickTaskClaimed = false;
+            // Reset pet daily chores
+            pet.plantsWatered = 0;
+            pet.flowersCollected = 0;
+            pet.petsFed = 0;
+            pet.choresCompletedToday = false;
+            pet.energy = 80;
             lastResetDate = today;
             saveState();
             render();
@@ -1608,7 +1649,7 @@
           let name = '';
           if (type === 'gift') {
             if (giftClaimed) return;
-            amount = Math.floor(Math.random() * 11) + 5; // 5-15
+            amount = Math.floor(Math.random() * 11) + 5;
             name = 'Daily Gift';
             giftClaimed = true;
           } else if (type === 'focus') {
@@ -1635,7 +1676,6 @@
         }
 
         function updateDailyBonusUI() {
-          // Gift
           if (giftClaimed) {
             giftClaimedEl.classList.remove('hidden');
             claimGiftBtn.classList.add('hidden');
@@ -1644,7 +1684,6 @@
             claimGiftBtn.classList.remove('hidden');
             dailyGiftValue.textContent = `+${Math.floor(Math.random() * 11) + 5} XP`;
           }
-          // Focus
           if (focusClaimed) {
             focusClaimedEl.classList.remove('hidden');
             claimFocusBtn.classList.add('hidden');
@@ -1653,7 +1692,6 @@
             claimFocusBtn.classList.remove('hidden');
             focusBonusValue.textContent = '+15 XP';
           }
-          // Quick Task
           if (quickTaskClaimed) {
             quickTaskClaimedEl.classList.remove('hidden');
             claimQuickTaskBtn.classList.add('hidden');
@@ -1822,95 +1860,114 @@
           statsContent.innerHTML = html;
         }
 
-        // ---------- STORE ----------
+        // ---------- STORE (with locking) ----------
         function renderStore() {
+          const tasksDone = allTasksDoneToday();
           const items = [{
             id: 'pet',
-            name: '🌍 Pet World',
-            description: 'Walk around with your pets! Collect bananas and toys, feed and play.',
+            name: '🌆 Pet City',
+            description: 'Explore a city, do daily chores, earn XP!',
             price: 150,
-            type: 'game'
+            type: 'game',
+            locked: !tasksDone
           }, {
             id: 'monkey',
             name: '🌴 Monkey World',
             description: 'Explore a jungle, collect bananas, chase the thief!',
             price: 200,
-            type: 'game'
+            type: 'game',
+            locked: !tasksDone
           }, {
             id: 'theme_gold',
             name: '✨ Gold Theme',
             description: 'Change the accent color to gold.',
             price: 100,
-            type: 'theme'
+            type: 'theme',
+            locked: false
           }, {
             id: 'theme_cosmic',
             name: '🌌 Cosmic Theme',
             description: 'Purple and teal cosmic vibe.',
             price: 120,
-            type: 'theme'
+            type: 'theme',
+            locked: false
           }, {
             id: 'theme_ocean',
             name: '🌊 Ocean Theme',
             description: 'Calming ocean blues and greens.',
             price: 110,
-            type: 'theme'
+            type: 'theme',
+            locked: false
           }, {
             id: 'sound_pack',
             name: '🎵 Custom Sound Pack',
             description: 'Changes notification sounds to a fun melody.',
             price: 80,
-            type: 'sound'
+            type: 'sound',
+            locked: false
           }, {
             id: 'extra_pet',
             name: '🐶 Extra Pet (Dog)',
-            description: 'Unlock a dog companion in Pet World.',
+            description: 'Unlock a dog companion in Pet City.',
             price: 180,
-            type: 'pet_skin'
+            type: 'pet_skin',
+            locked: !tasksDone
           }, {
             id: 'pet_cat',
             name: '🐱 Pet Cat',
-            description: 'Unlock a cat companion in Pet World.',
+            description: 'Unlock a cat companion in Pet City.',
             price: 150,
-            type: 'pet_skin'
+            type: 'pet_skin',
+            locked: !tasksDone
           }, {
             id: 'pet_bird',
             name: '🐦 Pet Bird',
-            description: 'Unlock a bird companion in Pet World.',
+            description: 'Unlock a bird companion in Pet City.',
             price: 120,
-            type: 'pet_skin'
+            type: 'pet_skin',
+            locked: !tasksDone
           }, {
             id: 'bg_forest',
             name: '🌲 Forest Background',
             description: 'Change the app background to a forest green gradient.',
             price: 80,
-            type: 'background'
+            type: 'background',
+            locked: false
           }, {
             id: 'bg_sunset',
             name: '🌅 Sunset Background',
             description: 'Change the app background to a warm sunset gradient.',
             price: 90,
-            type: 'background'
+            type: 'background',
+            locked: false
           }, {
             id: 'bg_midnight',
             name: '🌙 Midnight Background',
             description: 'Change the app background to a deep night gradient.',
             price: 100,
-            type: 'background'
+            type: 'background',
+            locked: false
           }, {
             id: 'xp_booster',
             name: '🚀 XP Booster (24h)',
             description: 'Double all XP gains for 24 hours!',
             price: 200,
-            type: 'booster'
+            type: 'booster',
+            locked: false
           }];
 
           let html = '';
           items.forEach(item => {
             const isUnlocked = unlockedItems.includes(item.id);
+            const isLocked = item.locked && !isUnlocked;
             let buttonHtml = '';
             if (isUnlocked) {
               if (item.type === 'game') {
-                buttonHtml = `<button class="btn btn-success" data-action="play" data-id="${item.id}">▶️ Play</button>`;
+                if (tasksDone) {
+                  buttonHtml = `<button class="btn btn-success" data-action="play" data-id="${item.id}">▶️ Play</button>`;
+                } else {
+                  buttonHtml = `<button class="btn btn-outline" disabled>🔒 Locked (finish tasks)</button>`;
+                }
               } else if (item.type === 'theme') {
                 const isActive = settings.theme === item.id.replace('theme_', '');
                 buttonHtml = `<button class="btn ${isActive ? 'btn-primary' : 'btn-outline'}" data-action="apply-theme" data-id="${item.id}">${isActive ? '✅ Active' : 'Apply'}</button>`;
@@ -1929,10 +1986,13 @@
               }
             } else {
               const canAfford = xp >= item.price;
+              const buyDisabled = !canAfford || isLocked;
+              const label = isLocked ? '🔒 Locked (finish tasks)' : `Buy (${item.price} XP)`;
               buttonHtml =
-                `<button class="btn btn-primary" data-action="buy" data-id="${item.id}" ${canAfford ? '' : 'disabled'}>Buy (${item.price} XP)</button>`;
+                `<button class="btn btn-primary" data-action="buy" data-id="${item.id}" ${buyDisabled ? 'disabled' : ''}>${label}</button>`;
             }
-            html += `<div class="store-item ${isUnlocked ? 'unlocked' : ''}">
+            const lockClass = isLocked && !isUnlocked ? 'locked' : '';
+            html += `<div class="store-item ${isUnlocked ? 'unlocked' : ''} ${lockClass}">
               <h3>${item.name}</h3>
               <p>${item.description}</p>
               <div class="price">${isUnlocked ? '✅ Unlocked' : `${item.price} XP`}</div>
@@ -1950,6 +2010,10 @@
             if (action === 'buy') {
               const item = items.find(i => i.id === id);
               if (!item) return;
+              if (item.locked && !unlockedItems.includes(id)) {
+                alert('🔒 Complete all your scheduled tasks for today to unlock this!');
+                return;
+              }
               if (xp >= item.price && !unlockedItems.includes(id)) {
                 xp -= item.price;
                 unlockedItems.push(id);
@@ -1961,6 +2025,10 @@
                 alert('Not enough XP or already unlocked.');
               }
             } else if (action === 'play') {
+              if (!allTasksDoneToday()) {
+                alert('🔒 Complete all your scheduled tasks for today to play games!');
+                return;
+              }
               openGame(id);
             } else if (action === 'apply-theme') {
               const themeName = id.replace('theme_', '');
@@ -1989,13 +2057,13 @@
         });
 
         // ---------- GAME FUNCTIONS ----------
-        let petWorld = {};
+        let petCity = {};
         let monkeyWorld = {};
 
         function openGame(gameId) {
           gameOverlay.classList.add('show');
           if (gameId === 'pet') {
-            initPetWorld();
+            initPetCity();
           } else if (gameId === 'monkey') {
             initMonkeyWorld();
           } else {
@@ -2003,51 +2071,80 @@
           }
         }
 
-        // ========== PET WORLD ==========
-        function initPetWorld() {
+        // ========== PET CITY (NEW) ==========
+        function initPetCity() {
           const container = gameContent;
           container.innerHTML = '';
 
+          // Get unlocked pets
           let petEmojis = ['🐒'];
           if (unlockedItems.includes('extra_pet')) petEmojis.push('🐶');
           if (unlockedItems.includes('pet_cat')) petEmojis.push('🐱');
           if (unlockedItems.includes('pet_bird')) petEmojis.push('🐦');
 
+          // City state
           const state = {
-            player: { x: 400, y: 300, w: 24, h: 32 },
-            pets: petEmojis.map((e, i) => ({ emoji: e, x: 400 - (i + 1) * 30, y: 300, targetX: 400, targetY: 300 })),
-            items: [],
-            bananas: pet.bananas || 0,
-            toys: pet.toys || 0,
-            hunger: pet.hunger || 50,
-            happiness: pet.happiness || 50,
-            worldWidth: 1200,
-            worldHeight: 900,
-            trees: [],
-            house: { x: 100, y: 100, w: 120, h: 100 },
-            pond: { x: 900, y: 600, r: 60 },
-            lastItemSpawn: 0,
+            player: { x: 400, y: 300, w: 20, h: 28 },
+            pets: petEmojis.map((e, i) => ({ emoji: e, x: 400 - (i + 1) * 30, y: 330, targetX: 400, targetY: 330 })),
+            npcs: [
+              { x: 100, y: 150, emoji: '🧑', text: '🌱 Water the plants in the garden!', spoken: false },
+              { x: 700, y: 500, emoji: '👩', text: '🍌 Feed your pets at home!', spoken: false },
+              { x: 500, y: 80, emoji: '🧑‍🌾', text: '🌸 Collect flowers in the park!', spoken: false }
+            ],
+            buildings: [
+              { x: 80, y: 80, w: 100, h: 80, label: '🏠 Home', color: '#DEB887', action: 'home' },
+              { x: 350, y: 50, w: 100, h: 80, label: '🌱 Garden', color: '#90EE90', action: 'garden' },
+              { x: 620, y: 80, w: 100, h: 80, label: '☕ Café', color: '#D2B48C', action: 'cafe' },
+              { x: 80, y: 450, w: 100, h: 80, label: '🌳 Park', color: '#32CD32', action: 'park' },
+              { x: 620, y: 450, w: 100, h: 80, label: '🛒 Shop', color: '#F4A460', action: 'shop' }
+            ],
+            // In-game items
+            plants: [{ x: 380, y: 120, watered: false }, { x: 400, y: 140, watered: false }, { x: 420, y: 120,
+              watered: false }],
+            flowers: [{ x: 110, y: 480, collected: false }, { x: 130, y: 500, collected: false }, { x: 150, y: 480,
+              collected: false }, { x: 120, y: 520, collected: false }, { x: 140, y: 510, collected: false }],
+            worldWidth: 800,
+            worldHeight: 600,
             keys: {},
-            running: true
+            running: true,
+            inBuilding: null, // 'home', 'garden', 'cafe', 'park', 'shop'
+            interactionMessage: '',
+            showMessage: false,
+            messageTimer: 0,
+            shopItems: [
+              { name: '🍌 Banana', price: 3, action: 'buy_banana' },
+              { name: '🎾 Toy', price: 5, action: 'buy_toy' }
+            ]
           };
 
-          for (let i = 0; i < 25; i++) {
-            state.trees.push({
-              x: Math.random() * state.worldWidth,
-              y: Math.random() * state.worldHeight,
-              r: 20 + Math.random() * 20
-            });
-          }
+          // Load saved state into game
+          state.player.x = 400;
+          state.player.y = 300;
+          // Copy pet data
+          const p = pet;
+          // We'll use pet data for persistence
 
-          for (let i = 0; i < 8; i++) spawnItem(state);
-
+          // HUD
           const hud = document.createElement('div');
           hud.className = 'game-hud';
           hud.innerHTML = `
-            <span>🍌 <span id="petBananas">${state.bananas}</span></span>
-            <span>🎾 <span id="petToys">${state.toys}</span></span>
-            <span>❤️ <span id="petHunger">${state.hunger}</span>%</span>
-            <span>😊 <span id="petHappiness">${state.happiness}</span>%</span>
+            <span>❤️ <span id="petHunger">${p.hunger}</span>%</span>
+            <span>😊 <span id="petHappiness">${p.happiness}</span>%</span>
+            <span>⚡ <span id="petEnergy">${p.energy}</span>%</span>
+            <span>🪙 <span id="petCoins">${p.coins}</span></span>
+            <span>🍌 <span id="petBananas">${p.bananas}</span></span>
+            <span>🎾 <span id="petToys">${p.toys}</span></span>
+          `;
+
+          // Chores progress
+          const choreDiv = document.createElement('div');
+          choreDiv.style.cssText =
+            'width:100%;max-width:800px;background:rgba(0,0,0,0.4);padding:6px 12px;border-radius:0 0 8px 8px;color:#fff;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;';
+          choreDiv.innerHTML = `
+            <span>🌱 Watered: <span id="chorePlants">${p.plantsWatered}</span>/3</span>
+            <span>🐾 Pets fed: <span id="chorePets">${p.petsFed}</span>/2</span>
+            <span>🌸 Flowers: <span id="choreFlowers">${p.flowersCollected}</span>/5</span>
+            <span id="choreStatus" style="color:#FFD700;">${p.choresCompletedToday ? '✅ All chores done! +15 XP' : 'Complete all chores for +15 XP!'}</span>
           `;
 
           const canvas = document.createElement('canvas');
@@ -2057,20 +2154,26 @@
 
           const controls = document.createElement('div');
           controls.className = 'game-controls-hint';
-          controls.textContent = 'Arrow keys to move • Space: feed nearest pet • E: play with nearest pet';
+          controls.textContent = 'Arrow keys to move • Space: interact/enter building • ESC: exit building';
 
           container.appendChild(hud);
+          container.appendChild(choreDiv);
           container.appendChild(canvas);
           container.appendChild(controls);
 
-          petWorld = { state, canvas, ctx, hud };
+          petCity = { state, canvas, ctx, hud, choreDiv };
 
+          // Key handlers
           function keyDown(e) {
             state.keys[e.key] = true;
-            if (e.key === ' ' || e.key === 'Space') { e.preventDefault();
-              interactPet(state, 'feed'); }
-            if (e.key === 'e' || e.key === 'E') { e.preventDefault();
-              interactPet(state, 'play'); }
+            if (e.key === ' ' || e.key === 'Space') {
+              e.preventDefault();
+              handleInteraction(state);
+            }
+            if (e.key === 'Escape') {
+              state.inBuilding = null;
+              state.showMessage = false;
+            }
           }
 
           function keyUp(e) { state.keys[e.key] = false; }
@@ -2084,54 +2187,183 @@
             if (!state.running) return;
             const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
             lastTime = timestamp;
-            updatePetWorld(state, dt);
-            renderPetWorld(state, ctx);
+            updatePetCity(state, dt, p);
+            renderPetCity(state, ctx, p);
 
-            document.getElementById('petBananas').textContent = state.bananas;
-            document.getElementById('petToys').textContent = state.toys;
-            document.getElementById('petHunger').textContent = Math.round(state.hunger);
-            document.getElementById('petHappiness').textContent = Math.round(state.happiness);
+            // Update HUD
+            document.getElementById('petHunger').textContent = Math.round(p.hunger);
+            document.getElementById('petHappiness').textContent = Math.round(p.happiness);
+            document.getElementById('petEnergy').textContent = Math.round(p.energy);
+            document.getElementById('petCoins').textContent = p.coins;
+            document.getElementById('petBananas').textContent = p.bananas;
+            document.getElementById('petToys').textContent = p.toys;
+            document.getElementById('chorePlants').textContent = p.plantsWatered;
+            document.getElementById('chorePets').textContent = p.petsFed;
+            document.getElementById('choreFlowers').textContent = p.flowersCollected;
+            const choresDone = p.plantsWatered >= 3 && p.petsFed >= 2 && p.flowersCollected >= 5;
+            if (choresDone && !p.choresCompletedToday) {
+              p.choresCompletedToday = true;
+              addXP(15);
+              showBonusNotification('🌆 City Chores Done!', 'You completed all daily chores! +15 XP');
+              playNotificationSound();
+            }
+            document.getElementById('choreStatus').textContent = p.choresCompletedToday ? '✅ All chores done! +15 XP' :
+              'Complete all chores for +15 XP!';
 
-            petWorld.animationId = requestAnimationFrame(gameLoop);
+            petCity.animationId = requestAnimationFrame(gameLoop);
           }
 
           const closeHandler = function() {
             state.running = false;
-            if (petWorld.animationId) cancelAnimationFrame(petWorld.animationId);
+            if (petCity.animationId) cancelAnimationFrame(petCity.animationId);
             document.removeEventListener('keydown', keyDown);
             document.removeEventListener('keyup', keyUp);
-            pet.bananas = state.bananas;
-            pet.toys = state.toys;
-            pet.hunger = state.hunger;
-            pet.happiness = state.happiness;
+            // Save pet data back
+            pet.hunger = p.hunger;
+            pet.happiness = p.happiness;
+            pet.energy = p.energy;
+            pet.coins = p.coins;
+            pet.bananas = p.bananas;
+            pet.toys = p.toys;
+            pet.plantsWatered = p.plantsWatered;
+            pet.petsFed = p.petsFed;
+            pet.flowersCollected = p.flowersCollected;
+            pet.choresCompletedToday = p.choresCompletedToday;
             saveState();
             gameOverlay.classList.remove('show');
           };
 
           closeGameBtn.onclick = closeHandler;
-          petWorld.animationId = requestAnimationFrame(gameLoop);
-
-          setInterval(() => {
-            if (state.running && state.items.length < 15) spawnItem(state);
-          }, 5000);
+          petCity.animationId = requestAnimationFrame(gameLoop);
         }
 
-        function spawnItem(state) {
-          const types = ['banana', 'toy'];
-          const type = types[Math.random() < 0.6 ? 0 : 1];
-          const x = 50 + Math.random() * (state.worldWidth - 100);
-          const y = 50 + Math.random() * (state.worldHeight - 100);
-          const dx = x - state.house.x - state.house.w / 2;
-          const dy = y - state.house.y - state.house.h / 2;
-          const pondDx = x - state.pond.x;
-          const pondDy = y - state.pond.y;
-          if (Math.abs(dx) < 80 && Math.abs(dy) < 80) return;
-          if (Math.sqrt(pondDx * pondDx + pondDy * pondDy) < state.pond.r + 20) return;
-          state.items.push({ x, y, type, w: 16, h: 16, collected: false });
+        function handleInteraction(state) {
+          const p = pet;
+          const player = state.player;
+          const bx = player.x,
+            by = player.y;
+
+          // Check if near a building
+          for (let b of state.buildings) {
+            if (bx > b.x - 20 && bx < b.x + b.w + 20 && by > b.y - 20 && by < b.y + b.h + 20) {
+              state.inBuilding = b.action;
+              state.showMessage = false;
+              return;
+            }
+          }
+
+          // Check if near NPC
+          for (let npc of state.npcs) {
+            const dx = npc.x - bx;
+            const dy = npc.y - by;
+            if (Math.sqrt(dx * dx + dy * dy) < 40) {
+              showBonusNotification('💬 NPC says:', npc.text);
+              npc.spoken = true;
+              return;
+            }
+          }
+
+          // Check if near plants (garden)
+          if (state.inBuilding === 'garden' || state.inBuilding === null) {
+            for (let plant of state.plants) {
+              const dx = plant.x - bx;
+              const dy = plant.y - by;
+              if (Math.sqrt(dx * dx + dy * dy) < 30 && !plant.watered && p.energy >= 5) {
+                plant.watered = true;
+                p.plantsWatered = Math.min(3, p.plantsWatered + 1);
+                p.energy = Math.max(0, p.energy - 5);
+                addXP(2);
+                playClickSound();
+                showBonusNotification('💧 Plant watered!', '+2 XP');
+                return;
+              }
+            }
+          }
+
+          // Check if near flowers (park)
+          if (state.inBuilding === 'park' || state.inBuilding === null) {
+            for (let flower of state.flowers) {
+              const dx = flower.x - bx;
+              const dy = flower.y - by;
+              if (Math.sqrt(dx * dx + dy * dy) < 30 && !flower.collected) {
+                flower.collected = true;
+                p.flowersCollected = Math.min(5, p.flowersCollected + 1);
+                p.energy = Math.max(0, p.energy - 2);
+                addXP(1);
+                playClickSound();
+                showBonusNotification('🌸 Flower collected!', '+1 XP');
+                return;
+              }
+            }
+          }
+
+          // Check if near pets (home)
+          if (state.inBuilding === 'home' || state.inBuilding === null) {
+            for (let petObj of state.pets) {
+              const dx = petObj.x - bx;
+              const dy = petObj.y - by;
+              if (Math.sqrt(dx * dx + dy * dy) < 40 && p.bananas >= 1 && p.petsFed < 2) {
+                p.bananas--;
+                p.petsFed = Math.min(2, p.petsFed + 1);
+                p.happiness = Math.min(100, p.happiness + 10);
+                p.hunger = Math.min(100, p.hunger + 5);
+                p.energy = Math.max(0, p.energy - 3);
+                playClickSound();
+                showBonusNotification('🍌 Pet fed!', 'Your pet is happy!');
+                return;
+              }
+            }
+          }
+
+          // Café
+          if (state.inBuilding === 'cafe' || state.inBuilding === null) {
+            // Check if near café counter
+            const cafe = state.buildings.find(b => b.action === 'cafe');
+            if (cafe && bx > cafe.x && bx < cafe.x + cafe.w && by > cafe.y && by < cafe.y + cafe.h) {
+              if (p.coins >= 2) {
+                p.coins -= 2;
+                p.energy = Math.min(100, p.energy + 30);
+                p.happiness = Math.min(100, p.happiness + 5);
+                addXP(1);
+                playClickSound();
+                showBonusNotification('☕ Coffee!', 'Energy restored! +1 XP');
+                return;
+              } else {
+                showBonusNotification('☕ Not enough coins!', 'You need 2 coins for coffee.');
+                return;
+              }
+            }
+          }
+
+          // Shop
+          if (state.inBuilding === 'shop' || state.inBuilding === null) {
+            const shop = state.buildings.find(b => b.action === 'shop');
+            if (shop && bx > shop.x && bx < shop.x + shop.w && by > shop.y && by < shop.y + shop.h) {
+              // Show shop UI in a simple way
+              if (p.coins >= 3) {
+                p.coins -= 3;
+                p.bananas += 2;
+                playClickSound();
+                showBonusNotification('🛒 Bought bananas!', '+2 bananas');
+                return;
+              } else if (p.coins >= 5) {
+                p.coins -= 5;
+                p.toys += 1;
+                playClickSound();
+                showBonusNotification('🛒 Bought toy!', '+1 toy');
+                return;
+              } else {
+                showBonusNotification('🛒 Not enough coins!', 'Bananas: 3 coins, Toys: 5 coins');
+                return;
+              }
+            }
+          }
+
+          showBonusNotification('👀 Nothing here.', 'Walk to a building and press Space.');
         }
 
-        function updatePetWorld(state, dt) {
-          const speed = 150;
+        function updatePetCity(state, dt, p) {
+          const speed = 120;
           let dx = 0,
             dy = 0;
           if (state.keys['ArrowLeft']) dx = -speed;
@@ -2141,189 +2373,206 @@
           if (dx && dy) { dx *= 0.707;
             dy *= 0.707; }
 
+          // If in building, limit movement
+          if (state.inBuilding) {
+            const building = state.buildings.find(b => b.action === state.inBuilding);
+            if (building) {
+              // Allow movement inside building area
+              const cx = building.x + building.w / 2;
+              const cy = building.y + building.h / 2;
+              state.player.x += dx * dt;
+              state.player.y += dy * dt;
+              state.player.x = Math.max(building.x + 10, Math.min(building.x + building.w - 10, state.player.x));
+              state.player.y = Math.max(building.y + 10, Math.min(building.y + building.h - 10, state.player.y));
+              // Pets follow in building
+              state.pets.forEach((pet, i) => {
+                const targetX = state.player.x - (i + 1) * 25;
+                const targetY = state.player.y + 10;
+                pet.x += (targetX - pet.x) * 0.05;
+                pet.y += (targetY - pet.y) * 0.05;
+              });
+              return;
+            }
+          }
+
           state.player.x += dx * dt;
           state.player.y += dy * dt;
           state.player.x = Math.max(20, Math.min(state.worldWidth - 20, state.player.x));
           state.player.y = Math.max(20, Math.min(state.worldHeight - 20, state.player.y));
 
+          // Pets follow player
           state.pets.forEach((pet, i) => {
-            const targetX = state.player.x - (i + 1) * 30;
-            const targetY = state.player.y + 10;
-            pet.targetX = targetX;
-            pet.targetY = targetY;
-            pet.x += (pet.targetX - pet.x) * 0.05;
-            pet.y += (pet.targetY - pet.y) * 0.05;
+            const targetX = state.player.x - (i + 1) * 28;
+            const targetY = state.player.y + 15;
+            pet.x += (targetX - pet.x) * 0.04;
+            pet.y += (targetY - pet.y) * 0.04;
           });
 
-          for (let i = state.items.length - 1; i >= 0; i--) {
-            const item = state.items[i];
-            const dx = item.x - state.player.x;
-            const dy = item.y - state.player.y;
-            if (Math.sqrt(dx * dx + dy * dy) < 30) {
-              if (item.type === 'banana') state.bananas++;
-              else state.toys++;
-              state.items.splice(i, 1);
-              playClickSound();
+          // NPCs wander
+          state.npcs.forEach(npc => {
+            if (!npc.targetX || Math.random() < 0.002) {
+              npc.targetX = 50 + Math.random() * 700;
+              npc.targetY = 50 + Math.random() * 500;
             }
-          }
-
-          state.hunger = Math.max(0, state.hunger - 0.5 * dt);
-          state.happiness = Math.max(0, state.happiness - 0.3 * dt);
-          if (state.hunger < 20) state.happiness -= 1 * dt;
-        }
-
-        function interactPet(state, action) {
-          let nearest = null;
-          let nearestDist = Infinity;
-          state.pets.forEach(pet => {
-            const dx = pet.x - state.player.x;
-            const dy = pet.y - state.player.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < nearestDist) { nearestDist = dist;
-              nearest = pet; }
+            const dx2 = npc.targetX - npc.x;
+            const dy2 = npc.targetY - npc.y;
+            const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+            if (dist > 5) {
+              npc.x += (dx2 / dist) * 30 * dt;
+              npc.y += (dy2 / dist) * 30 * dt;
+            }
+            npc.x = Math.max(20, Math.min(780, npc.x));
+            npc.y = Math.max(20, Math.min(580, npc.y));
           });
-
-          if (!nearest || nearestDist > 100) {
-            showBonusNotification('🐾 Too far!', 'Get closer to a pet to interact.');
-            return;
-          }
-
-          if (action === 'feed') {
-            if (state.bananas < 1) {
-              showBonusNotification('🍌 No bananas!', 'Find bananas in the world to feed your pets.');
-              return;
-            }
-            state.bananas--;
-            state.hunger = Math.min(100, state.hunger + 15);
-            state.happiness = Math.min(100, state.happiness + 5);
-            playClickSound();
-            showBonusNotification('🍌 Fed!', 'Your pet is happy and full!');
-          } else if (action === 'play') {
-            if (state.toys < 1) {
-              showBonusNotification('🎾 No toys!', 'Find toys in the world to play with your pets.');
-              return;
-            }
-            state.toys--;
-            state.happiness = Math.min(100, state.happiness + 20);
-            state.hunger = Math.max(0, state.hunger - 5);
-            playClickSound();
-            showBonusNotification('🎾 Played!', 'Your pet loves playing with you!');
-          }
         }
 
-        function renderPetWorld(state, ctx) {
-          const camX = state.player.x - 400;
-          const camY = state.player.y - 300;
-
+        function renderPetCity(state, ctx, p) {
           ctx.clearRect(0, 0, 800, 600);
 
+          // Sky / background
           const grad = ctx.createLinearGradient(0, 0, 0, 600);
           grad.addColorStop(0, '#87CEEB');
-          grad.addColorStop(0.7, '#90EE90');
+          grad.addColorStop(0.8, '#90EE90');
           ctx.fillStyle = grad;
           ctx.fillRect(0, 0, 800, 600);
 
-          ctx.save();
-          ctx.translate(-camX, -camY);
+          // Ground
+          ctx.fillStyle = '#7CCD7C';
+          ctx.fillRect(0, 380, 800, 220);
+          // Paths
+          ctx.fillStyle = '#C4A882';
+          ctx.fillRect(350, 0, 20, 380);
+          ctx.fillRect(0, 350, 350, 20);
+          ctx.fillRect(450, 350, 350, 20);
+          ctx.fillRect(350, 380, 20, 220);
+          ctx.fillRect(0, 380, 350, 20);
+          ctx.fillRect(450, 380, 350, 20);
 
-          ctx.fillStyle = '#228B22';
-          ctx.fillRect(0, 0, state.worldWidth, state.worldHeight);
-
-          for (let i = 0; i < 200; i++) {
-            ctx.fillStyle = i % 2 === 0 ? '#32CD32' : '#2E8B57';
-            ctx.fillRect((i * 60) % state.worldWidth, (i * 30) % state.worldHeight, 30, 15);
-          }
-
-          state.trees.forEach(tree => {
-            ctx.fillStyle = '#8B4513';
-            ctx.fillRect(tree.x - 4, tree.y - 10, 8, 20);
-            ctx.fillStyle = '#228B22';
-            ctx.beginPath();
-            ctx.arc(tree.x, tree.y - 20, tree.r, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#2E8B57';
-            ctx.beginPath();
-            ctx.arc(tree.x - 10, tree.y - 15, tree.r * 0.7, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(tree.x + 10, tree.y - 15, tree.r * 0.7, 0, Math.PI * 2);
-            ctx.fill();
+          // Buildings
+          state.buildings.forEach(b => {
+            ctx.fillStyle = b.color;
+            ctx.shadowColor = 'rgba(0,0,0,0.2)';
+            ctx.shadowBlur = 10;
+            ctx.fillRect(b.x, b.y, b.w, b.h);
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#000';
+            ctx.font = '20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(b.label, b.x + b.w / 2, b.y + b.h / 2);
+            ctx.fillStyle = '#fff';
+            ctx.font = '14px sans-serif';
+            ctx.fillText(b.label.split(' ')[0], b.x + b.w / 2, b.y + b.h / 2 + 22);
+            // Building outline
+            ctx.strokeStyle = '#8B7355';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(b.x, b.y, b.w, b.h);
           });
 
-          ctx.fillStyle = '#DEB887';
-          ctx.fillRect(state.house.x, state.house.y, state.house.w, state.house.h);
-          ctx.fillStyle = '#8B0000';
-          ctx.fillRect(state.house.x + state.house.w / 2 - 20, state.house.y - 40, 40, 40);
-          ctx.fillStyle = '#FFD700';
-          ctx.fillRect(state.house.x + state.house.w / 2 - 2, state.house.y - 8, 4, 8);
-          ctx.fillStyle = '#87CEEB';
-          ctx.fillRect(state.house.x + 20, state.house.y + 30, 25, 25);
-          ctx.fillRect(state.house.x + state.house.w - 45, state.house.y + 30, 25, 25);
+          // Garden plants
+          state.plants.forEach(plant => {
+            ctx.fillStyle = plant.watered ? '#228B22' : '#8B4513';
+            ctx.font = '24px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(plant.watered ? '🌿' : '🌱', plant.x, plant.y);
+          });
 
-          ctx.fillStyle = 'rgba(30, 144, 255, 0.7)';
-          ctx.beginPath();
-          ctx.arc(state.pond.x, state.pond.y, state.pond.r, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-          ctx.beginPath();
-          ctx.arc(state.pond.x - 20, state.pond.y - 20, 15, 0, Math.PI * 2);
-          ctx.fill();
+          // Park flowers
+          state.flowers.forEach(flower => {
+            ctx.fillStyle = '#FF1493';
+            ctx.font = '20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(flower.collected ? '🌿' : '🌸', flower.x, flower.y);
+          });
 
-          state.items.forEach(item => {
-            if (item.type === 'banana') {
-              ctx.fillStyle = '#FFD700';
-              ctx.beginPath();
-              ctx.arc(item.x, item.y, 10, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.fillStyle = '#8B4513';
-              ctx.fillRect(item.x - 2, item.y - 12, 4, 6);
-              ctx.fillRect(item.x - 6, item.y - 8, 12, 4);
-            } else {
-              ctx.fillStyle = '#FF6347';
-              ctx.beginPath();
-              ctx.arc(item.x, item.y, 8, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.fillStyle = '#FFFFFF';
-              ctx.beginPath();
-              ctx.arc(item.x - 3, item.y - 3, 3, 0, Math.PI * 2);
-              ctx.fill();
+          // NPCs
+          state.npcs.forEach(npc => {
+            ctx.font = '32px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(npc.emoji, npc.x, npc.y);
+            if (!npc.spoken) {
+              ctx.fillStyle = 'rgba(0,0,0,0.5)';
+              ctx.fillRect(npc.x - 30, npc.y - 30, 60, 20);
+              ctx.fillStyle = '#fff';
+              ctx.font = '10px sans-serif';
+              ctx.fillText('💬 Space', npc.x, npc.y - 20);
             }
           });
 
+          // Pets
           state.pets.forEach((pet, i) => {
             ctx.font = '28px serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(pet.emoji, pet.x, pet.y);
-            const names = ['Monkey', 'Dog', 'Cat', 'Bird'];
-            ctx.font = '10px sans-serif';
-            ctx.fillStyle = '#fff';
-            ctx.fillText(names[i] || 'Pet', pet.x, pet.y + 25);
           });
 
-          ctx.font = '32px serif';
+          // Player
+          ctx.font = '34px serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText('🧑', state.player.x, state.player.y);
 
-          ctx.restore();
-
-          const nearPet = state.pets.some(p => {
-            const dx = p.x - state.player.x;
-            const dy = p.y - state.player.y;
-            return Math.sqrt(dx * dx + dy * dy) < 100;
-          });
-          if (nearPet) {
+          // Building entry hint
+          let nearBuilding = false;
+          for (let b of state.buildings) {
+            if (state.player.x > b.x - 20 && state.player.x < b.x + b.w + 20 &&
+              state.player.y > b.y - 20 && state.player.y < b.y + b.h + 20) {
+              nearBuilding = true;
+              break;
+            }
+          }
+          if (nearBuilding && !state.inBuilding) {
             ctx.fillStyle = 'rgba(0,0,0,0.6)';
-            ctx.fillRect(240, 560, 320, 30);
+            ctx.fillRect(280, 10, 240, 24);
             ctx.fillStyle = '#fff';
             ctx.font = '14px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('Press Space to feed • Press E to play', 400, 582);
+            ctx.fillText('Press Space to enter building', 400, 28);
+          }
+
+          if (state.inBuilding) {
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(0, 0, 800, 600);
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px sans-serif';
+            ctx.textAlign = 'center';
+            const b = state.buildings.find(b => b.action === state.inBuilding);
+            ctx.fillText(`🏠 ${b ? b.label : ''} (Press ESC to exit)`, 400, 40);
+            ctx.fillStyle = '#ddd';
+            ctx.font = '18px sans-serif';
+            // Building specific info
+            if (state.inBuilding === 'home') {
+              ctx.fillText(`🍌 Bananas: ${p.bananas}   🐾 Feed pets (walk near them)`, 400, 90);
+              ctx.fillText('❤️ Happiness: ' + Math.round(p.happiness) + '%', 400, 130);
+            } else if (state.inBuilding === 'garden') {
+              ctx.fillText(`🌱 Water plants (walk near them)   Energy: ${Math.round(p.energy)}%`, 400, 90);
+              ctx.fillText(`Plants watered: ${p.plantsWatered}/3`, 400, 130);
+            } else if (state.inBuilding === 'park') {
+              ctx.fillText(`🌸 Collect flowers (walk near them)`, 400, 90);
+              ctx.fillText(`Flowers: ${p.flowersCollected}/5`, 400, 130);
+            } else if (state.inBuilding === 'cafe') {
+              ctx.fillText(`☕ Coffee: 2 coins   🪙 Coins: ${p.coins}`, 400, 90);
+              ctx.fillText('Walk to the counter and press Space to buy', 400, 130);
+            } else if (state.inBuilding === 'shop') {
+              ctx.fillText(`🛒 Bananas: 3 coins   Toys: 5 coins   🪙 Coins: ${p.coins}`, 400, 90);
+              ctx.fillText('Walk to the counter and press Space to buy', 400, 130);
+            }
+            // Draw building interior mini-map
+            if (b) {
+              ctx.strokeStyle = '#888';
+              ctx.lineWidth = 1;
+              ctx.strokeRect(b.x + 50, b.y + 50, b.w - 100, b.h - 100);
+              ctx.fillStyle = '#aaa';
+              ctx.fillRect(b.x + 60, b.y + 60, b.w - 120, b.h - 120);
+            }
           }
         }
 
-        // ========== MONKEY WORLD ==========
+        // ========== MONKEY WORLD (unchanged) ==========
         function initMonkeyWorld() {
           const container = gameContent;
           container.innerHTML = '';
@@ -3189,7 +3438,7 @@
           setCountdownFromInputs();
 
           closeGameBtn.addEventListener('click', function() {
-            if (petWorld.animationId) cancelAnimationFrame(petWorld.animationId);
+            if (petCity.animationId) cancelAnimationFrame(petCity.animationId);
             if (monkeyWorld.animationId) cancelAnimationFrame(monkeyWorld.animationId);
             gameOverlay.classList.remove('show');
           });
@@ -3298,7 +3547,7 @@
               render(); }
           });
 
-          console.log('📋 Smart Scheduler + Worlds + Daily Bonuses + Fixed Themes loaded!');
+          console.log('📋 Smart Scheduler + Pet City + Locking + Themes loaded!');
         }
 
         document.addEventListener('DOMContentLoaded', init);
