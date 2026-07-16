@@ -359,7 +359,6 @@
     }
     .game-hud span { padding: 4px 12px; }
     .game-controls-hint { color: rgba(255,255,255,0.6); font-size: 13px; padding: 6px 0; text-align: center; }
-    .game-locked-msg { color: #FF6B6B; font-size: 18px; font-weight: 700; text-align: center; padding: 20px; background: rgba(0,0,0,0.5); border-radius: var(--radius-sm); margin: 20px 0; }
 
     /* ---------- NOTIFICATIONS ---------- */
     .notification-banner {
@@ -720,7 +719,7 @@
         let focusClaimed = false;
         let quickTaskClaimed = false;
 
-        // Pet city state (simple, no NaN)
+        // ----- PET STATE (with defaults) -----
         let pet = {
           hunger: 70,
           happiness: 60,
@@ -971,7 +970,25 @@
             if (db) dailyBonusClaimed = JSON.parse(db);
             if (wb) weeklyBonusClaimed = JSON.parse(wb);
             if (ws) weekStartDate = ws;
-            if (p) pet = JSON.parse(p);
+            // FIX: Ensure pet has all fields
+            if (p) {
+              // Merge with defaults
+              pet = {
+                hunger: 70,
+                happiness: 60,
+                energy: 80,
+                coins: 15,
+                bananas: 3,
+                toys: 1,
+                plantsWatered: 0,
+                flowersCollected: 0,
+                petsFed: 0,
+                choresCompletedToday: false,
+                ...p
+              };
+            } else {
+              pet = { hunger: 70, happiness: 60, energy: 80, coins: 15, bananas: 3, toys: 1, plantsWatered: 0, flowersCollected: 0, petsFed: 0, choresCompletedToday: false };
+            }
             if (xb) xpBoosterExpiry = JSON.parse(xb);
             if (gc !== null) giftClaimed = JSON.parse(gc);
             if (fc !== null) focusClaimed = JSON.parse(fc);
@@ -1449,7 +1466,7 @@
           }
         }
 
-        // ========== PET CITY (REWRITTEN - WORKING & FUN) ==========
+        // ========== PET CITY (FIXED) ==========
         function initPetCity() {
           const container = gameContent;
           container.innerHTML = '';
@@ -1459,6 +1476,20 @@
           if (unlockedItems.includes('extra_pet')) petEmojis.push('🐶');
           if (unlockedItems.includes('pet_cat')) petEmojis.push('🐱');
           if (unlockedItems.includes('pet_bird')) petEmojis.push('🐦');
+
+          // Create a mutable copy of pet with defaults
+          const p = {
+            hunger: pet.hunger ?? 70,
+            happiness: pet.happiness ?? 60,
+            energy: pet.energy ?? 80,
+            coins: pet.coins ?? 15,
+            bananas: pet.bananas ?? 3,
+            toys: pet.toys ?? 1,
+            plantsWatered: pet.plantsWatered ?? 0,
+            flowersCollected: pet.flowersCollected ?? 0,
+            petsFed: pet.petsFed ?? 0,
+            choresCompletedToday: pet.choresCompletedToday ?? false
+          };
 
           // Game state
           const state = {
@@ -1490,25 +1521,7 @@
             running: true,
             inBuilding: null,
             message: '',
-            messageTimer: 0,
-            shopItems: [
-              { name: '🍌 Banana (2 coins)', price: 2, action: 'buy_banana' },
-              { name: '🎾 Toy (4 coins)', price: 4, action: 'buy_toy' }
-            ]
-          };
-
-          // Copy pet data into local mutable object
-          const p = {
-            hunger: pet.hunger,
-            happiness: pet.happiness,
-            energy: pet.energy,
-            coins: pet.coins,
-            bananas: pet.bananas,
-            toys: pet.toys,
-            plantsWatered: pet.plantsWatered,
-            flowersCollected: pet.flowersCollected,
-            petsFed: pet.petsFed,
-            choresCompletedToday: pet.choresCompletedToday
+            messageTimer: 0
           };
 
           // HUD
@@ -1633,6 +1646,7 @@
             if (bx > b.x - 20 && bx < b.x + b.w + 20 && by > b.y - 20 && by < b.y + b.h + 20) {
               state.inBuilding = b.action;
               state.message = `Entered ${b.label}`;
+              showBonusNotification('🏠 Entered', b.label);
               return;
             }
           }
@@ -1751,7 +1765,6 @@
           if (state.keys['ArrowDown']) dy = speed;
           if (dx && dy) { dx *= 0.707; dy *= 0.707; }
 
-          // If in building, limit movement
           if (state.inBuilding) {
             const building = state.buildings.find(b => b.action === state.inBuilding);
             if (building) {
@@ -1774,7 +1787,6 @@
           state.player.x = Math.max(20, Math.min(state.worldWidth - 20, state.player.x));
           state.player.y = Math.max(20, Math.min(state.worldHeight - 20, state.player.y));
 
-          // Pets follow
           state.pets.forEach((pet, i) => {
             const targetX = state.player.x - (i+1)*30;
             const targetY = state.player.y + 15;
@@ -1782,7 +1794,6 @@
             pet.y += (targetY - pet.y) * 0.04;
           });
 
-          // NPCs wander
           state.npcs.forEach(npc => {
             if (!npc.targetX || Math.random() < 0.003) {
               npc.targetX = 50 + Math.random() * 700;
@@ -1799,7 +1810,6 @@
             npc.y = Math.max(20, Math.min(580, npc.y));
           });
 
-          // Decay hunger and happiness slowly
           p.hunger = Math.max(0, p.hunger - 0.3 * dt);
           p.happiness = Math.max(0, p.happiness - 0.2 * dt);
           if (p.hunger < 20) p.happiness -= 0.5 * dt;
@@ -1808,17 +1818,14 @@
         function renderPetCity(state, ctx, p) {
           ctx.clearRect(0, 0, 800, 600);
 
-          // Sky
           const grad = ctx.createLinearGradient(0, 0, 0, 600);
           grad.addColorStop(0, '#87CEEB');
           grad.addColorStop(0.6, '#90EE90');
           ctx.fillStyle = grad;
           ctx.fillRect(0, 0, 800, 600);
 
-          // Ground
           ctx.fillStyle = '#7CCD7C';
           ctx.fillRect(0, 370, 800, 230);
-          // Paths
           ctx.fillStyle = '#C4A882';
           ctx.fillRect(350, 0, 20, 370);
           ctx.fillRect(0, 340, 350, 20);
@@ -1827,7 +1834,6 @@
           ctx.fillRect(0, 370, 350, 20);
           ctx.fillRect(450, 370, 350, 20);
 
-          // Buildings
           state.buildings.forEach(b => {
             ctx.fillStyle = b.color;
             ctx.shadowColor = 'rgba(0,0,0,0.2)';
@@ -1847,7 +1853,6 @@
             ctx.strokeRect(b.x, b.y, b.w, b.h);
           });
 
-          // Plants (garden)
           state.plants.forEach(plant => {
             ctx.font = '24px sans-serif';
             ctx.textAlign = 'center';
@@ -1855,7 +1860,6 @@
             ctx.fillText(plant.watered ? '🌿' : '🌱', plant.x, plant.y);
           });
 
-          // Flowers (park)
           state.flowers.forEach(flower => {
             ctx.font = '22px sans-serif';
             ctx.textAlign = 'center';
@@ -1863,7 +1867,6 @@
             ctx.fillText(flower.collected ? '🌿' : '🌸', flower.x, flower.y);
           });
 
-          // NPCs
           state.npcs.forEach(npc => {
             ctx.font = '34px sans-serif';
             ctx.textAlign = 'center';
@@ -1878,7 +1881,6 @@
             }
           });
 
-          // Pets
           state.pets.forEach(pet => {
             ctx.font = '28px serif';
             ctx.textAlign = 'center';
@@ -1886,13 +1888,11 @@
             ctx.fillText(pet.emoji, pet.x, pet.y);
           });
 
-          // Player
           ctx.font = '34px serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText('🧑', state.player.x, state.player.y);
 
-          // Building entry hint
           let nearBuilding = false;
           for (let b of state.buildings) {
             if (state.player.x > b.x - 20 && state.player.x < b.x + b.w + 20 &&
@@ -1910,7 +1910,6 @@
             ctx.fillText('Press Space to enter', 400, 28);
           }
 
-          // Building interior overlay
           if (state.inBuilding) {
             ctx.fillStyle = 'rgba(0,0,0,0.7)';
             ctx.fillRect(0, 0, 800, 600);
@@ -1940,7 +1939,6 @@
               ctx.fillText('Walk to the counter and press Space to buy', 400, 130);
             }
 
-            // Draw building interior mini-map
             if (b) {
               ctx.strokeStyle = '#888';
               ctx.lineWidth = 1;
@@ -1953,7 +1951,6 @@
             }
           }
 
-          // Chore progress inside the game view
           const choresDone = p.plantsWatered >= 3 && p.petsFed >= 2 && p.flowersCollected >= 5;
           if (!state.inBuilding) {
             ctx.fillStyle = 'rgba(0,0,0,0.5)';
