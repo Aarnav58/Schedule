@@ -33,39 +33,6 @@
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
       --bg-input: #f0f2f5;
     }
-    /* ---- Background themes (applied to .app) ---- */
-    .bg-forest .app {
-      background: linear-gradient(135deg, #2d5016, #4a7c2e);
-      padding: 20px;
-      border-radius: var(--radius);
-    }
-    .bg-sunset .app {
-      background: linear-gradient(135deg, #f7971e, #ffd200);
-      padding: 20px;
-      border-radius: var(--radius);
-    }
-    .bg-midnight .app {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      padding: 20px;
-      border-radius: var(--radius);
-    }
-    /* --- Theme overrides (accent colors) --- */
-    .theme-gold {
-      --primary: #FFD700;
-      --primary-dark: #c9a800;
-      --secondary: #FF6B6B;
-    }
-    .theme-cosmic {
-      --primary: #9B59B6;
-      --primary-dark: #7D3C98;
-      --secondary: #2ECC71;
-    }
-    .theme-ocean {
-      --primary: #1ABC9C;
-      --primary-dark: #16A085;
-      --secondary: #3498DB;
-    }
-
     body {
       font-family: var(--font);
       background: var(--bg);
@@ -87,7 +54,24 @@
       border-radius: var(--radius);
     }
 
-    /* ---------- HEADER ---------- */
+    /* ---------- BACKGROUND THEMES (applied to body) ---------- */
+    .bg-forest .app {
+      background: linear-gradient(135deg, #2d5016, #4a7c2e);
+      padding: 20px;
+      border-radius: var(--radius);
+    }
+    .bg-sunset .app {
+      background: linear-gradient(135deg, #f7971e, #ffd200);
+      padding: 20px;
+      border-radius: var(--radius);
+    }
+    .bg-midnight .app {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      padding: 20px;
+      border-radius: var(--radius);
+    }
+
+    /* ---------- HEADER (unchanged) ---------- */
     .header {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -520,6 +504,32 @@
       color: var(--primary);
       text-align: center;
     }
+    .daily-bonus-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .daily-bonus-item {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+    }
+    .daily-bonus-item .btn {
+      width: 100%;
+      margin-top: 4px;
+    }
+    .daily-bonus-item .claimed {
+      color: #16a34a;
+      font-weight: 600;
+    }
+    .daily-bonus-item .value {
+      font-weight: 700;
+      color: var(--primary);
+    }
 
     /* ---------- STATS ---------- */
     .stats-table {
@@ -694,15 +704,28 @@
       display: flex;
     }
     .game-overlay .game-container {
-      background: var(--bg);
+      background: #2d2d2d;
       border-radius: var(--radius);
       padding: 20px;
-      max-width: 800px;
+      max-width: 850px;
       width: 95%;
       max-height: 90vh;
       overflow-y: auto;
       color: var(--text);
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .game-overlay .game-container canvas {
+      border-radius: var(--radius-sm);
+      background: #4a8f4a;
+      display: block;
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      aspect-ratio: 800/600;
+      image-rendering: pixelated;
     }
     .game-overlay .close-game {
       position: absolute;
@@ -718,48 +741,26 @@
     .game-overlay .close-game:hover {
       color: var(--text);
     }
-
-    /* ---------- PET GAME ---------- */
-    .pet-status {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      margin: 15px 0;
-      font-size: 18px;
-    }
-    .pet-status span {
-      background: var(--bg-input);
-      padding: 6px 16px;
-      border-radius: 30px;
-    }
-    .pet-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 15px 0;
-    }
-    .pet-actions .btn {
-      font-size: 16px;
-      padding: 8px 24px;
-    }
-
-    /* ---------- MONKEY GAME ---------- */
-    #monkeyGameCanvas {
-      background: #87CEEB;
-      display: block;
-      margin: 0 auto;
-      border: 2px solid var(--border);
-      border-radius: var(--radius-sm);
+    .game-hud {
       width: 100%;
-      max-width: 600px;
-      height: auto;
-      aspect-ratio: 600/400;
+      max-width: 800px;
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 4px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 8px 8px 0 0;
+      margin-top: 4px;
     }
-    .game-info-text {
-      font-size: 16px;
-      color: var(--text-secondary);
-      margin: 10px 0;
+    .game-hud span {
+      padding: 4px 12px;
+    }
+    .game-controls-hint {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      padding: 6px 0;
       text-align: center;
     }
 
@@ -902,7 +903,7 @@
       .game-overlay .game-container {
         padding: 14px;
       }
-      #monkeyGameCanvas {
+      .game-overlay .game-container canvas {
         max-width: 100%;
       }
     }
@@ -1012,6 +1013,32 @@
               <p id="dashWeeklyBonus" style="font-size:14px;color:var(--text-muted);">Weekly bonus: not earned yet</p>
               <p style="margin-top:6px;">🔥 Streak: <strong id="dashStreak">0</strong> days</p>
               <p id="dashBooster" style="font-size:14px;color:var(--primary);margin-top:4px;"></p>
+
+              <!-- DAILY BONUSES -->
+              <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px;">
+                <h4 style="font-size:14px;font-weight:600;color:var(--text-secondary);">🎁 Daily Bonuses</h4>
+                <div class="daily-bonus-row">
+                  <div class="daily-bonus-item">
+                    <div>🎁 Gift</div>
+                    <div class="value" id="dailyGiftValue">+? XP</div>
+                    <button class="btn btn-sm btn-primary" id="claimGiftBtn">Claim</button>
+                    <div class="claimed hidden" id="giftClaimed">✅ Claimed</div>
+                  </div>
+                  <div class="daily-bonus-item">
+                    <div>💪 Focus</div>
+                    <div class="value" id="focusBonusValue">+15 XP</div>
+                    <button class="btn btn-sm btn-primary" id="claimFocusBtn">Claim</button>
+                    <div class="claimed hidden" id="focusClaimed">✅ Claimed</div>
+                  </div>
+                  <div class="daily-bonus-item">
+                    <div>⭐ Quick Task</div>
+                    <div class="value" id="quickTaskValue">+10 XP</div>
+                    <button class="btn btn-sm btn-primary" id="claimQuickTaskBtn">Claim</button>
+                    <div class="claimed hidden" id="quickTaskClaimed">✅ Claimed</div>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline" id="claimAllBonuses" style="margin-top:6px;">Claim All</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1095,7 +1122,6 @@
           <h2>⏱️ Timer & Stopwatch</h2>
         </div>
         <div class="timer-container">
-          <!-- Stopwatch -->
           <div class="timer-box">
             <h3>⏱️ Stopwatch</h3>
             <div class="timer-display" id="stopwatchDisplay">00:00:00</div>
@@ -1105,7 +1131,6 @@
               <button class="btn btn-outline" id="stopwatchReset">Reset</button>
             </div>
           </div>
-          <!-- Countdown -->
           <div class="timer-box">
             <h3>⏳ Countdown</h3>
             <div class="timer-display" id="countdownDisplay">00:00</div>
@@ -1135,9 +1160,7 @@
         <div class="store-top-bar">
           <button class="btn btn-outline" id="setDefaultBgBtn">🔄 Set Default Background</button>
         </div>
-        <div class="store-grid" id="storeGrid">
-          <!-- Items will be injected by JS -->
-        </div>
+        <div class="store-grid" id="storeGrid"></div>
       </div>
     </div>
 
@@ -1145,9 +1168,7 @@
     <div class="game-overlay" id="gameOverlay">
       <div class="game-container">
         <button class="close-game" id="closeGameBtn">✕</button>
-        <div id="gameContent">
-          <!-- Game content loaded here -->
-        </div>
+        <div id="gameContent" style="width:100%;display:flex;flex-direction:column;align-items:center;"></div>
       </div>
     </div>
 
@@ -1165,45 +1186,31 @@
         let settings = { soundEnabled: true, theme: 'default', background: 'default' };
         let audioCtx = null;
 
-        // XP & Level & Streak
         let xp = 0;
         let level = 1;
         let streak = 0;
         let lastStreakDate = '';
 
-        // Store
         let unlockedItems = [];
         let dailyBonusClaimed = false;
         let weeklyBonusClaimed = false;
         let weekStartDate = '';
         let xpBoosterExpiry = 0;
 
-        // Pet state
-        let pet = { hunger: 50, happiness: 50 };
+        let giftClaimed = false;
+        let focusClaimed = false;
+        let quickTaskClaimed = false;
 
-        // Timer states
+        let pet = { hunger: 50, happiness: 50, bananas: 0, toys: 0 };
+
         let stopwatchInterval = null;
         let stopwatchSeconds = 0;
         let countdownInterval = null;
         let countdownSeconds = 0;
 
-        // Monkey game state
-        let monkeyGameLoop = null;
-        let monkeyX = 280,
-          monkeyY = 340;
-        let bananas = [];
-        let score = 0;
-        let gameOver = false;
-        let thiefActive = false;
-        let thiefX = 0,
-          thiefY = 0;
-        let gameWon = false;
-        let keys = {};
-
         // ---------- DOM REFS ----------
         const $ = id => document.getElementById(id);
 
-        // Tabs
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = {
           dashboard: $('tab-dashboard'),
@@ -1214,7 +1221,6 @@
           store: $('tab-store')
         };
 
-        // Header
         const currentDateEl = $('currentDate');
         const taskCountEl = $('taskCount');
         const doneCountEl = $('doneCount');
@@ -1223,7 +1229,6 @@
         const levelBarHeader = $('levelBarHeader');
         const streakHeader = $('streakHeader');
 
-        // Dashboard
         const dashProgress = $('dashProgress');
         const dashTasksDone = $('dashTasksDone');
         const dashTasksTotal = $('dashTasksTotal');
@@ -1241,7 +1246,17 @@
         const dashStreak = $('dashStreak');
         const dashBooster = $('dashBooster');
 
-        // Schedule
+        const dailyGiftValue = $('dailyGiftValue');
+        const focusBonusValue = $('focusBonusValue');
+        const quickTaskValue = $('quickTaskValue');
+        const giftClaimedEl = $('giftClaimed');
+        const focusClaimedEl = $('focusClaimed');
+        const quickTaskClaimedEl = $('quickTaskClaimed');
+        const claimGiftBtn = $('claimGiftBtn');
+        const claimFocusBtn = $('claimFocusBtn');
+        const claimQuickTaskBtn = $('claimQuickTaskBtn');
+        const claimAllBonusesBtn = $('claimAllBonuses');
+
         const taskList = $('taskList');
         const scheduleForm = $('scheduleForm');
         const taskTitle = $('taskTitle');
@@ -1253,18 +1268,15 @@
         const toggleCompletedBtn = $('toggleCompletedTasks');
         const scheduleBadge = $('scheduleBadge');
 
-        // Todos
         const todoList = $('todoList');
         const todoForm = $('todoForm');
         const todoInput = $('todoInput');
         const todoDaysCheckboxes = document.querySelectorAll('#todoDaysCheckboxes input[type="checkbox"]');
         const todoBadge = $('todoBadge');
 
-        // Stats
         const statsContent = $('statsContent');
         const refreshStatsBtn = $('refreshStatsBtn');
 
-        // Timer
         const stopwatchDisplay = $('stopwatchDisplay');
         const stopwatchStart = $('stopwatchStart');
         const stopwatchPause = $('stopwatchPause');
@@ -1276,17 +1288,14 @@
         const countdownPause = $('countdownPause');
         const countdownReset = $('countdownReset');
 
-        // Store
         const storeGrid = $('storeGrid');
         const storeXP = $('storeXP');
         const setDefaultBgBtn = $('setDefaultBgBtn');
 
-        // Game overlay
         const gameOverlay = $('gameOverlay');
         const gameContent = $('gameContent');
         const closeGameBtn = $('closeGameBtn');
 
-        // Notifications
         const notifBanner = $('notifBanner');
         const notifIcon = $('notifIcon');
         const notifTitle = $('notifTitle');
@@ -1358,17 +1367,11 @@
         }
 
         // ---------- LEVEL HELPERS ----------
-        function getLevel(xpAmount) {
-          return Math.floor(xpAmount / 100) + 1;
-        }
+        function getLevel(xpAmount) { return Math.floor(xpAmount / 100) + 1; }
 
-        function getXPForLevel(lvl) {
-          return (lvl - 1) * 100;
-        }
+        function getXPForLevel(lvl) { return (lvl - 1) * 100; }
 
-        function getXPForNextLevel(lvl) {
-          return lvl * 100;
-        }
+        function getXPForNextLevel(lvl) { return lvl * 100; }
 
         function getLevelProgress(xpAmount) {
           const currentLevel = getLevel(xpAmount);
@@ -1379,9 +1382,7 @@
         }
 
         // ---------- XP BOOSTER ----------
-        function isBoosterActive() {
-          return Date.now() < xpBoosterExpiry;
-        }
+        function isBoosterActive() { return Date.now() < xpBoosterExpiry; }
 
         function getBoosterRemaining() {
           if (!isBoosterActive()) return 0;
@@ -1406,6 +1407,9 @@
             localStorage.setItem('smart_weekStart', weekStartDate);
             localStorage.setItem('smart_pet', JSON.stringify(pet));
             localStorage.setItem('smart_xpBoosterExpiry', JSON.stringify(xpBoosterExpiry));
+            localStorage.setItem('smart_giftClaimed', JSON.stringify(giftClaimed));
+            localStorage.setItem('smart_focusClaimed', JSON.stringify(focusClaimed));
+            localStorage.setItem('smart_quickTaskClaimed', JSON.stringify(quickTaskClaimed));
           } catch (_) {}
         }
 
@@ -1426,6 +1430,9 @@
             const ws = localStorage.getItem('smart_weekStart');
             const p = localStorage.getItem('smart_pet');
             const xb = localStorage.getItem('smart_xpBoosterExpiry');
+            const gc = localStorage.getItem('smart_giftClaimed');
+            const fc = localStorage.getItem('smart_focusClaimed');
+            const qtc = localStorage.getItem('smart_quickTaskClaimed');
             if (t) tasks = JSON.parse(t);
             if (d) todos = JSON.parse(d);
             if (m) mood = m;
@@ -1441,6 +1448,9 @@
             if (ws) weekStartDate = ws;
             if (p) pet = JSON.parse(p);
             if (xb) xpBoosterExpiry = JSON.parse(xb);
+            if (gc !== null) giftClaimed = JSON.parse(gc);
+            if (fc !== null) focusClaimed = JSON.parse(fc);
+            if (qtc !== null) quickTaskClaimed = JSON.parse(qtc);
             tasks.forEach(task => {
               if (!task.completedDates) task.completedDates = [];
               if (task.startNotifiedToday === undefined) task.startNotifiedToday = false;
@@ -1448,23 +1458,32 @@
               if (task.xpAwardedToday === undefined) task.xpAwardedToday = false;
             });
             if (!weekStartDate) weekStartDate = todayStr();
+            // Apply saved theme
             applyTheme(settings.theme || 'default');
             applyBackground(settings.background || 'default');
           } catch (_) {}
         }
 
-        // ---------- THEME ----------
+        // ========== THEME FIX ==========
         function applyTheme(themeName) {
           const root = document.documentElement;
-          root.classList.remove('theme-gold', 'theme-cosmic', 'theme-ocean');
-          if (themeName && themeName !== 'default') {
-            root.classList.add(`theme-${themeName}`);
-          }
+          // Define color palettes
+          const themes = {
+            default: { primary: '#6C63FF', primaryDark: '#5a52d5', secondary: '#FF6584' },
+            gold: { primary: '#FFD700', primaryDark: '#c9a800', secondary: '#FF6B6B' },
+            cosmic: { primary: '#9B59B6', primaryDark: '#7D3C98', secondary: '#2ECC71' },
+            ocean: { primary: '#1ABC9C', primaryDark: '#16A085', secondary: '#3498DB' }
+          };
+          const theme = themes[themeName] || themes.default;
+          // Apply directly to root style
+          root.style.setProperty('--primary', theme.primary);
+          root.style.setProperty('--primary-dark', theme.primaryDark);
+          root.style.setProperty('--secondary', theme.secondary);
+          // Save setting
           settings.theme = themeName;
           saveState();
         }
 
-        // ---------- BACKGROUND ----------
         function applyBackground(bgName) {
           const body = document.body;
           body.classList.remove('bg-forest', 'bg-sunset', 'bg-midnight');
@@ -1488,6 +1507,9 @@
             });
             todos.forEach(t => t.completedToday = false);
             dailyBonusClaimed = false;
+            giftClaimed = false;
+            focusClaimed = false;
+            quickTaskClaimed = false;
             lastResetDate = today;
             saveState();
             render();
@@ -1502,7 +1524,6 @@
           }
         }
 
-        // ---------- STREAK UPDATE ----------
         function updateStreak() {
           const yesterday = new Date();
           yesterday.setDate(yesterday.getDate() - 1);
@@ -1523,24 +1544,15 @@
           let allDone = true;
           if (tasksYesterday.length > 0) {
             for (let task of tasksYesterday) {
-              if (!task.completedDates || !task.completedDates.includes(yStr)) {
-                allDone = false;
-                break;
-              }
+              if (!task.completedDates || !task.completedDates.includes(yStr)) { allDone = false; break; }
             }
             if (allDone) {
-              if (lastStreakDate !== yStr) {
-                streak += 1;
-                lastStreakDate = yStr;
-              }
-            } else {
-              streak = 0;
-              lastStreakDate = yStr;
-            }
+              if (lastStreakDate !== yStr) { streak += 1;
+                lastStreakDate = yStr; }
+            } else { streak = 0;
+              lastStreakDate = yStr; }
           } else {
-            if (lastStreakDate !== yStr) {
-              lastStreakDate = yStr;
-            }
+            if (lastStreakDate !== yStr) lastStreakDate = yStr;
           }
           saveState();
           updateStreakDisplay();
@@ -1553,9 +1565,7 @@
 
         // ---------- XP SYSTEM ----------
         function addXP(amount) {
-          if (isBoosterActive()) {
-            amount = Math.floor(amount * 2);
-          }
+          if (isBoosterActive()) amount = Math.floor(amount * 2);
           const oldLevel = getLevel(xp);
           xp += amount;
           const newLevel = getLevel(xp);
@@ -1579,7 +1589,8 @@
           dashLevel.textContent = currentLevel;
           dashLevelBar.style.width = progress + '%';
           const nextLevelXP = getXPForNextLevel(currentLevel);
-          dashLevelText.textContent = `${xp - getXPForLevel(currentLevel)} / ${nextLevelXP - getXPForLevel(currentLevel)} XP to level ${currentLevel + 1}`;
+          dashLevelText.textContent =
+            `${xp - getXPForLevel(currentLevel)} / ${nextLevelXP - getXPForLevel(currentLevel)} XP to level ${currentLevel + 1}`;
           storeXP.textContent = xp;
           if (isBoosterActive()) {
             const remaining = getBoosterRemaining();
@@ -1588,6 +1599,68 @@
             dashBooster.textContent = `🚀 XP Booster active! ${hours}h ${minutes}m remaining`;
           } else {
             dashBooster.textContent = '';
+          }
+        }
+
+        // ---------- DAILY BONUS ----------
+        function claimDailyBonus(type) {
+          let amount = 0;
+          let name = '';
+          if (type === 'gift') {
+            if (giftClaimed) return;
+            amount = Math.floor(Math.random() * 11) + 5; // 5-15
+            name = 'Daily Gift';
+            giftClaimed = true;
+          } else if (type === 'focus') {
+            if (focusClaimed) return;
+            amount = 15;
+            name = 'Focus Bonus';
+            focusClaimed = true;
+          } else if (type === 'quickTask') {
+            if (quickTaskClaimed) return;
+            amount = 10;
+            name = 'Quick Task';
+            quickTaskClaimed = true;
+          }
+          addXP(amount);
+          showBonusNotification(`🎁 ${name}`, `You earned ${amount} XP!`);
+          saveState();
+          updateDailyBonusUI();
+        }
+
+        function claimAllBonuses() {
+          if (!giftClaimed) claimDailyBonus('gift');
+          if (!focusClaimed) claimDailyBonus('focus');
+          if (!quickTaskClaimed) claimDailyBonus('quickTask');
+        }
+
+        function updateDailyBonusUI() {
+          // Gift
+          if (giftClaimed) {
+            giftClaimedEl.classList.remove('hidden');
+            claimGiftBtn.classList.add('hidden');
+          } else {
+            giftClaimedEl.classList.add('hidden');
+            claimGiftBtn.classList.remove('hidden');
+            dailyGiftValue.textContent = `+${Math.floor(Math.random() * 11) + 5} XP`;
+          }
+          // Focus
+          if (focusClaimed) {
+            focusClaimedEl.classList.remove('hidden');
+            claimFocusBtn.classList.add('hidden');
+          } else {
+            focusClaimedEl.classList.add('hidden');
+            claimFocusBtn.classList.remove('hidden');
+            focusBonusValue.textContent = '+15 XP';
+          }
+          // Quick Task
+          if (quickTaskClaimed) {
+            quickTaskClaimedEl.classList.remove('hidden');
+            claimQuickTaskBtn.classList.add('hidden');
+          } else {
+            quickTaskClaimedEl.classList.add('hidden');
+            claimQuickTaskBtn.classList.remove('hidden');
+            quickTaskValue.textContent = '+10 XP';
           }
         }
 
@@ -1603,16 +1676,17 @@
           updateBadges();
           updateXPDisplay();
           updateStreakDisplay();
+          updateDailyBonusUI();
           checkDailyBonus();
           checkWeeklyBonus();
           saveState();
         }
 
+        // ---------- TASKS & TODOS ----------
         function renderTasks() {
           let todayTasks = tasks.filter(t => isTaskActiveToday(t));
           if (!showCompleted) todayTasks = todayTasks.filter(t => !t.completedToday);
           todayTasks.sort((a, b) => a.startTime.localeCompare(b.startTime));
-
           if (todayTasks.length === 0) {
             taskList.innerHTML = `<div class="empty-state"><span class="icon">📋</span><p>No tasks today.</p></div>`;
             return;
@@ -1657,7 +1731,6 @@
           });
           if (!showCompleted) todayTodos = todayTodos.filter(t => !t.completedToday);
           todayTodos.sort((a, b) => a.text.localeCompare(b.text));
-
           if (todayTodos.length === 0) {
             todoList.innerHTML = `<div class="empty-state"><span class="icon">✅</span><p>No todos today.</p></div>`;
             return;
@@ -1753,14 +1826,14 @@
         function renderStore() {
           const items = [{
             id: 'pet',
-            name: '🐒 Pet Monkey',
-            description: 'Take care of your own virtual monkey! Feed and play with it.',
+            name: '🌍 Pet World',
+            description: 'Walk around with your pets! Collect bananas and toys, feed and play.',
             price: 150,
             type: 'game'
           }, {
             id: 'monkey',
-            name: '🍌 Monkey Adventure',
-            description: 'Help the monkey find its bananas and catch the thief!',
+            name: '🌴 Monkey World',
+            description: 'Explore a jungle, collect bananas, chase the thief!',
             price: 200,
             type: 'game'
           }, {
@@ -1790,19 +1863,19 @@
           }, {
             id: 'extra_pet',
             name: '🐶 Extra Pet (Dog)',
-            description: 'Unlock a second pet – a cute dog! (appears in pet game)',
+            description: 'Unlock a dog companion in Pet World.',
             price: 180,
             type: 'pet_skin'
           }, {
             id: 'pet_cat',
             name: '🐱 Pet Cat',
-            description: 'Unlock a cat companion in the pet game.',
+            description: 'Unlock a cat companion in Pet World.',
             price: 150,
             type: 'pet_skin'
           }, {
             id: 'pet_bird',
             name: '🐦 Pet Bird',
-            description: 'Unlock a bird companion in the pet game.',
+            description: 'Unlock a bird companion in Pet World.',
             price: 120,
             type: 'pet_skin'
           }, {
@@ -1869,7 +1942,6 @@
           storeGrid.innerHTML = html;
           storeXP.textContent = xp;
 
-          // Handle store actions via delegation
           storeGrid.addEventListener('click', function(e) {
             const btn = e.target.closest('button');
             if (!btn) return;
@@ -1899,10 +1971,7 @@
               applyBackground(bgName);
               renderStore();
             } else if (action === 'use-booster') {
-              if (xpBoosterExpiry > Date.now()) {
-                alert('Booster already active!');
-                return;
-              }
+              if (xpBoosterExpiry > Date.now()) { alert('Booster already active!'); return; }
               xpBoosterExpiry = Date.now() + 24 * 60 * 60 * 1000;
               saveState();
               render();
@@ -1913,7 +1982,6 @@
           storeXP.textContent = xp;
         }
 
-        // ---------- SET DEFAULT BACKGROUND ----------
         setDefaultBgBtn.addEventListener('click', function() {
           applyBackground('default');
           renderStore();
@@ -1921,307 +1989,676 @@
         });
 
         // ---------- GAME FUNCTIONS ----------
+        let petWorld = {};
+        let monkeyWorld = {};
+
         function openGame(gameId) {
           gameOverlay.classList.add('show');
           if (gameId === 'pet') {
-            renderPetGame();
+            initPetWorld();
           } else if (gameId === 'monkey') {
-            renderMonkeyAdventure();
+            initMonkeyWorld();
           } else {
             gameContent.innerHTML = '<p>Game not found.</p>';
           }
         }
 
-        // ---------- PET GAME ----------
-        function renderPetGame() {
-          const hunger = pet.hunger;
-          const happiness = pet.happiness;
-          const status = hunger > 70 ? '😋 Full' : (hunger > 30 ? '🍽️ Hungry' : '😵 Starving');
-          const mood = happiness > 70 ? '😊 Happy' : (happiness > 30 ? '😐 Neutral' : '😞 Sad');
+        // ========== PET WORLD ==========
+        function initPetWorld() {
+          const container = gameContent;
+          container.innerHTML = '';
 
-          let pets = ['🐒'];
-          if (unlockedItems.includes('extra_pet')) pets.push('🐶');
-          if (unlockedItems.includes('pet_cat')) pets.push('🐱');
-          if (unlockedItems.includes('pet_bird')) pets.push('🐦');
+          let petEmojis = ['🐒'];
+          if (unlockedItems.includes('extra_pet')) petEmojis.push('🐶');
+          if (unlockedItems.includes('pet_cat')) petEmojis.push('🐱');
+          if (unlockedItems.includes('pet_bird')) petEmojis.push('🐦');
 
-          let html = `
-            <h2>🐒 Your Pet Monkey</h2>
-            <div class="pet-status">
-              <span>Hunger: ${hunger}%</span>
-              <span>Happiness: ${happiness}%</span>
-              <span>Status: ${status}</span>
-              <span>Mood: ${mood}</span>
-            </div>
-            <div style="text-align:center;font-size:4rem;margin:10px 0;">
-              ${pets.join(' ')}
-            </div>
-            <div class="pet-actions">
-              <button class="btn btn-success" id="feedPet">🍌 Feed (10 XP)</button>
-              <button class="btn btn-primary" id="playPet">🎾 Play (10 XP)</button>
-            </div>
-            <p style="margin-top:12px;font-size:14px;color:var(--text-muted);">Actions cost 10 XP each.</p>
+          const state = {
+            player: { x: 400, y: 300, w: 24, h: 32 },
+            pets: petEmojis.map((e, i) => ({ emoji: e, x: 400 - (i + 1) * 30, y: 300, targetX: 400, targetY: 300 })),
+            items: [],
+            bananas: pet.bananas || 0,
+            toys: pet.toys || 0,
+            hunger: pet.hunger || 50,
+            happiness: pet.happiness || 50,
+            worldWidth: 1200,
+            worldHeight: 900,
+            trees: [],
+            house: { x: 100, y: 100, w: 120, h: 100 },
+            pond: { x: 900, y: 600, r: 60 },
+            lastItemSpawn: 0,
+            keys: {},
+            running: true
+          };
+
+          for (let i = 0; i < 25; i++) {
+            state.trees.push({
+              x: Math.random() * state.worldWidth,
+              y: Math.random() * state.worldHeight,
+              r: 20 + Math.random() * 20
+            });
+          }
+
+          for (let i = 0; i < 8; i++) spawnItem(state);
+
+          const hud = document.createElement('div');
+          hud.className = 'game-hud';
+          hud.innerHTML = `
+            <span>🍌 <span id="petBananas">${state.bananas}</span></span>
+            <span>🎾 <span id="petToys">${state.toys}</span></span>
+            <span>❤️ <span id="petHunger">${state.hunger}</span>%</span>
+            <span>😊 <span id="petHappiness">${state.happiness}</span>%</span>
           `;
 
-          gameContent.innerHTML = html;
-
-          document.getElementById('feedPet').addEventListener('click', function() {
-            if (xp < 10) { alert('Not enough XP!'); return; }
-            xp -= 10;
-            pet.hunger = Math.min(100, pet.hunger + 20);
-            pet.happiness = Math.min(100, pet.happiness + 5);
-            saveState();
-            renderPetGame();
-            updateXPDisplay();
-            playClickSound();
-          });
-
-          document.getElementById('playPet').addEventListener('click', function() {
-            if (xp < 10) { alert('Not enough XP!'); return; }
-            xp -= 10;
-            pet.happiness = Math.min(100, pet.happiness + 20);
-            pet.hunger = Math.max(0, pet.hunger - 5);
-            saveState();
-            renderPetGame();
-            updateXPDisplay();
-            playClickSound();
-          });
-        }
-
-        // ---------- MONKEY ADVENTURE ----------
-        function renderMonkeyAdventure() {
-          let html = `
-            <div id="monkeyInfoPage">
-              <h1>🐒 All About Monkeys</h1>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/Bonnet_macaque_%28Macaca_radiata%29_Photograph_By_Shantanu_Kuveskar.jpg" alt="a smiling monkey" style="max-width:100%;border-radius:10px;margin:10px 0;" />
-              <p style="font-size:16px;line-height:1.6;">
-                Monkeys are very interesting animals with 1 foot long tails, hands, and legs all of which help them climb up and down trees. 
-                They are usually brownish tan and give out a screech like <em>oogh oogh ahhy ahhy</em>. 
-                They are very clever things that know how to use juice boxes and spoons and forks. 
-                <strong>Fun fact:</strong> some well-trained monkeys can <strong><em>even speak sign language</em></strong>.
-              </p>
-              <button class="btn btn-primary" id="startAdventureBtn" style="margin-top:15px;font-size:18px;padding:10px 30px;">
-                🍌 Start the Adventure
-              </button>
-            </div>
-            <div id="monkeyGameArea" style="display:none;">
-              <h2>🍌 Find the Bananas & Catch the Thief!</h2>
-              <p class="game-info-text">Once upon a time, a monkey had a huge pile of bananas... until one day they all vanished! Help the monkey find them and catch the thief!</p>
-              <p class="game-info-text">Collect <strong>20 bananas</strong> to make the thief appear, then catch them!</p>
-              <div style="text-align:center;">
-                <canvas id="monkeyGameCanvas" width="600" height="400"></canvas>
-                <div style="margin-top:10px;">
-                  <span>🍌 <span id="gameScore">0</span> / 20</span>
-                  <span style="margin-left:20px;">Use arrow keys ← ↑ → ↓ to move</span>
-                  <button class="btn btn-outline" id="monkeyGameReset" style="margin-left:20px;">🔄 Restart</button>
-                </div>
-              </div>
-            </div>
-          `;
-          gameContent.innerHTML = html;
-
-          const infoPage = document.getElementById('monkeyInfoPage');
-          const gameArea = document.getElementById('monkeyGameArea');
-
-          document.getElementById('startAdventureBtn').addEventListener('click', function() {
-            infoPage.style.display = 'none';
-            gameArea.style.display = 'block';
-            initMonkeyGame();
-          });
-        }
-
-        function initMonkeyGame() {
-          const canvas = document.getElementById('monkeyGameCanvas');
+          const canvas = document.createElement('canvas');
+          canvas.width = 800;
+          canvas.height = 600;
           const ctx = canvas.getContext('2d');
-          const scoreSpan = document.getElementById('gameScore');
 
-          monkeyX = 280;
-          monkeyY = 340;
-          bananas = [];
-          score = 0;
-          gameOver = false;
-          thiefActive = false;
-          gameWon = false;
-          scoreSpan.textContent = score;
-          let bananaTimer = 0;
-          const bananaInterval = 600;
+          const controls = document.createElement('div');
+          controls.className = 'game-controls-hint';
+          controls.textContent = 'Arrow keys to move • Space: feed nearest pet • E: play with nearest pet';
+
+          container.appendChild(hud);
+          container.appendChild(canvas);
+          container.appendChild(controls);
+
+          petWorld = { state, canvas, ctx, hud };
+
+          function keyDown(e) {
+            state.keys[e.key] = true;
+            if (e.key === ' ' || e.key === 'Space') { e.preventDefault();
+              interactPet(state, 'feed'); }
+            if (e.key === 'e' || e.key === 'E') { e.preventDefault();
+              interactPet(state, 'play'); }
+          }
+
+          function keyUp(e) { state.keys[e.key] = false; }
+
+          document.addEventListener('keydown', keyDown);
+          document.addEventListener('keyup', keyUp);
+
           let lastTime = 0;
 
-          function keyDownHandler(e) {
-            keys[e.key] = true;
-            e.preventDefault();
-          }
-
-          function keyUpHandler(e) {
-            keys[e.key] = false;
-            e.preventDefault();
-          }
-
-          document.addEventListener('keydown', keyDownHandler);
-          document.addEventListener('keyup', keyUpHandler);
-
-          document.getElementById('monkeyGameReset').addEventListener('click', function() {
-            document.removeEventListener('keydown', keyDownHandler);
-            document.removeEventListener('keyup', keyUpHandler);
-            if (monkeyGameLoop) cancelAnimationFrame(monkeyGameLoop);
-            initMonkeyGame();
-          });
-
-          function drawMonkey() {
-            ctx.clearRect(0, 0, 600, 400);
-            ctx.fillStyle = '#8B4513';
-            ctx.fillRect(0, 370, 600, 30);
-            ctx.fillStyle = '#228B22';
-            ctx.fillRect(0, 360, 600, 10);
-
-            bananas.forEach(b => {
-              ctx.fillStyle = '#FFD700';
-              ctx.beginPath();
-              ctx.arc(b.x, b.y, 8, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.fillStyle = '#8B4513';
-              ctx.fillRect(b.x - 2, b.y - 10, 4, 6);
-            });
-
-            if (thiefActive) {
-              ctx.fillStyle = '#FF0000';
-              ctx.font = '30px Arial';
-              ctx.textAlign = 'center';
-              ctx.fillText('👤 Thief', thiefX, thiefY);
-            }
-
-            ctx.fillStyle = '#8B4513';
-            ctx.beginPath();
-            ctx.arc(monkeyX, monkeyY - 10, 20, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(monkeyX, monkeyY - 35, 15, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(monkeyX - 6, monkeyY - 38, 4, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(monkeyX + 6, monkeyY - 38, 4, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#000';
-            ctx.beginPath();
-            ctx.arc(monkeyX - 6, monkeyY - 38, 2, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(monkeyX + 6, monkeyY - 38, 2, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#FF0000';
-            ctx.beginPath();
-            ctx.arc(monkeyX, monkeyY - 30, 4, 0, Math.PI);
-            ctx.fill();
-
-            if (gameOver) {
-              ctx.fillStyle = 'rgba(0,0,0,0.6)';
-              ctx.fillRect(0, 0, 600, 400);
-              ctx.fillStyle = '#fff';
-              ctx.font = '40px Arial';
-              ctx.textAlign = 'center';
-              ctx.fillText('💀 Game Over!', 300, 180);
-              ctx.font = '20px Arial';
-              ctx.fillText('You missed a banana!', 300, 240);
-              ctx.fillText('Press Reset to try again', 300, 280);
-              document.removeEventListener('keydown', keyDownHandler);
-              document.removeEventListener('keyup', keyUpHandler);
-            }
-            if (gameWon) {
-              ctx.fillStyle = 'rgba(0,0,0,0.6)';
-              ctx.fillRect(0, 0, 600, 400);
-              ctx.fillStyle = '#FFD700';
-              ctx.font = '40px Arial';
-              ctx.textAlign = 'center';
-              ctx.fillText('🎉 You caught the thief!', 300, 180);
-              ctx.fillStyle = '#fff';
-              ctx.font = '20px Arial';
-              ctx.fillText('All bananas are safe!', 300, 240);
-              ctx.fillText('Press Reset to play again', 300, 280);
-              document.removeEventListener('keydown', keyDownHandler);
-              document.removeEventListener('keyup', keyUpHandler);
-              if (!window._monkeyGameBonus) {
-                window._monkeyGameBonus = true;
-                addXP(25);
-                showBonusNotification('🏆 Game Won!', 'You completed the monkey adventure! +25 XP');
-              }
-            }
-          }
-
           function gameLoop(timestamp) {
-            if (gameOver || gameWon) {
-              drawMonkey();
-              return;
-            }
-
-            const delta = timestamp - lastTime;
+            if (!state.running) return;
+            const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
             lastTime = timestamp;
+            updatePetWorld(state, dt);
+            renderPetWorld(state, ctx);
 
-            const step = 4;
-            if (keys['ArrowLeft']) monkeyX = Math.max(20, monkeyX - step);
-            if (keys['ArrowRight']) monkeyX = Math.min(580, monkeyX + step);
-            if (keys['ArrowUp']) monkeyY = Math.max(360, monkeyY - step);
-            if (keys['ArrowDown']) monkeyY = Math.min(360, monkeyY + step);
+            document.getElementById('petBananas').textContent = state.bananas;
+            document.getElementById('petToys').textContent = state.toys;
+            document.getElementById('petHunger').textContent = Math.round(state.hunger);
+            document.getElementById('petHappiness').textContent = Math.round(state.happiness);
 
-            bananaTimer += delta;
-            if (bananaTimer > bananaInterval) {
-              bananaTimer = 0;
-              const x = Math.random() * 560 + 20;
-              bananas.push({ x: x, y: 0 });
-            }
-
-            for (let i = bananas.length - 1; i >= 0; i--) {
-              bananas[i].y += 2;
-              if (bananas[i].y > 380) {
-                bananas.splice(i, 1);
-                gameOver = true;
-                break;
-              }
-              const dx = bananas[i].x - monkeyX;
-              const dy = bananas[i].y - (monkeyY - 20);
-              if (Math.sqrt(dx * dx + dy * dy) < 25) {
-                bananas.splice(i, 1);
-                score++;
-                scoreSpan.textContent = score;
-                playClickSound();
-                if (score >= 20 && !thiefActive && !gameWon) {
-                  thiefActive = true;
-                  thiefX = Math.random() * 560 + 20;
-                  thiefY = 60;
-                  alert('👤 The thief appears! Catch them!');
-                }
-              }
-            }
-
-            if (thiefActive) {
-              thiefX += (Math.sin(Date.now() / 1000) * 2);
-              if (thiefX < 20 || thiefX > 580) thiefX = Math.random() * 560 + 20;
-              const dx = thiefX - monkeyX;
-              const dy = thiefY - (monkeyY - 20);
-              if (Math.sqrt(dx * dx + dy * dy) < 30) {
-                gameWon = true;
-              }
-            }
-
-            drawMonkey();
-            monkeyGameLoop = requestAnimationFrame(gameLoop);
+            petWorld.animationId = requestAnimationFrame(gameLoop);
           }
-
-          if (monkeyGameLoop) cancelAnimationFrame(monkeyGameLoop);
-          window._monkeyGameBonus = false;
-          monkeyGameLoop = requestAnimationFrame(gameLoop);
 
           const closeHandler = function() {
-            document.removeEventListener('keydown', keyDownHandler);
-            document.removeEventListener('keyup', keyUpHandler);
-            if (monkeyGameLoop) cancelAnimationFrame(monkeyGameLoop);
+            state.running = false;
+            if (petWorld.animationId) cancelAnimationFrame(petWorld.animationId);
+            document.removeEventListener('keydown', keyDown);
+            document.removeEventListener('keyup', keyUp);
+            pet.bananas = state.bananas;
+            pet.toys = state.toys;
+            pet.hunger = state.hunger;
+            pet.happiness = state.happiness;
+            saveState();
             gameOverlay.classList.remove('show');
           };
 
-          closeGameBtn.onclick = function() {
-            closeHandler();
+          closeGameBtn.onclick = closeHandler;
+          petWorld.animationId = requestAnimationFrame(gameLoop);
+
+          setInterval(() => {
+            if (state.running && state.items.length < 15) spawnItem(state);
+          }, 5000);
+        }
+
+        function spawnItem(state) {
+          const types = ['banana', 'toy'];
+          const type = types[Math.random() < 0.6 ? 0 : 1];
+          const x = 50 + Math.random() * (state.worldWidth - 100);
+          const y = 50 + Math.random() * (state.worldHeight - 100);
+          const dx = x - state.house.x - state.house.w / 2;
+          const dy = y - state.house.y - state.house.h / 2;
+          const pondDx = x - state.pond.x;
+          const pondDy = y - state.pond.y;
+          if (Math.abs(dx) < 80 && Math.abs(dy) < 80) return;
+          if (Math.sqrt(pondDx * pondDx + pondDy * pondDy) < state.pond.r + 20) return;
+          state.items.push({ x, y, type, w: 16, h: 16, collected: false });
+        }
+
+        function updatePetWorld(state, dt) {
+          const speed = 150;
+          let dx = 0,
+            dy = 0;
+          if (state.keys['ArrowLeft']) dx = -speed;
+          if (state.keys['ArrowRight']) dx = speed;
+          if (state.keys['ArrowUp']) dy = -speed;
+          if (state.keys['ArrowDown']) dy = speed;
+          if (dx && dy) { dx *= 0.707;
+            dy *= 0.707; }
+
+          state.player.x += dx * dt;
+          state.player.y += dy * dt;
+          state.player.x = Math.max(20, Math.min(state.worldWidth - 20, state.player.x));
+          state.player.y = Math.max(20, Math.min(state.worldHeight - 20, state.player.y));
+
+          state.pets.forEach((pet, i) => {
+            const targetX = state.player.x - (i + 1) * 30;
+            const targetY = state.player.y + 10;
+            pet.targetX = targetX;
+            pet.targetY = targetY;
+            pet.x += (pet.targetX - pet.x) * 0.05;
+            pet.y += (pet.targetY - pet.y) * 0.05;
+          });
+
+          for (let i = state.items.length - 1; i >= 0; i--) {
+            const item = state.items[i];
+            const dx = item.x - state.player.x;
+            const dy = item.y - state.player.y;
+            if (Math.sqrt(dx * dx + dy * dy) < 30) {
+              if (item.type === 'banana') state.bananas++;
+              else state.toys++;
+              state.items.splice(i, 1);
+              playClickSound();
+            }
+          }
+
+          state.hunger = Math.max(0, state.hunger - 0.5 * dt);
+          state.happiness = Math.max(0, state.happiness - 0.3 * dt);
+          if (state.hunger < 20) state.happiness -= 1 * dt;
+        }
+
+        function interactPet(state, action) {
+          let nearest = null;
+          let nearestDist = Infinity;
+          state.pets.forEach(pet => {
+            const dx = pet.x - state.player.x;
+            const dy = pet.y - state.player.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < nearestDist) { nearestDist = dist;
+              nearest = pet; }
+          });
+
+          if (!nearest || nearestDist > 100) {
+            showBonusNotification('🐾 Too far!', 'Get closer to a pet to interact.');
+            return;
+          }
+
+          if (action === 'feed') {
+            if (state.bananas < 1) {
+              showBonusNotification('🍌 No bananas!', 'Find bananas in the world to feed your pets.');
+              return;
+            }
+            state.bananas--;
+            state.hunger = Math.min(100, state.hunger + 15);
+            state.happiness = Math.min(100, state.happiness + 5);
+            playClickSound();
+            showBonusNotification('🍌 Fed!', 'Your pet is happy and full!');
+          } else if (action === 'play') {
+            if (state.toys < 1) {
+              showBonusNotification('🎾 No toys!', 'Find toys in the world to play with your pets.');
+              return;
+            }
+            state.toys--;
+            state.happiness = Math.min(100, state.happiness + 20);
+            state.hunger = Math.max(0, state.hunger - 5);
+            playClickSound();
+            showBonusNotification('🎾 Played!', 'Your pet loves playing with you!');
+          }
+        }
+
+        function renderPetWorld(state, ctx) {
+          const camX = state.player.x - 400;
+          const camY = state.player.y - 300;
+
+          ctx.clearRect(0, 0, 800, 600);
+
+          const grad = ctx.createLinearGradient(0, 0, 0, 600);
+          grad.addColorStop(0, '#87CEEB');
+          grad.addColorStop(0.7, '#90EE90');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, 800, 600);
+
+          ctx.save();
+          ctx.translate(-camX, -camY);
+
+          ctx.fillStyle = '#228B22';
+          ctx.fillRect(0, 0, state.worldWidth, state.worldHeight);
+
+          for (let i = 0; i < 200; i++) {
+            ctx.fillStyle = i % 2 === 0 ? '#32CD32' : '#2E8B57';
+            ctx.fillRect((i * 60) % state.worldWidth, (i * 30) % state.worldHeight, 30, 15);
+          }
+
+          state.trees.forEach(tree => {
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(tree.x - 4, tree.y - 10, 8, 20);
+            ctx.fillStyle = '#228B22';
+            ctx.beginPath();
+            ctx.arc(tree.x, tree.y - 20, tree.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#2E8B57';
+            ctx.beginPath();
+            ctx.arc(tree.x - 10, tree.y - 15, tree.r * 0.7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(tree.x + 10, tree.y - 15, tree.r * 0.7, 0, Math.PI * 2);
+            ctx.fill();
+          });
+
+          ctx.fillStyle = '#DEB887';
+          ctx.fillRect(state.house.x, state.house.y, state.house.w, state.house.h);
+          ctx.fillStyle = '#8B0000';
+          ctx.fillRect(state.house.x + state.house.w / 2 - 20, state.house.y - 40, 40, 40);
+          ctx.fillStyle = '#FFD700';
+          ctx.fillRect(state.house.x + state.house.w / 2 - 2, state.house.y - 8, 4, 8);
+          ctx.fillStyle = '#87CEEB';
+          ctx.fillRect(state.house.x + 20, state.house.y + 30, 25, 25);
+          ctx.fillRect(state.house.x + state.house.w - 45, state.house.y + 30, 25, 25);
+
+          ctx.fillStyle = 'rgba(30, 144, 255, 0.7)';
+          ctx.beginPath();
+          ctx.arc(state.pond.x, state.pond.y, state.pond.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+          ctx.beginPath();
+          ctx.arc(state.pond.x - 20, state.pond.y - 20, 15, 0, Math.PI * 2);
+          ctx.fill();
+
+          state.items.forEach(item => {
+            if (item.type === 'banana') {
+              ctx.fillStyle = '#FFD700';
+              ctx.beginPath();
+              ctx.arc(item.x, item.y, 10, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = '#8B4513';
+              ctx.fillRect(item.x - 2, item.y - 12, 4, 6);
+              ctx.fillRect(item.x - 6, item.y - 8, 12, 4);
+            } else {
+              ctx.fillStyle = '#FF6347';
+              ctx.beginPath();
+              ctx.arc(item.x, item.y, 8, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = '#FFFFFF';
+              ctx.beginPath();
+              ctx.arc(item.x - 3, item.y - 3, 3, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          });
+
+          state.pets.forEach((pet, i) => {
+            ctx.font = '28px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(pet.emoji, pet.x, pet.y);
+            const names = ['Monkey', 'Dog', 'Cat', 'Bird'];
+            ctx.font = '10px sans-serif';
+            ctx.fillStyle = '#fff';
+            ctx.fillText(names[i] || 'Pet', pet.x, pet.y + 25);
+          });
+
+          ctx.font = '32px serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('🧑', state.player.x, state.player.y);
+
+          ctx.restore();
+
+          const nearPet = state.pets.some(p => {
+            const dx = p.x - state.player.x;
+            const dy = p.y - state.player.y;
+            return Math.sqrt(dx * dx + dy * dy) < 100;
+          });
+          if (nearPet) {
+            ctx.fillStyle = 'rgba(0,0,0,0.6)';
+            ctx.fillRect(240, 560, 320, 30);
+            ctx.fillStyle = '#fff';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Press Space to feed • Press E to play', 400, 582);
+          }
+        }
+
+        // ========== MONKEY WORLD ==========
+        function initMonkeyWorld() {
+          const container = gameContent;
+          container.innerHTML = '';
+
+          const state = {
+            player: { x: 400, y: 300, w: 24, h: 32 },
+            bananas: [],
+            collected: 0,
+            target: 15,
+            thief: null,
+            thiefCaught: false,
+            npcs: [],
+            worldWidth: 1500,
+            worldHeight: 1000,
+            trees: [],
+            village: { x: 200, y: 700, w: 200, h: 150 },
+            river: { x: 700, y: 200, w: 100, h: 400 },
+            keys: {},
+            running: true,
+            gameOver: false,
+            gameWon: false
           };
+
+          for (let i = 0; i < 35; i++) {
+            state.trees.push({
+              x: Math.random() * state.worldWidth,
+              y: Math.random() * state.worldHeight,
+              r: 20 + Math.random() * 25
+            });
+          }
+
+          for (let i = 0; i < 25; i++) {
+            let x, y, valid;
+            let attempts = 0;
+            do {
+              x = 50 + Math.random() * (state.worldWidth - 100);
+              y = 50 + Math.random() * (state.worldHeight - 100);
+              valid = true;
+              if (x > state.village.x - 30 && x < state.village.x + state.village.w + 30 &&
+                y > state.village.y - 30 && y < state.village.y + state.village.h + 30) valid = false;
+              if (x > state.river.x - 20 && x < state.river.x + state.river.w + 20 &&
+                y > state.river.y - 20 && y < state.river.y + state.river.h + 20) valid = false;
+              attempts++;
+            } while (!valid && attempts < 50);
+            state.bananas.push({ x, y, collected: false, w: 16, h: 16 });
+          }
+
+          state.npcs = [
+            { x: 300, y: 400, emoji: '🐒', text: '🍌 Bananas are near the river!', spoken: false },
+            { x: 800, y: 800, emoji: '🐒', text: '👀 The thief is scared of water!', spoken: false },
+            { x: 1200, y: 300, emoji: '🐒', text: '🌳 Check under the big trees!', spoken: false }
+          ];
+
+          state.thief = { x: 1300, y: 500, speed: 80, active: false };
+
+          const hud = document.createElement('div');
+          hud.className = 'game-hud';
+          hud.innerHTML = `
+            <span>🍌 <span id="monkeyCollected">${state.collected}</span> / ${state.target}</span>
+            <span id="monkeyStatus">🌴 Find bananas!</span>
+          `;
+
+          const canvas = document.createElement('canvas');
+          canvas.width = 800;
+          canvas.height = 600;
+          const ctx = canvas.getContext('2d');
+
+          const controls = document.createElement('div');
+          controls.className = 'game-controls-hint';
+          controls.textContent = 'Arrow keys to move • Space: talk to NPC • Collect 15 bananas to find the thief!';
+
+          container.appendChild(hud);
+          container.appendChild(canvas);
+          container.appendChild(controls);
+
+          monkeyWorld = { state, canvas, ctx, hud };
+
+          function keyDown(e) {
+            state.keys[e.key] = true;
+            if (e.key === ' ' || e.key === 'Space') { e.preventDefault();
+              talkToNPC(state); }
+          }
+
+          function keyUp(e) { state.keys[e.key] = false; }
+
+          document.addEventListener('keydown', keyDown);
+          document.addEventListener('keyup', keyUp);
+
+          let lastTime = 0;
+
+          function gameLoop(timestamp) {
+            if (!state.running) return;
+            const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
+            lastTime = timestamp;
+            updateMonkeyWorld(state, dt);
+            renderMonkeyWorld(state, ctx);
+
+            document.getElementById('monkeyCollected').textContent = state.collected;
+            if (state.gameWon) {
+              document.getElementById('monkeyStatus').textContent = '🎉 You caught the thief! +25 XP!';
+            } else if (state.gameOver) {
+              document.getElementById('monkeyStatus').textContent = '💀 Game Over! Press Reset to retry.';
+            } else if (state.thief.active) {
+              document.getElementById('monkeyStatus').textContent = '🕵️ The thief is running! Chase them!';
+            } else {
+              document.getElementById('monkeyStatus').textContent =
+                `🍌 ${state.collected}/${state.target} bananas - find more!`;
+            }
+
+            monkeyWorld.animationId = requestAnimationFrame(gameLoop);
+          }
+
+          const closeHandler = function() {
+            state.running = false;
+            if (monkeyWorld.animationId) cancelAnimationFrame(monkeyWorld.animationId);
+            document.removeEventListener('keydown', keyDown);
+            document.removeEventListener('keyup', keyUp);
+            gameOverlay.classList.remove('show');
+          };
+
+          closeGameBtn.onclick = closeHandler;
+          monkeyWorld.animationId = requestAnimationFrame(gameLoop);
+        }
+
+        function talkToNPC(state) {
+          const player = state.player;
+          let talked = false;
+          state.npcs.forEach(npc => {
+            const dx = npc.x - player.x;
+            const dy = npc.y - player.y;
+            if (Math.sqrt(dx * dx + dy * dy) < 80) {
+              showBonusNotification('🐒 NPC says:', npc.text);
+              npc.spoken = true;
+              talked = true;
+            }
+          });
+          if (!talked) {
+            showBonusNotification('🐒 No one here.', 'Find an NPC monkey to talk to (look for 🐒).');
+          }
+        }
+
+        function updateMonkeyWorld(state, dt) {
+          const speed = 150;
+          let dx = 0,
+            dy = 0;
+          if (state.keys['ArrowLeft']) dx = -speed;
+          if (state.keys['ArrowRight']) dx = speed;
+          if (state.keys['ArrowUp']) dy = -speed;
+          if (state.keys['ArrowDown']) dy = speed;
+          if (dx && dy) { dx *= 0.707;
+            dy *= 0.707; }
+
+          state.player.x += dx * dt;
+          state.player.y += dy * dt;
+          state.player.x = Math.max(20, Math.min(state.worldWidth - 20, state.player.x));
+          state.player.y = Math.max(20, Math.min(state.worldHeight - 20, state.player.y));
+
+          state.bananas.forEach(b => {
+            if (!b.collected) {
+              const dx2 = b.x - state.player.x;
+              const dy2 = b.y - state.player.y;
+              if (Math.sqrt(dx2 * dx2 + dy2 * dy2) < 30) {
+                b.collected = true;
+                state.collected++;
+                playClickSound();
+                if (state.collected >= state.target && !state.thief.active) {
+                  state.thief.active = true;
+                  state.thief.x = 100 + Math.random() * (state.worldWidth - 200);
+                  state.thief.y = 100 + Math.random() * (state.worldHeight - 200);
+                  showBonusNotification('🕵️ Thief appears!', 'The banana thief is running! Chase them!');
+                }
+              }
+            }
+          });
+
+          if (state.thief.active && !state.gameWon) {
+            const speed2 = 80;
+            if (!state.thief.targetX || Math.random() < 0.01) {
+              state.thief.targetX = 100 + Math.random() * (state.worldWidth - 200);
+              state.thief.targetY = 100 + Math.random() * (state.worldHeight - 200);
+            }
+            const dxT = state.thief.targetX - state.thief.x;
+            const dyT = state.thief.targetY - state.thief.y;
+            const distT = Math.sqrt(dxT * dxT + dyT * dyT);
+            if (distT > 5) {
+              state.thief.x += (dxT / distT) * speed2 * dt;
+              state.thief.y += (dyT / distT) * speed2 * dt;
+            }
+            state.thief.x = Math.max(20, Math.min(state.worldWidth - 20, state.thief.x));
+            state.thief.y = Math.max(20, Math.min(state.worldHeight - 20, state.thief.y));
+
+            const dxP = state.thief.x - state.player.x;
+            const dyP = state.thief.y - state.player.y;
+            if (Math.sqrt(dxP * dxP + dyP * dyP) < 30) {
+              state.gameWon = true;
+              state.thief.active = false;
+              addXP(25);
+              showBonusNotification('🎉 Thief caught!', 'You caught the banana thief! +25 XP');
+              playNotificationSound();
+            }
+          }
+
+          if (state.collected >= state.target && !state.thief.active && !state.gameWon) {
+            state.thief.active = true;
+            state.thief.x = 100 + Math.random() * (state.worldWidth - 200);
+            state.thief.y = 100 + Math.random() * (state.worldHeight - 200);
+          }
+        }
+
+        function renderMonkeyWorld(state, ctx) {
+          const camX = state.player.x - 400;
+          const camY = state.player.y - 300;
+
+          ctx.clearRect(0, 0, 800, 600);
+
+          const grad = ctx.createLinearGradient(0, 0, 0, 600);
+          grad.addColorStop(0, '#87CEEB');
+          grad.addColorStop(0.6, '#90EE90');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, 800, 600);
+
+          ctx.save();
+          ctx.translate(-camX, -camY);
+
+          ctx.fillStyle = '#2E8B57';
+          ctx.fillRect(0, 0, state.worldWidth, state.worldHeight);
+
+          for (let i = 0; i < 300; i++) {
+            ctx.fillStyle = i % 2 === 0 ? '#32CD32' : '#228B22';
+            ctx.fillRect((i * 40) % state.worldWidth, (i * 25) % state.worldHeight, 20, 12);
+          }
+
+          state.trees.forEach(tree => {
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(tree.x - 5, tree.y - 12, 10, 24);
+            ctx.fillStyle = '#1a6b1a';
+            ctx.beginPath();
+            ctx.arc(tree.x, tree.y - 25, tree.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#228B22';
+            ctx.beginPath();
+            ctx.arc(tree.x - 12, tree.y - 18, tree.r * 0.7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(tree.x + 12, tree.y - 18, tree.r * 0.7, 0, Math.PI * 2);
+            ctx.fill();
+          });
+
+          ctx.fillStyle = '#DEB887';
+          ctx.fillRect(state.village.x, state.village.y, state.village.w, state.village.h);
+          ctx.fillStyle = '#A0522D';
+          for (let i = 0; i < 4; i++) {
+            ctx.fillRect(state.village.x + 20 + i * 50, state.village.y + 20, 30, 30);
+            ctx.fillRect(state.village.x + 20 + i * 50, state.village.y + 70, 30, 30);
+          }
+          ctx.fillStyle = '#8B0000';
+          ctx.fillRect(state.village.x + state.village.w / 2 - 15, state.village.y - 30, 30, 30);
+
+          ctx.fillStyle = 'rgba(30, 144, 255, 0.5)';
+          ctx.fillRect(state.river.x, state.river.y, state.river.w, state.river.h);
+          for (let i = 0; i < 10; i++) {
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.beginPath();
+            ctx.arc(state.river.x + 20 + i * 40, state.river.y + 30 + Math.sin(i) * 20, 10, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          state.bananas.forEach(b => {
+            if (!b.collected) {
+              ctx.fillStyle = '#FFD700';
+              ctx.beginPath();
+              ctx.arc(b.x, b.y, 9, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = '#8B4513';
+              ctx.fillRect(b.x - 2, b.y - 11, 4, 5);
+              ctx.fillRect(b.x - 5, b.y - 7, 10, 4);
+              ctx.shadowColor = '#FFD700';
+              ctx.shadowBlur = 10;
+              ctx.fillStyle = 'rgba(255,215,0,0.1)';
+              ctx.beginPath();
+              ctx.arc(b.x, b.y, 15, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.shadowBlur = 0;
+            }
+          });
+
+          state.npcs.forEach(npc => {
+            ctx.font = '30px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(npc.emoji, npc.x, npc.y);
+            if (!npc.spoken) {
+              ctx.font = '12px sans-serif';
+              ctx.fillStyle = '#fff';
+              ctx.fillText('💬 Press Space', npc.x, npc.y + 30);
+            }
+          });
+
+          if (state.thief.active && !state.gameWon) {
+            ctx.font = '40px serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🕵️', state.thief.x, state.thief.y);
+            ctx.font = '20px sans-serif';
+            ctx.fillStyle = '#FF0000';
+            ctx.fillText('❗', state.thief.x + 25, state.thief.y - 25);
+          }
+
+          ctx.font = '34px serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('🐒', state.player.x, state.player.y);
+
+          ctx.restore();
+
+          if (state.collected < state.target) {
+            ctx.fillStyle = 'rgba(0,0,0,0.6)';
+            ctx.fillRect(10, 10, 200, 24);
+            ctx.fillStyle = '#fff';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`🍌 ${state.collected}/${state.target} bananas`, 20, 28);
+          }
+
+          if (state.gameWon) {
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillRect(0, 0, 800, 600);
+            ctx.fillStyle = '#FFD700';
+            ctx.font = '48px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🎉 You caught the thief!', 400, 280);
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px sans-serif';
+            ctx.fillText('+25 XP! Press close to return.', 400, 340);
+          }
         }
 
         // ---------- DASHBOARD ----------
@@ -2270,7 +2707,6 @@
           } else {
             dashNextTask.textContent = 'All tasks done! 🎉';
           }
-
           moodToday.textContent = mood ? `Today's mood: ${mood}` : 'Today\'s mood: —';
         }
 
@@ -2328,10 +2764,7 @@
               return active;
             });
             const doneTasks = dayTasks.filter(t => t.completedDates && t.completedDates.includes(dateStr));
-            if (dayTasks.length > 0 && doneTasks.length !== dayTasks.length) {
-              allDaysComplete = false;
-              break;
-            }
+            if (dayTasks.length > 0 && doneTasks.length !== dayTasks.length) { allDaysComplete = false; break; }
           }
           if (allDaysComplete && !weeklyBonusClaimed) {
             weeklyBonusClaimed = true;
@@ -2351,11 +2784,9 @@
             if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const now = audioCtx.currentTime;
-            let freq = 1200;
-            let duration = 0.15;
+            let freq = 1200,
+              duration = 0.15;
             if (unlockedItems.includes('sound_pack')) {
-              freq = 800;
-              duration = 0.2;
               const notes = [523, 659, 784, 659];
               notes.forEach((f, i) => {
                 const t = now + i * 0.15;
@@ -2419,16 +2850,15 @@
           notifActions.appendChild(dismissBtn);
           notifBanner.classList.add('show');
           if (window.notifTimeout) clearTimeout(window.notifTimeout);
-          window.notifTimeout = setTimeout(() => notifBanner.classList.remove('show'), 8000);
+          window.notifTimeout = setTimeout(() => notifBanner.classList.remove('show'), 5000);
           playNotificationSound();
         }
 
         function showTaskNotification(type, task) {
           const title = type === 'start' ? `▶️ Started: ${task.title}` : `⏹️ Ended: ${task.title}`;
           const timeRange = `${formatTime(task.startTime)} – ${formatTime(task.endTime)}`;
-          const desc = type === 'start' ?
-            `📅 ${timeRange}\n${task.description || ''}` :
-            `⏰ Time is up! (${timeRange})\n${task.description || ''}`;
+          const desc = type === 'start' ? `📅 ${timeRange}\n${task.description || ''}` : `⏰ Time is up! (${timeRange})\n${task
+              .description || ''}`;
 
           notifIcon.textContent = type === 'start' ? '▶️' : '⏹️';
           notifTitle.textContent = title;
@@ -2495,8 +2925,7 @@
           const now = new Date();
           const nowMinutes = now.getHours() * 60 + now.getMinutes();
           tasks.forEach(task => {
-            if (!isTaskActiveToday(task)) return;
-            if (task.completedToday) return;
+            if (!isTaskActiveToday(task) || task.completedToday) return;
             const [sh, sm] = task.startTime.split(':').map(Number);
             const [eh, em] = task.endTime.split(':').map(Number);
             const startMinutes = sh * 60 + sm;
@@ -2543,9 +2972,7 @@
           const task = tasks.find(t => t.id === id);
           if (!task || !isTaskActiveToday(task)) return;
           const today = todayStr();
-
           task.completedToday = !task.completedToday;
-
           if (task.completedToday) {
             if (!task.completedDates.includes(today)) task.completedDates.push(today);
             if (!task.xpAwardedToday) {
@@ -2558,16 +2985,13 @@
           } else {
             task.completedDates = task.completedDates.filter(d => d !== today);
           }
-
           saveState();
           render();
         }
 
-        function deleteTask(id) {
-          tasks = tasks.filter(t => t.id !== id);
+        function deleteTask(id) { tasks = tasks.filter(t => t.id !== id);
           saveState();
-          render();
-        }
+          render(); }
 
         function editTask(id, newTitle, newDesc, newRepeat, newDays, newStart, newEnd) {
           const task = tasks.find(t => t.id === id);
@@ -2598,55 +3022,45 @@
           const today = getTodayDay();
           if (todo.days.length === 0 || todo.days.includes(today)) {
             todo.completedToday = !todo.completedToday;
-            if (todo.completedToday) {
-              addXP(5);
-              playClickSound();
-            }
+            if (todo.completedToday) { addXP(5);
+              playClickSound(); }
             saveState();
             render();
           }
         }
 
-        function deleteTodo(id) {
-          todos = todos.filter(t => t.id !== id);
+        function deleteTodo(id) { todos = todos.filter(t => t.id !== id);
           saveState();
-          render();
-        }
+          render(); }
 
         // ---------- MOOD ----------
-        function setMood(emoji) {
-          mood = emoji;
+        function setMood(emoji) { mood = emoji;
           saveState();
-          updateDashboard();
-        }
+          updateDashboard(); }
 
         // ---------- TIMER FUNCTIONS ----------
         function stopwatchTick() {
           stopwatchSeconds++;
-          const hrs = Math.floor(stopwatchSeconds / 3600);
-          const mins = Math.floor((stopwatchSeconds % 3600) / 60);
-          const secs = stopwatchSeconds % 60;
-          stopwatchDisplay.textContent =
-            `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+          const h = Math.floor(stopwatchSeconds / 3600),
+            m = Math.floor((stopwatchSeconds % 3600) / 60),
+            s = stopwatchSeconds % 60;
+          stopwatchDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }
 
         function countdownTick() {
-          if (countdownSeconds <= 0) {
-            clearInterval(countdownInterval);
+          if (countdownSeconds <= 0) { clearInterval(countdownInterval);
             countdownInterval = null;
             playNotificationSound();
-            alert('⏰ Countdown finished!');
-            return;
-          }
+            alert('⏰ Countdown finished!'); return; }
           countdownSeconds--;
-          const mins = Math.floor(countdownSeconds / 60);
-          const secs = countdownSeconds % 60;
-          countdownDisplay.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+          const m = Math.floor(countdownSeconds / 60),
+            s = countdownSeconds % 60;
+          countdownDisplay.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }
 
         function setCountdownFromInputs() {
-          const min = parseInt(countdownMin.value) || 0;
-          const sec = parseInt(countdownSec.value) || 0;
+          const min = parseInt(countdownMin.value) || 0,
+            sec = parseInt(countdownSec.value) || 0;
           countdownSeconds = min * 60 + sec;
           countdownDisplay.textContent =
             `${String(Math.floor(countdownSeconds/60)).padStart(2,'0')}:${String(countdownSeconds%60).padStart(2,'0')}`;
@@ -2670,8 +3084,7 @@
               permToast.classList.remove('hidden');
               enableNotifBtn.disabled = true;
               enableNotifBtn.textContent = '🚫 Blocked';
-              permDiagnostic.textContent =
-                '⚠️ Notifications blocked. Click lock icon → Site settings → Notifications → Allow.';
+              permDiagnostic.textContent = '⚠️ Notifications blocked. Click lock icon → Site settings → Notifications → Allow.';
               break;
             default:
               permToast.classList.remove('hidden');
@@ -2684,12 +3097,11 @@
 
         // ---------- EVENT DELEGATION ----------
         function setupEventDelegation() {
-          // Task list
           taskList.addEventListener('click', (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
-            const action = target.dataset.action;
-            const id = target.dataset.id;
+            const action = target.dataset.action,
+              id = target.dataset.id;
             if (action === 'toggle-task' || action === 'mark-done') toggleTask(id);
             else if (action === 'delete-task') { if (confirm('Delete?')) deleteTask(id); } else if (action === 'edit-task') {
               const task = tasks.find(t => t.id === id);
@@ -2711,111 +3123,82 @@
             }
           });
 
-          // Todo list
           todoList.addEventListener('click', (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
-            const action = target.dataset.action;
-            const id = target.dataset.id;
-            if (action === 'toggle-todo') toggleTodo(id);
-            else if (action === 'delete-todo') deleteTodo(id);
+            if (target.dataset.action === 'toggle-todo') toggleTodo(target.dataset.id);
+            else if (target.dataset.action === 'delete-todo') deleteTodo(target.dataset.id);
           });
 
-          // Notifications
           notifClose.addEventListener('click', () => { notifBanner.classList.remove('show'); if (window.notifTimeout)
               clearTimeout(window.notifTimeout); });
 
-          // Toggle completed tasks
           toggleCompletedBtn.addEventListener('click', () => {
             showCompleted = !showCompleted;
             toggleCompletedBtn.textContent = showCompleted ? 'Hide completed' : 'Show completed';
             render();
           });
 
-          // Test notification
           testNotifBtn.addEventListener('click', () => {
             const testTask = { id: 'test', title: '🔔 Test Alert', description: 'Test notification!', startTime: '00:00',
               endTime: '00:01' };
             showTaskNotification('end', testTask);
           });
 
-          // Refresh stats
           refreshStatsBtn.addEventListener('click', renderStats);
 
-          // Enable notifications
           enableNotifBtn.addEventListener('click', function() {
             if (!('Notification' in window)) return;
-            if (Notification.permission === 'granted' || Notification.permission === 'denied') {
-              updatePermissionUI();
-              return;
-            }
+            if (Notification.permission === 'granted' || Notification.permission === 'denied') { updatePermissionUI();
+              return; }
             Notification.requestPermission().then(perm => {
               updatePermissionUI();
-              if (perm === 'granted') {
-                try { new Notification('✅ Notifications enabled!', { body: 'You will get desktop alerts.',
-                    icon: '📋' }); } catch (_) {}
-              }
+              if (perm === 'granted') { try { new Notification('✅ Notifications enabled!', { body: 'You will get desktop alerts.',
+                    icon: '📋' }); } catch (_) {} }
             });
           });
           dismissPermBtn.addEventListener('click', () => permToast.classList.add('hidden'));
 
-          // Mood clicks
           document.querySelectorAll('[data-mood]').forEach(el => {
-            el.addEventListener('click', function() {
-              setMood(this.dataset.mood);
-            });
+            el.addEventListener('click', function() { setMood(this.dataset.mood); });
           });
 
-          // ---------- TIMER CONTROLS ----------
-          // Stopwatch
-          stopwatchStart.addEventListener('click', function() {
-            if (stopwatchInterval) return;
-            stopwatchInterval = setInterval(stopwatchTick, 1000);
-          });
-          stopwatchPause.addEventListener('click', function() {
-            clearInterval(stopwatchInterval);
-            stopwatchInterval = null;
-          });
-          stopwatchReset.addEventListener('click', function() {
-            clearInterval(stopwatchInterval);
+          // Timer
+          stopwatchStart.addEventListener('click', function() { if (stopwatchInterval) return;
+            stopwatchInterval = setInterval(stopwatchTick, 1000); });
+          stopwatchPause.addEventListener('click', function() { clearInterval(stopwatchInterval);
+            stopwatchInterval = null; });
+          stopwatchReset.addEventListener('click', function() { clearInterval(stopwatchInterval);
             stopwatchInterval = null;
             stopwatchSeconds = 0;
-            stopwatchDisplay.textContent = '00:00:00';
-          });
+            stopwatchDisplay.textContent = '00:00:00'; });
 
-          // Countdown
           countdownMin.addEventListener('change', setCountdownFromInputs);
           countdownSec.addEventListener('change', setCountdownFromInputs);
-
           countdownStart.addEventListener('click', function() {
             if (countdownInterval) return;
-            if (countdownSeconds <= 0) {
-              setCountdownFromInputs();
-              if (countdownSeconds <= 0) {
-                alert('Please set a time greater than 0.');
-                return;
-              }
-            }
+            if (countdownSeconds <= 0) { setCountdownFromInputs(); if (countdownSeconds <= 0) { alert('Set a time >0.');
+                return; } }
             countdownInterval = setInterval(countdownTick, 1000);
           });
-          countdownPause.addEventListener('click', function() {
-            clearInterval(countdownInterval);
+          countdownPause.addEventListener('click', function() { clearInterval(countdownInterval);
+            countdownInterval = null; });
+          countdownReset.addEventListener('click', function() { clearInterval(countdownInterval);
             countdownInterval = null;
-          });
-          countdownReset.addEventListener('click', function() {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-            setCountdownFromInputs();
-          });
-
-          // Set initial countdown display
+            setCountdownFromInputs(); });
           setCountdownFromInputs();
 
-          // ---------- GAME OVERLAY CLOSE ----------
           closeGameBtn.addEventListener('click', function() {
-            if (monkeyGameLoop) cancelAnimationFrame(monkeyGameLoop);
+            if (petWorld.animationId) cancelAnimationFrame(petWorld.animationId);
+            if (monkeyWorld.animationId) cancelAnimationFrame(monkeyWorld.animationId);
             gameOverlay.classList.remove('show');
           });
+
+          // Daily bonus buttons
+          claimGiftBtn.addEventListener('click', function() { claimDailyBonus('gift'); });
+          claimFocusBtn.addEventListener('click', function() { claimDailyBonus('focus'); });
+          claimQuickTaskBtn.addEventListener('click', function() { claimDailyBonus('quickTask'); });
+          claimAllBonusesBtn.addEventListener('click', claimAllBonuses);
         }
 
         // ---------- TABS ----------
@@ -2831,9 +3214,7 @@
 
         function setupTabs() {
           tabBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-              switchTab(this.dataset.tab);
-            });
+            btn.addEventListener('click', function() { switchTab(this.dataset.tab); });
           });
         }
 
@@ -2854,8 +3235,8 @@
             addTask(title, desc, repeat, days, startTime, endTime);
             this.reset();
             const now = new Date();
-            const h = now.getHours();
-            const m = now.getMinutes();
+            const h = now.getHours(),
+              m = now.getMinutes();
             const start = new Date(now);
             start.setHours(h, m + 1, 0, 0);
             const end = new Date(start);
@@ -2886,12 +3267,10 @@
 
           if (tasks.length === 0 && todos.length === 0) {
             const now = new Date();
-            const h = now.getHours();
-            const m = now.getMinutes();
-            const startH = (h + 1) % 24;
-            const endH = (h + 2) % 24;
-            const start = `${String(startH).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-            const end = `${String(endH).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+            const h = now.getHours(),
+              m = now.getMinutes();
+            const start = `${String((h+1)%24).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+            const end = `${String((h+2)%24).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
             addTask('Sample daily task', 'This task repeats daily', 'daily', [], start, end);
             addTodo('Sample todo (Mon-Fri)', [1, 2, 3, 4, 5]);
           }
@@ -2904,11 +3283,9 @@
           startReminderChecker();
 
           document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-              resetDailyIfNeeded();
+            if (!document.hidden) { resetDailyIfNeeded();
               render();
-              checkReminders();
-            }
+              checkReminders(); }
           });
 
           setInterval(() => {
@@ -2917,13 +3294,11 @@
           }, 60000);
 
           window.addEventListener('storage', (e) => {
-            if (e.key.startsWith('smart_')) {
-              loadState();
-              render();
-            }
+            if (e.key.startsWith('smart_')) { loadState();
+              render(); }
           });
 
-          console.log('📋 Smart Scheduler + Level + Streak + Store Extras loaded!');
+          console.log('📋 Smart Scheduler + Worlds + Daily Bonuses + Fixed Themes loaded!');
         }
 
         document.addEventListener('DOMContentLoaded', init);
