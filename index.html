@@ -6,9 +6,16 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>🚀 Ultra Productivity Suite</title>
+  <title>📋 Smart Scheduler</title>
   <style>
-    /* ---------- CSS Variables (Light theme only) ---------- */
+    /* ---------- RESET & BASE ---------- */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     :root {
       --primary: #6C63FF;
       --primary-dark: #5a52d5;
@@ -26,15 +33,6 @@
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
       --bg-input: #f0f2f5;
     }
-
-    /* ---------- Reset & Base ---------- */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
     body {
       font-family: var(--font);
       background: var(--bg);
@@ -51,7 +49,7 @@
       margin: 0 auto;
     }
 
-    /* ---------- Header ---------- */
+    /* ---------- HEADER ---------- */
     .header {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -84,7 +82,6 @@
       font-size: 14px;
       font-weight: 500;
       color: var(--text-secondary);
-      -webkit-text-fill-color: var(--text-secondary);
     }
     .header-actions {
       display: flex;
@@ -159,7 +156,7 @@
       font-size: 12px;
     }
 
-    /* ---------- Tabs ---------- */
+    /* ---------- TABS ---------- */
     .tabs {
       display: flex;
       gap: 6px;
@@ -195,7 +192,7 @@
       display: block;
     }
 
-    /* ---------- Cards ---------- */
+    /* ---------- CARDS ---------- */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -227,7 +224,7 @@
       color: var(--text-secondary);
     }
 
-    /* ---------- Forms (reusable) ---------- */
+    /* ---------- FORMS ---------- */
     .form-inline {
       background: var(--bg-input);
       padding: 14px 16px;
@@ -286,7 +283,7 @@
       border-color: var(--primary);
     }
 
-    /* ---------- Items (Task, Todo, Habit) ---------- */
+    /* ---------- ITEMS (Task & Todo) ---------- */
     .item {
       display: flex;
       align-items: flex-start;
@@ -412,7 +409,7 @@
       border-radius: 10px;
     }
 
-    /* ---------- Dashboard ---------- */
+    /* ---------- DASHBOARD ---------- */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -449,119 +446,54 @@
       font-size: 16px;
       margin: 0 auto 8px;
     }
-    .dash-card .habit-streak {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--primary);
-    }
 
-    /* ---------- Focus Overlay ---------- */
-    .focus-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
+    /* ---------- STATS ---------- */
+    .stats-table {
       width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 10000;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      color: white;
-      font-size: 4rem;
-      font-weight: 700;
+      border-collapse: collapse;
+      margin-top: 10px;
     }
-    .focus-overlay.show {
-      display: flex;
+    .stats-table th,
+    .stats-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
     }
-    .focus-overlay .timer-display {
-      font-size: 6rem;
-      font-family: monospace;
+    .stats-table th {
+      background: var(--bg);
+      font-weight: 600;
+      color: var(--text-secondary);
     }
-    .focus-overlay .controls {
-      margin-top: 30px;
-      display: flex;
-      gap: 20px;
-    }
-    .focus-overlay .controls .btn {
-      font-size: 1.5rem;
-      padding: 12px 30px;
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-    }
-    .focus-overlay .controls .btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-    .focus-overlay .close-focus {
-      position: absolute;
-      top: 30px;
-      right: 40px;
-      font-size: 2rem;
-      cursor: pointer;
-      color: rgba(255, 255, 255, 0.6);
-      background: none;
-      border: none;
-    }
-
-    /* ---------- Confetti ---------- */
-    .confetti-container {
-      position: fixed;
-      top: 0;
-      left: 0;
+    .stats-table .bar-container {
       width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 99999;
+      height: 20px;
+      background: var(--bg);
+      border-radius: 10px;
       overflow: hidden;
     }
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background: var(--secondary);
-      animation: confettiFall linear forwards;
-    }
-    @keyframes confettiFall {
-      0% {
-        transform: translateY(-10vh) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(720deg);
-        opacity: 0;
-      }
-    }
-
-    /* ---------- Modal ---------- */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+    .stats-table .bar-fill {
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
+      border-radius: 10px;
+      transition: width 0.5s ease;
     }
-    .modal.show {
-      display: flex;
+    .stats-table .completed-badge {
+      background: #dcfce7;
+      color: #16a34a;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
     }
-    .modal-content {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 30px;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: var(--shadow);
-      max-height: 80vh;
-      overflow-y: auto;
+    .stats-table .pending-badge {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
     }
 
-    /* ---------- Notification Banner ---------- */
+    /* ---------- NOTIFICATION BANNER ---------- */
     .notification-banner {
       display: none !important;
       position: fixed !important;
@@ -578,7 +510,6 @@
       border-left: 6px solid var(--secondary) !important;
       animation: slideDown 0.4s ease !important;
       border: 3px solid #FF6584 !important;
-      box-shadow: 0 0 30px rgba(255, 101, 132, 0.4) !important;
     }
     .notification-banner.show {
       display: block !important;
@@ -633,7 +564,7 @@
       right: 16px;
     }
 
-    /* ---------- Permission Toast ---------- */
+    /* ---------- PERMISSION TOAST ---------- */
     .perm-toast {
       background: var(--card-bg);
       border-radius: var(--radius-sm);
@@ -661,91 +592,7 @@
       margin-top: 4px;
     }
 
-    /* ---------- Stats Table ---------- */
-    .stats-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    .stats-table th,
-    .stats-table td {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-    }
-    .stats-table th {
-      background: var(--bg);
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-    .stats-table .bar-container {
-      width: 100%;
-      height: 20px;
-      background: var(--bg);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .stats-table .bar-fill {
-      height: 100%;
-      border-radius: 10px;
-      transition: width 0.5s ease;
-    }
-    .stats-table .completed-badge {
-      background: #dcfce7;
-      color: #16a34a;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .stats-table .pending-badge {
-      background: #fee2e2;
-      color: #dc2626;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    /* ---------- Timer ---------- */
-    .timer-display {
-      font-size: 3rem;
-      font-family: monospace;
-      font-weight: 700;
-    }
-    .timer-controls {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* ---------- Utility ---------- */
-    .hidden {
-      display: none !important;
-    }
-    .fade-in {
-      animation: fadeIn 0.25s ease;
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .mt-8 {
-      margin-top: 8px;
-    }
-    .text-center {
-      text-align: center;
-    }
-
-    /* ---------- Responsive ---------- */
+    /* ---------- RESPONSIVE ---------- */
     @media (max-width: 600px) {
       body {
         padding: 12px;
@@ -772,15 +619,9 @@
         width: 100%;
         justify-content: flex-end;
       }
-      .focus-overlay .timer-display {
-        font-size: 4rem;
-      }
       .tabs .tab-btn {
         font-size: 13px;
         padding: 6px 14px;
-      }
-      .timer-display {
-        font-size: 2.2rem;
       }
     }
   </style>
@@ -790,13 +631,11 @@
     <!-- ========== HEADER ========== -->
     <header class="header">
       <div class="header-left">
-        <h1>🚀 Productivity Suite</h1>
+        <h1>📋 Smart Scheduler</h1>
         <span class="date-badge" id="currentDate"></span>
       </div>
       <div class="header-actions">
         <div class="stats">
-          <span>🏆 <span id="pointsDisplay">0</span> XP</span>
-          <span>📈 Lv.<span id="levelDisplay">1</span></span>
           <span>📌 <span id="taskCount">0</span></span>
           <span>✅ <span id="doneCount">0</span></span>
         </div>
@@ -830,11 +669,7 @@
       <button class="tab-btn active" data-tab="dashboard">🏠 Dashboard</button>
       <button class="tab-btn" data-tab="schedule">📅 Schedule</button>
       <button class="tab-btn" data-tab="todos">✅ Todos</button>
-      <button class="tab-btn" data-tab="habits">🔥 Habits</button>
-      <button class="tab-btn" data-tab="focus">🧘 Focus</button>
-      <button class="tab-btn" data-tab="journal">📔 Journal</button>
       <button class="tab-btn" data-tab="stats">📊 Stats</button>
-      <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
     </div>
 
     <!-- ========== TAB: DASHBOARD ========== -->
@@ -853,28 +688,18 @@
                 <span id="dashTasksDone">0</span> / <span id="dashTasksTotal">0</span> tasks done
               </p>
               <div style="margin-top:8px;text-align:center;">
-                <span id="dashTodosDone">0</span> todos done · <span id="dashHabitsDone">0</span> habits checked
+                <span id="dashTodosDone">0</span> todos done
               </div>
             </div>
             <div class="dash-card">
               <h3>💬 Daily Quote</h3>
               <p id="dailyQuote" style="font-style:italic;font-size:16px;">Loading...</p>
             </div>
-            <div class="dash-card">
-              <h3>🔥 Habit Streaks</h3>
-              <div id="dashStreaks">No habits yet.</div>
-            </div>
           </div>
           <div>
             <div class="dash-card">
               <h3>⏰ Next Task</h3>
               <div id="dashNextTask">No upcoming tasks.</div>
-            </div>
-            <div class="dash-card">
-              <h3>🎯 Today's Challenge</h3>
-              <p id="dashChallenge">Complete 5 tasks today!</p>
-              <progress id="challengeProgress" value="0" max="5" style="width:100%;height:20px;"></progress>
-              <span id="challengeCount">0 / 5</span>
             </div>
             <div class="dash-card">
               <h3>😊 Mood Check</h3>
@@ -951,102 +776,6 @@
       </div>
     </div>
 
-    <!-- ========== TAB: HABITS ========== -->
-    <div class="tab-content" id="tab-habits">
-      <div class="card">
-        <div class="card-header">
-          <h2>🔥 Habits <span class="badge" id="habitBadge">0</span></h2>
-        </div>
-        <form class="form-inline" id="habitForm">
-          <input type="text" id="habitInput" placeholder="New habit (e.g. 'Exercise')" required />
-          <button type="submit" class="btn btn-primary">➕ Add Habit</button>
-        </form>
-        <div id="habitList" class="scroll-area"></div>
-      </div>
-    </div>
-
-    <!-- ========== TAB: FOCUS ========== -->
-    <div class="tab-content" id="tab-focus">
-      <div class="card">
-        <div class="card-header">
-          <h2>🧘 Focus Mode</h2>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">
-          <div style="background:var(--bg-input);padding:20px;border-radius:var(--radius-sm);flex:1;min-width:200px;text-align:center;">
-            <h3>🍅 Pomodoro</h3>
-            <div class="timer-display" id="pomodoroDisplay" style="font-size:3rem;">25:00</div>
-            <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;">
-              <button class="btn btn-primary" id="pomodoroStart">Start</button>
-              <button class="btn btn-outline" id="pomodoroPause">Pause</button>
-              <button class="btn btn-outline" id="pomodoroReset">Reset</button>
-            </div>
-            <p style="margin-top:8px;font-size:14px;color:var(--text-muted);" id="pomodoroStatus">Ready</p>
-          </div>
-          <div style="background:var(--bg-input);padding:20px;border-radius:var(--radius-sm);flex:1;min-width:200px;text-align:center;">
-            <h3>🎵 Ambient</h3>
-            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
-              <button class="btn btn-outline" data-sound="rain">🌧️ Rain</button>
-              <button class="btn btn-outline" data-sound="forest">🌲 Forest</button>
-              <button class="btn btn-outline" data-sound="waves">🌊 Waves</button>
-              <button class="btn btn-outline" data-sound="off">🔇 Off</button>
-            </div>
-            <p id="ambientStatus" style="margin-top:8px;font-size:14px;color:var(--text-muted);">No sound playing</p>
-          </div>
-          <div style="background:var(--bg-input);padding:20px;border-radius:var(--radius-sm);flex:1;min-width:200px;text-align:center;">
-            <h3>🧘 Full Screen Focus</h3>
-            <button class="btn btn-primary" id="focusModeBtn" style="font-size:1.2rem;padding:12px 30px;">Enter Focus</button>
-            <p style="margin-top:8px;font-size:14px;color:var(--text-muted);">Blocks distractions</p>
-          </div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:20px;margin-top:20px;justify-content:center;">
-          <div style="background:var(--bg-input);padding:20px;border-radius:var(--radius-sm);flex:1;min-width:200px;text-align:center;">
-            <h3>⏱️ Stopwatch</h3>
-            <div class="timer-display" id="stopwatchDisplay">00:00:00</div>
-            <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;">
-              <button class="btn btn-primary" id="stopwatchStart">Start</button>
-              <button class="btn btn-outline" id="stopwatchPause">Pause</button>
-              <button class="btn btn-outline" id="stopwatchReset">Reset</button>
-            </div>
-          </div>
-          <div style="background:var(--bg-input);padding:20px;border-radius:var(--radius-sm);flex:1;min-width:200px;text-align:center;">
-            <h3>⏳ Countdown</h3>
-            <div class="timer-display" id="countdownDisplay">00:00</div>
-            <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap;">
-              <input type="number" id="countdownMin" value="0" min="0" max="99" style="width:60px;padding:6px;border:2px solid var(--border);border-radius:var(--radius-sm);text-align:center;" />
-              <span>:</span>
-              <input type="number" id="countdownSec" value="30" min="0" max="59" style="width:60px;padding:6px;border:2px solid var(--border);border-radius:var(--radius-sm);text-align:center;" />
-              <button class="btn btn-primary" id="countdownStart">Start</button>
-              <button class="btn btn-outline" id="countdownPause">Pause</button>
-              <button class="btn btn-outline" id="countdownReset">Reset</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== TAB: JOURNAL ========== -->
-    <div class="tab-content" id="tab-journal">
-      <div class="card">
-        <div class="card-header">
-          <h2>📔 Journal</h2>
-        </div>
-        <form class="form-inline" id="journalForm">
-          <textarea id="journalEntry" placeholder="Write your thoughts..." rows="3" style="flex-basis:100%;"></textarea>
-          <div style="display:flex;gap:10px;width:100%;flex-wrap:wrap;">
-            <select id="journalMood" style="flex:1;min-width:100px;">
-              <option value="😊">😊 Happy</option>
-              <option value="😐">😐 Neutral</option>
-              <option value="😞">😞 Sad</option>
-              <option value="😡">😡 Angry</option>
-              <option value="🤩">🤩 Excited</option>
-            </select>
-            <button type="submit" class="btn btn-primary">📝 Save Entry</button>
-          </div>
-        </form>
-        <div id="journalList" class="scroll-area"></div>
-      </div>
-    </div>
-
     <!-- ========== TAB: STATS ========== -->
     <div class="tab-content" id="tab-stats">
       <div class="card">
@@ -1058,61 +787,6 @@
       </div>
     </div>
 
-    <!-- ========== TAB: SETTINGS ========== -->
-    <div class="tab-content" id="tab-settings">
-      <div class="card">
-        <div class="card-header">
-          <h2>⚙️ Settings</h2>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:20px;">
-          <div>
-            <h3>🔊 Sound Effects</h3>
-            <label><input type="checkbox" id="soundEnabled" checked /> Enable sounds</label>
-          </div>
-          <div>
-            <h3>💾 Data Management</h3>
-            <button class="btn btn-primary" id="exportDataBtn">📤 Export Data (JSON)</button>
-            <button class="btn btn-outline" id="importDataBtn">📥 Import Data (JSON)</button>
-            <input type="file" id="importFileInput" accept=".json" style="display:none;" />
-          </div>
-          <div>
-            <h3>⚠️ Danger Zone</h3>
-            <button class="btn btn-danger" id="resetAllData">🗑️ Reset All Data</button>
-          </div>
-          <div>
-            <h3>⌨️ Keyboard Shortcuts</h3>
-            <ul style="list-style:none;padding:0;font-size:14px;color:var(--text-secondary);">
-              <li>Ctrl+1 : Dashboard</li>
-              <li>Ctrl+2 : Schedule</li>
-              <li>Ctrl+3 : Todos</li>
-              <li>Ctrl+4 : Habits</li>
-              <li>Ctrl+5 : Focus</li>
-              <li>Ctrl+6 : Journal</li>
-              <li>Ctrl+7 : Stats</li>
-              <li>Ctrl+8 : Settings</li>
-              <li>Ctrl+Enter : Quick add task (from any tab)</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== FOCUS OVERLAY ========== -->
-    <div class="focus-overlay" id="focusOverlay">
-      <button class="close-focus" id="focusClose">✕</button>
-      <div class="timer-display" id="focusTimerDisplay">25:00</div>
-      <div class="controls">
-        <button class="btn" id="focusStart">▶ Start</button>
-        <button class="btn" id="focusPause">⏸ Pause</button>
-        <button class="btn" id="focusReset">⟳ Reset</button>
-        <button class="btn" id="focusModeToggle">🔄 Switch to Countdown</button>
-      </div>
-      <p style="margin-top:20px;font-size:1.2rem;color:rgba(255,255,255,0.6);" id="focusLabel">Pomodoro</p>
-    </div>
-
-    <!-- ========== CONFETTI CONTAINER ========== -->
-    <div class="confetti-container" id="confettiContainer"></div>
-
     <!-- ========== SCRIPT ========== -->
     <script>
       (function() {
@@ -1121,34 +795,13 @@
         // ---------- STATE ----------
         let tasks = [];
         let todos = [];
-        let habits = [];
-        let journal = [];
-        let points = 0;
-        let level = 1;
-        let settings = { soundEnabled: true };
+        let mood = '';
         let showCompleted = false;
         let lastResetDate = '';
+        let settings = { soundEnabled: true };
         let audioCtx = null;
 
-        // Timer states
-        let pomodoroInterval = null;
-        let pomodoroSeconds = 1500;
-        let pomodoroRunning = false;
-        let pomodoroMode = 'work';
-        let stopwatchInterval = null;
-        let stopwatchSeconds = 0;
-        let countdownInterval = null;
-        let countdownSeconds = 0;
-        let countdownTotal = 0;
-        let ambientInterval = null;
-
-        // Focus overlay
-        let focusInterval = null;
-        let focusSeconds = 1500;
-        let focusRunning = false;
-        let focusMode = 'pomodoro';
-
-        // DOM refs
+        // ---------- DOM REFS ----------
         const $ = id => document.getElementById(id);
 
         // Tabs
@@ -1157,17 +810,11 @@
           dashboard: $('tab-dashboard'),
           schedule: $('tab-schedule'),
           todos: $('tab-todos'),
-          habits: $('tab-habits'),
-          focus: $('tab-focus'),
-          journal: $('tab-journal'),
-          stats: $('tab-stats'),
-          settings: $('tab-settings')
+          stats: $('tab-stats')
         };
 
         // Header
         const currentDateEl = $('currentDate');
-        const pointsDisplay = $('pointsDisplay');
-        const levelDisplay = $('levelDisplay');
         const taskCountEl = $('taskCount');
         const doneCountEl = $('doneCount');
 
@@ -1176,14 +823,9 @@
         const dashTasksDone = $('dashTasksDone');
         const dashTasksTotal = $('dashTasksTotal');
         const dashTodosDone = $('dashTodosDone');
-        const dashHabitsDone = $('dashHabitsDone');
         const dashDate = $('dashDate');
         const dailyQuote = $('dailyQuote');
-        const dashStreaks = $('dashStreaks');
         const dashNextTask = $('dashNextTask');
-        const dashChallenge = $('dashChallenge');
-        const challengeProgress = $('challengeProgress');
-        const challengeCount = $('challengeCount');
         const moodToday = $('moodToday');
 
         // Schedule
@@ -1205,56 +847,9 @@
         const todoDaysCheckboxes = document.querySelectorAll('#todoDaysCheckboxes input[type="checkbox"]');
         const todoBadge = $('todoBadge');
 
-        // Habits
-        const habitList = $('habitList');
-        const habitForm = $('habitForm');
-        const habitInput = $('habitInput');
-        const habitBadge = $('habitBadge');
-
-        // Focus
-        const pomodoroDisplay = $('pomodoroDisplay');
-        const pomodoroStart = $('pomodoroStart');
-        const pomodoroPause = $('pomodoroPause');
-        const pomodoroReset = $('pomodoroReset');
-        const pomodoroStatus = $('pomodoroStatus');
-        const stopwatchDisplay = $('stopwatchDisplay');
-        const stopwatchStart = $('stopwatchStart');
-        const stopwatchPause = $('stopwatchPause');
-        const stopwatchReset = $('stopwatchReset');
-        const countdownDisplay = $('countdownDisplay');
-        const countdownMin = $('countdownMin');
-        const countdownSec = $('countdownSec');
-        const countdownStart = $('countdownStart');
-        const countdownPause = $('countdownPause');
-        const countdownReset = $('countdownReset');
-        const focusOverlay = $('focusOverlay');
-        const focusTimerDisplay = $('focusTimerDisplay');
-        const focusStart = $('focusStart');
-        const focusPause = $('focusPause');
-        const focusReset = $('focusReset');
-        const focusModeToggle = $('focusModeToggle');
-        const focusLabel = $('focusLabel');
-        const focusClose = $('focusClose');
-        const focusModeBtn = $('focusModeBtn');
-        const ambientStatus = $('ambientStatus');
-        const soundBtns = document.querySelectorAll('[data-sound]');
-
-        // Journal
-        const journalList = $('journalList');
-        const journalForm = $('journalForm');
-        const journalEntry = $('journalEntry');
-        const journalMood = $('journalMood');
-
         // Stats
         const statsContent = $('statsContent');
         const refreshStatsBtn = $('refreshStatsBtn');
-
-        // Settings
-        const soundEnabledCheck = $('soundEnabled');
-        const exportDataBtn = $('exportDataBtn');
-        const importDataBtn = $('importDataBtn');
-        const importFileInput = $('importFileInput');
-        const resetAllDataBtn = $('resetAllData');
 
         // Notifications
         const notifBanner = $('notifBanner');
@@ -1269,7 +864,7 @@
         const permDiagnostic = $('permDiagnostic');
         const testNotifBtn = $('testNotifBtn');
 
-        // ========== HELPERS ==========
+        // ---------- HELPERS ----------
         function generateId() { return Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7); }
 
         function todayStr() { return new Date().toISOString().slice(0, 10); }
@@ -1327,17 +922,14 @@
           return div.innerHTML;
         }
 
-        // ========== STORAGE ==========
+        // ---------- STORAGE ----------
         function saveState() {
           try {
             localStorage.setItem('smart_tasks', JSON.stringify(tasks));
             localStorage.setItem('smart_todos', JSON.stringify(todos));
-            localStorage.setItem('smart_habits', JSON.stringify(habits));
-            localStorage.setItem('smart_journal', JSON.stringify(journal));
-            localStorage.setItem('smart_points', JSON.stringify(points));
-            localStorage.setItem('smart_level', JSON.stringify(level));
-            localStorage.setItem('smart_settings', JSON.stringify(settings));
+            localStorage.setItem('smart_mood', mood);
             localStorage.setItem('smart_lastReset', lastResetDate);
+            localStorage.setItem('smart_settings', JSON.stringify(settings));
           } catch (_) {}
         }
 
@@ -1345,34 +937,23 @@
           try {
             const t = localStorage.getItem('smart_tasks');
             const d = localStorage.getItem('smart_todos');
-            const h = localStorage.getItem('smart_habits');
-            const j = localStorage.getItem('smart_journal');
-            const p = localStorage.getItem('smart_points');
-            const l = localStorage.getItem('smart_level');
-            const s = localStorage.getItem('smart_settings');
+            const m = localStorage.getItem('smart_mood');
             const r = localStorage.getItem('smart_lastReset');
+            const s = localStorage.getItem('smart_settings');
             if (t) tasks = JSON.parse(t);
             if (d) todos = JSON.parse(d);
-            if (h) habits = JSON.parse(h);
-            if (j) journal = JSON.parse(j);
-            if (p) points = parseInt(p, 10) || 0;
-            if (l) level = parseInt(l, 10) || 1;
-            if (s) settings = JSON.parse(s);
+            if (m) mood = m;
             if (r) lastResetDate = r;
+            if (s) settings = JSON.parse(s);
             tasks.forEach(task => {
               if (!task.completedDates) task.completedDates = [];
               if (task.startNotifiedToday === undefined) task.startNotifiedToday = false;
               if (task.endNotifiedToday === undefined) task.endNotifiedToday = false;
             });
-            habits.forEach(habit => {
-              if (!habit.streak) habit.streak = 0;
-              if (!habit.lastDate) habit.lastDate = '';
-              if (!habit.doneToday) habit.doneToday = false;
-            });
           } catch (_) {}
         }
 
-        // ========== RESET DAILY ==========
+        // ---------- RESET DAILY ----------
         function resetDailyIfNeeded() {
           const today = todayStr();
           if (lastResetDate !== today) {
@@ -1382,33 +963,21 @@
               t.endNotifiedToday = false;
             });
             todos.forEach(t => t.completedToday = false);
-            habits.forEach(h => {
-              const yesterday = new Date();
-              yesterday.setDate(yesterday.getDate() - 1);
-              const yStr = yesterday.toISOString().slice(0, 10);
-              if (h.lastDate !== yStr) {
-                h.streak = 0;
-              }
-              h.doneToday = false;
-            });
             lastResetDate = today;
             saveState();
             render();
           }
         }
 
-        // ========== RENDER ==========
+        // ---------- RENDER ----------
         function render() {
           resetDailyIfNeeded();
           renderTasks();
           renderTodos();
-          renderHabits();
-          renderJournal();
           renderStats();
           updateDashboard();
           updateHeader();
           updateBadges();
-          updatePoints();
           saveState();
         }
 
@@ -1481,56 +1050,6 @@
           todoList.innerHTML = html;
         }
 
-        function renderHabits() {
-          if (habits.length === 0) {
-            habitList.innerHTML = `<div class="empty-state"><span class="icon">🔥</span><p>No habits yet. Add one above!</p></div>`;
-            return;
-          }
-          const today = todayStr();
-          let html = '';
-          habits.forEach(habit => {
-            const done = habit.doneToday || (habit.lastDate === today && habit.doneToday !== false);
-            const streakDisplay = habit.streak || 0;
-            html += `
-              <div class="item fade-in" data-id="${habit.id}">
-                <div class="check ${done ? 'checked' : ''}" data-action="toggle-habit" data-id="${habit.id}"></div>
-                <div class="info">
-                  <div class="title">${escapeHtml(habit.text)}</div>
-                  <div class="meta"><span class="tag">🔥 Streak: ${streakDisplay}</span></div>
-                </div>
-                <div class="actions">
-                  <button class="btn btn-sm btn-danger" data-action="delete-habit" data-id="${habit.id}">✕</button>
-                </div>
-              </div>
-            `;
-          });
-          habitList.innerHTML = html;
-          habitBadge.textContent = habits.length;
-        }
-
-        function renderJournal() {
-          if (journal.length === 0) {
-            journalList.innerHTML = `<div class="empty-state"><span class="icon">📔</span><p>No entries yet. Write your first!</p></div>`;
-            return;
-          }
-          const sorted = [...journal].reverse();
-          let html = '';
-          sorted.forEach(entry => {
-            html += `
-              <div class="item" style="border-left-color:var(--secondary);">
-                <div class="info">
-                  <div class="title">${escapeHtml(entry.mood)} ${new Date(entry.date).toLocaleString()}</div>
-                  <div class="desc">${escapeHtml(entry.text)}</div>
-                </div>
-                <div class="actions">
-                  <button class="btn btn-sm btn-danger" data-action="delete-journal" data-id="${entry.id}">✕</button>
-                </div>
-              </div>
-            `;
-          });
-          journalList.innerHTML = html;
-        }
-
         function renderStats() {
           const today = new Date();
           const currentDay = today.getDay();
@@ -1540,20 +1059,16 @@
           monday.setHours(0, 0, 0, 0);
 
           let html = `<div style="overflow-x:auto;"><table class="stats-table" style="width:100%;border-collapse:collapse;">
-            <thead><tr><th>Day</th><th>Tasks</th><th>Completed</th><th>Habits Done</th><th>Progress</th></tr></thead><tbody>`;
+            <thead><tr><th>Day</th><th>Tasks</th><th>Completed</th><th>Progress</th></tr></thead><tbody>`;
           let totalTasks = 0,
-            totalCompleted = 0,
-            totalHabits = 0,
-            totalHabitsDone = 0;
+            totalCompleted = 0;
           for (let i = 0; i < 7; i++) {
             const d = new Date(monday);
             d.setDate(monday.getDate() + i);
             const dateStr = d.toISOString().slice(0, 10);
             const dayNum = d.getDay();
             let tasksScheduled = 0,
-              tasksDone = 0,
-              habitsScheduled = 0,
-              habitsDone = 0;
+              tasksDone = 0;
 
             tasks.forEach(task => {
               let active = false;
@@ -1569,19 +1084,8 @@
               }
             });
 
-            habits.forEach(habit => {
-              if (habit.lastDate === dateStr) {
-                habitsScheduled++;
-                habitsDone++;
-              } else {
-                habitsScheduled++;
-              }
-            });
-
             totalTasks += tasksScheduled;
             totalCompleted += tasksDone;
-            totalHabits += habitsScheduled;
-            totalHabitsDone += habitsDone;
 
             const taskPercent = tasksScheduled > 0 ? Math.round((tasksDone / tasksScheduled) * 100) : 0;
             const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
@@ -1591,7 +1095,6 @@
                 <td><strong>${dayName}</strong> ${isToday ? '📌' : ''}</td>
                 <td>${tasksScheduled}</td>
                 <td><span class="${tasksDone === tasksScheduled && tasksScheduled > 0 ? 'completed-badge' : 'pending-badge'}">${tasksDone}/${tasksScheduled}</span></td>
-                <td>${habitsDone}/${habitsScheduled}</td>
                 <td>
                   <div class="bar-container" style="width:100%;height:20px;background:var(--bg);border-radius:10px;overflow:hidden;">
                     <div class="bar-fill" style="width:${taskPercent}%;height:100%;background:${taskPercent===100?'#16a34a':taskPercent>50?'#f59e0b':'#dc2626'};border-radius:10px;"></div>
@@ -1607,7 +1110,6 @@
               <td>Total</td>
               <td>${totalTasks}</td>
               <td>${totalCompleted}/${totalTasks}</td>
-              <td>${totalHabitsDone}/${totalHabits}</td>
               <td>
                 <div class="bar-container" style="width:100%;height:20px;background:var(--bg);border-radius:10px;overflow:hidden;">
                   <div class="bar-fill" style="width:${totalPercent}%;height:100%;background:${totalPercent===100?'#16a34a':totalPercent>50?'#f59e0b':'#dc2626'};border-radius:10px;"></div>
@@ -1617,17 +1119,10 @@
             </tr>
           `;
           html += `</tbody></table></div>`;
-
-          let streakHtml = `<div style="margin-top:20px;"><h3>🔥 Habit Streaks</h3><div style="display:flex;flex-wrap:wrap;gap:10px;">`;
-          habits.forEach(h => {
-            streakHtml +=
-              `<span style="background:var(--bg-input);padding:4px 12px;border-radius:20px;">${escapeHtml(h.text)}: ${h.streak} days</span>`;
-          });
-          streakHtml += `</div></div>`;
-          statsContent.innerHTML = html + streakHtml;
+          statsContent.innerHTML = html;
         }
 
-        // ========== DASHBOARD ==========
+        // ---------- DASHBOARD ----------
         function updateDashboard() {
           const today = todayStr();
           dashDate.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
@@ -1650,9 +1145,6 @@
           const doneTodos = todayTodos.filter(t => t.completedToday).length;
           dashTodosDone.textContent = doneTodos;
 
-          const doneHabits = habits.filter(h => h.doneToday || h.lastDate === today).length;
-          dashHabitsDone.textContent = doneHabits;
-
           const quotes = [
             "The secret of getting ahead is getting started. – Mark Twain",
             "Success is not final, failure is not fatal: it is the courage to continue that counts. – Winston Churchill",
@@ -1668,19 +1160,6 @@
           const dayIndex = new Date().getDate();
           dailyQuote.textContent = quotes[dayIndex % quotes.length];
 
-          if (habits.length === 0) {
-            dashStreaks.innerHTML = 'No habits yet. Add one!';
-          } else {
-            let sHtml = '';
-            habits.forEach(h => {
-              sHtml += `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);">
-                <span>${escapeHtml(h.text)}</span>
-                <span class="habit-streak">🔥 ${h.streak}</span>
-              </div>`;
-            });
-            dashStreaks.innerHTML = sHtml;
-          }
-
           const upcoming = todayTasks.filter(t => !t.completedToday).sort((a, b) => a.startTime.localeCompare(b.startTime));
           if (upcoming.length > 0) {
             const next = upcoming[0];
@@ -1690,20 +1169,10 @@
             dashNextTask.textContent = 'All tasks done! 🎉';
           }
 
-          const challengeGoal = 5;
-          const challengeDone = Math.min(done, challengeGoal);
-          challengeProgress.value = challengeDone;
-          challengeProgress.max = challengeGoal;
-          challengeCount.textContent = `${challengeDone} / ${challengeGoal}`;
-          if (done >= challengeGoal) dashChallenge.textContent = '✅ Challenge completed! Great job!';
-          else dashChallenge.textContent = `🎯 Complete ${challengeGoal - done} more tasks to win today's challenge!`;
-
-          const todayEntry = journal.find(e => e.date.slice(0, 10) === today);
-          if (todayEntry) moodToday.textContent = `Today's mood: ${todayEntry.mood}`;
-          else moodToday.textContent = 'Today\'s mood: —';
+          moodToday.textContent = mood ? `Today's mood: ${mood}` : 'Today\'s mood: —';
         }
 
-        // ========== HEADER ==========
+        // ---------- HEADER ----------
         function updateHeader() {
           const now = new Date();
           currentDateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
@@ -1711,11 +1180,6 @@
           const done = tasks.filter(t => isTaskActiveToday(t) && t.completedToday).length;
           taskCountEl.textContent = total;
           doneCountEl.textContent = done;
-        }
-
-        function updatePoints() {
-          pointsDisplay.textContent = points;
-          levelDisplay.textContent = level;
         }
 
         function updateBadges() {
@@ -1726,7 +1190,7 @@
           todoBadge.textContent = todoPending;
         }
 
-        // ========== SOUND ==========
+        // ---------- SOUND ----------
         function playNotificationSound() {
           if (!settings.soundEnabled) return;
           try {
@@ -1751,25 +1215,7 @@
           } catch (_) {}
         }
 
-        function playClickSound() {
-          if (!settings.soundEnabled) return;
-          try {
-            if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            osc.connect(g);
-            g.connect(audioCtx.destination);
-            osc.frequency.value = 600;
-            osc.type = 'sine';
-            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-            osc.start(audioCtx.currentTime);
-            osc.stop(audioCtx.currentTime + 0.1);
-          } catch (_) {}
-        }
-
-        // ========== NOTIFICATIONS ==========
+        // ---------- NOTIFICATIONS ----------
         function showNotification(type, task) {
           const title = type === 'start' ? `▶️ Started: ${task.title}` : `⏹️ Ended: ${task.title}`;
           const timeRange = `${formatTime(task.startTime)} – ${formatTime(task.endTime)}`;
@@ -1828,7 +1274,7 @@
           playNotificationSound();
         }
 
-        // ========== REMINDER CHECKER ==========
+        // ---------- REMINDER CHECKER ----------
         let reminderInterval = null;
 
         function startReminderChecker() {
@@ -1861,7 +1307,7 @@
           });
         }
 
-        // ========== TASKS CRUD ==========
+        // ---------- TASKS CRUD ----------
         function addTask(title, description, repeat, days, startTime, endTime) {
           const task = {
             id: generateId(),
@@ -1892,12 +1338,6 @@
           task.completedToday = !task.completedToday;
           if (task.completedToday) {
             if (!task.completedDates.includes(today)) task.completedDates.push(today);
-            addPoints(10);
-            const allToday = tasks.filter(t => isTaskActiveToday(t));
-            if (allToday.every(t => t.completedToday)) {
-              launchConfetti();
-            }
-            playClickSound();
           } else {
             task.completedDates = task.completedDates.filter(d => d !== today);
           }
@@ -1925,7 +1365,7 @@
           }
         }
 
-        // ========== TODOS CRUD ==========
+        // ---------- TODOS CRUD ----------
         function addTodo(text, days) {
           const todo = { id: generateId(), text: text.trim(), days: days || [], completedToday: false };
           todos.push(todo);
@@ -1940,10 +1380,6 @@
           const today = getTodayDay();
           if (todo.days.length === 0 || todo.days.includes(today)) {
             todo.completedToday = !todo.completedToday;
-            if (todo.completedToday) {
-              addPoints(5);
-              playClickSound();
-            }
             saveState();
             render();
           }
@@ -1955,539 +1391,14 @@
           render();
         }
 
-        // ========== HABITS CRUD ==========
-        function addHabit(text) {
-          const habit = { id: generateId(), text: text.trim(), streak: 0, lastDate: '', doneToday: false };
-          habits.push(habit);
+        // ---------- MOOD ----------
+        function setMood(emoji) {
+          mood = emoji;
           saveState();
-          render();
-          return habit;
+          updateDashboard();
         }
 
-        function toggleHabit(id) {
-          const habit = habits.find(h => h.id === id);
-          if (!habit) return;
-          const today = todayStr();
-          if (habit.doneToday) {
-            habit.doneToday = false;
-            if (habit.lastDate === today) {
-              habit.streak = Math.max(0, habit.streak - 1);
-              habit.lastDate = '';
-            }
-          } else {
-            habit.doneToday = true;
-            habit.lastDate = today;
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            const yStr = yesterday.toISOString().slice(0, 10);
-            if (habit.lastDate === yStr || habit.streak === 0) {
-              habit.streak += 1;
-            } else {
-              habit.streak = 1;
-            }
-            addPoints(5);
-            playClickSound();
-          }
-          saveState();
-          render();
-        }
-
-        function deleteHabit(id) {
-          habits = habits.filter(h => h.id !== id);
-          saveState();
-          render();
-        }
-
-        // ========== JOURNAL CRUD ==========
-        function addJournalEntry(text, mood) {
-          const entry = { id: generateId(), text: text.trim(), mood: mood || '😐', date: new Date().toISOString() };
-          journal.push(entry);
-          saveState();
-          render();
-          return entry;
-        }
-
-        function deleteJournal(id) {
-          journal = journal.filter(j => j.id !== id);
-          saveState();
-          render();
-        }
-
-        // ========== POINTS & LEVEL ==========
-        function addPoints(amount) {
-          points += amount;
-          const newLevel = Math.floor(points / 100) + 1;
-          if (newLevel > level) {
-            level = newLevel;
-            launchConfetti();
-            alert(`🎉 Level Up! You are now level ${level}!`);
-            playNotificationSound();
-          }
-          saveState();
-          render();
-        }
-
-        // ========== CONFETTI ==========
-        function launchConfetti() {
-          const container = document.getElementById('confettiContainer');
-          const colors = ['#FF6584', '#6C63FF', '#FFC107', '#4CAF50', '#FF5722', '#00BCD4'];
-          for (let i = 0; i < 80; i++) {
-            const el = document.createElement('div');
-            el.className = 'confetti';
-            el.style.left = Math.random() * 100 + '%';
-            el.style.background = colors[Math.floor(Math.random() * colors.length)];
-            el.style.width = (Math.random() * 6 + 4) + 'px';
-            el.style.height = (Math.random() * 6 + 4) + 'px';
-            el.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
-            el.style.animationDelay = (Math.random() * 0.8) + 's';
-            container.appendChild(el);
-            setTimeout(() => el.remove(), 4000);
-          }
-        }
-
-        // ========== TIMER FUNCTIONS ==========
-        function pomodoroTick() {
-          pomodoroSeconds--;
-          const mins = Math.floor(pomodoroSeconds / 60);
-          const secs = pomodoroSeconds % 60;
-          pomodoroDisplay.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-          if (pomodoroSeconds <= 0) {
-            clearInterval(pomodoroInterval);
-            pomodoroRunning = false;
-            playNotificationSound();
-            if (pomodoroMode === 'work') {
-              pomodoroMode = 'break';
-              pomodoroSeconds = 300;
-              pomodoroStatus.textContent = '🍵 Break time!';
-            } else {
-              pomodoroMode = 'work';
-              pomodoroSeconds = 1500;
-              pomodoroStatus.textContent = '💪 Work time!';
-            }
-            pomodoroDisplay.textContent =
-            `${String(Math.floor(pomodoroSeconds/60)).padStart(2,'0')}:${String(pomodoroSeconds%60).padStart(2,'0')}`;
-            pomodoroRunning = false;
-          }
-        }
-
-        function pomodoroStart() {
-          if (pomodoroRunning) return;
-          pomodoroRunning = true;
-          pomodoroInterval = setInterval(pomodoroTick, 1000);
-          pomodoroStatus.textContent = pomodoroMode === 'work' ? '⏳ Working...' : '⏳ Break...';
-        }
-
-        function pomodoroPause() {
-          clearInterval(pomodoroInterval);
-          pomodoroRunning = false;
-          pomodoroStatus.textContent = '⏸️ Paused';
-        }
-
-        function pomodoroReset() {
-          clearInterval(pomodoroInterval);
-          pomodoroRunning = false;
-          pomodoroMode = 'work';
-          pomodoroSeconds = 1500;
-          pomodoroDisplay.textContent = '25:00';
-          pomodoroStatus.textContent = 'Ready';
-        }
-
-        function stopwatchTick() {
-          stopwatchSeconds++;
-          const hrs = Math.floor(stopwatchSeconds / 3600);
-          const mins = Math.floor((stopwatchSeconds % 3600) / 60);
-          const secs = stopwatchSeconds % 60;
-          stopwatchDisplay.textContent =
-            `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-        }
-
-        function countdownTick() {
-          if (countdownSeconds <= 0) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-            playNotificationSound();
-            alert('⏰ Countdown finished!');
-            return;
-          }
-          countdownSeconds--;
-          const mins = Math.floor(countdownSeconds / 60);
-          const secs = countdownSeconds % 60;
-          countdownDisplay.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-        }
-
-        let focusSecondsTotal = 1500;
-
-        function focusTick() {
-          focusSeconds--;
-          if (focusSeconds <= 0) {
-            clearInterval(focusInterval);
-            focusRunning = false;
-            playNotificationSound();
-            alert('⏰ Focus session finished!');
-            focusTimerDisplay.textContent = focusMode === 'pomodoro' ? '25:00' : '00:00';
-            return;
-          }
-          const mins = Math.floor(focusSeconds / 60);
-          const secs = focusSeconds % 60;
-          focusTimerDisplay.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-        }
-
-        function focusStart() {
-          if (focusRunning) return;
-          if (focusSeconds <= 0) {
-            focusSeconds = focusMode === 'pomodoro' ? 1500 : 60;
-          }
-          focusRunning = true;
-          focusInterval = setInterval(focusTick, 1000);
-        }
-
-        function focusPause() {
-          clearInterval(focusInterval);
-          focusRunning = false;
-        }
-
-        function focusReset() {
-          clearInterval(focusInterval);
-          focusRunning = false;
-          focusSeconds = focusMode === 'pomodoro' ? 1500 : 60;
-          focusTimerDisplay.textContent = focusMode === 'pomodoro' ? '25:00' : '01:00';
-        }
-
-        function toggleFocusMode() {
-          if (focusMode === 'pomodoro') {
-            focusMode = 'countdown';
-            focusSeconds = 60;
-            focusLabel.textContent = 'Countdown';
-            focusTimerDisplay.textContent = '01:00';
-            focusModeToggle.textContent = '🔄 Switch to Pomodoro';
-          } else {
-            focusMode = 'pomodoro';
-            focusSeconds = 1500;
-            focusLabel.textContent = 'Pomodoro';
-            focusTimerDisplay.textContent = '25:00';
-            focusModeToggle.textContent = '🔄 Switch to Countdown';
-          }
-          focusReset();
-        }
-
-        function playAmbient(sound) {
-          if (ambientInterval) { clearInterval(ambientInterval);
-            ambientInterval = null; }
-          if (sound === 'off') {
-            ambientStatus.textContent = 'No sound playing';
-            return;
-          }
-          ambientStatus.textContent = `Playing ${sound}...`;
-          try {
-            if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.value = sound === 'rain' ? 200 : (sound === 'forest' ? 300 : 150);
-            osc.type = 'sawtooth';
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            osc.start(audioCtx.currentTime);
-            ambientInterval = setInterval(() => {
-              if (audioCtx) {
-                const freq = sound === 'rain' ? 180 + Math.random() * 40 : (sound === 'forest' ? 280 + Math.random() * 40 :
-                  130 + Math.random() * 40);
-                try { osc.frequency.setValueAtTime(freq, audioCtx.currentTime); } catch (_) {}
-              }
-            }, 500);
-            window._ambientOsc = osc;
-            window._ambientGain = gain;
-          } catch (_) {}
-        }
-
-        function stopAmbient() {
-          if (ambientInterval) { clearInterval(ambientInterval);
-            ambientInterval = null; }
-          if (window._ambientOsc) {
-            try { window._ambientOsc.stop(); } catch (_) {}
-            window._ambientOsc = null;
-          }
-          if (window._ambientGain) {
-            try { window._ambientGain.gain.setValueAtTime(0, audioCtx.currentTime); } catch (_) {}
-            window._ambientGain = null;
-          }
-          ambientStatus.textContent = 'No sound playing';
-        }
-
-        // ========== DATA EXPORT/IMPORT ==========
-        function exportData() {
-          const data = {
-            tasks,
-            todos,
-            habits,
-            journal,
-            points,
-            level,
-            settings,
-            lastResetDate,
-            version: '2.0'
-          };
-          const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `productivity_backup_${todayStr()}.json`;
-          a.click();
-          URL.revokeObjectURL(url);
-        }
-
-        function importData(file) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            try {
-              const data = JSON.parse(e.target.result);
-              if (data.tasks) tasks = data.tasks;
-              if (data.todos) todos = data.todos;
-              if (data.habits) habits = data.habits;
-              if (data.journal) journal = data.journal;
-              if (data.points !== undefined) points = data.points;
-              if (data.level !== undefined) level = data.level;
-              if (data.settings) settings = data.settings;
-              if (data.lastResetDate) lastResetDate = data.lastResetDate;
-              saveState();
-              render();
-              alert('✅ Data imported successfully!');
-            } catch (err) {
-              alert('❌ Invalid file format.');
-            }
-          };
-          reader.readAsText(file);
-        }
-
-        function resetAll() {
-          if (confirm('⚠️ Are you sure you want to delete ALL data? This cannot be undone!')) {
-            if (confirm('Really? ALL tasks, todos, habits, journal, points, everything?')) {
-              tasks = [];
-              todos = [];
-              habits = [];
-              journal = [];
-              points = 0;
-              level = 1;
-              lastResetDate = '';
-              saveState();
-              render();
-              alert('🗑️ All data has been reset.');
-            }
-          }
-        }
-
-        // ========== EVENT DELEGATION ==========
-        function setupEventDelegation() {
-          taskList.addEventListener('click', (e) => {
-            const target = e.target.closest('[data-action]');
-            if (!target) return;
-            const action = target.dataset.action;
-            const id = target.dataset.id;
-            if (action === 'toggle-task' || action === 'mark-done') toggleTask(id);
-            else if (action === 'delete-task') { if (confirm('Delete?')) deleteTask(id); } else if (action === 'edit-task') {
-              const task = tasks.find(t => t.id === id);
-              if (!task) return;
-              const newTitle = prompt('Title:', task.title);
-              if (newTitle === null) return;
-              const newDesc = prompt('Description:', task.description) || '';
-              const newRepeat = prompt('Repeat (none/daily/weekly):', task.repeat) || 'none';
-              let newDays = task.days;
-              if (newRepeat === 'weekly') {
-                const daysInput = prompt('Days (0-6, comma-separated):', task.days.join(','));
-                if (daysInput !== null) newDays = daysInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
-              } else newDays = [];
-              const newStart = prompt('Start time (HH:MM):', task.startTime);
-              if (newStart === null) return;
-              const newEnd = prompt('End time (HH:MM):', task.endTime);
-              if (newEnd === null) return;
-              if (newTitle.trim()) editTask(id, newTitle, newDesc, newRepeat, newDays, newStart, newEnd);
-            }
-          });
-
-          todoList.addEventListener('click', (e) => {
-            const target = e.target.closest('[data-action]');
-            if (!target) return;
-            const action = target.dataset.action;
-            const id = target.dataset.id;
-            if (action === 'toggle-todo') toggleTodo(id);
-            else if (action === 'delete-todo') deleteTodo(id);
-          });
-
-          habitList.addEventListener('click', (e) => {
-            const target = e.target.closest('[data-action]');
-            if (!target) return;
-            const action = target.dataset.action;
-            const id = target.dataset.id;
-            if (action === 'toggle-habit') toggleHabit(id);
-            else if (action === 'delete-habit') { if (confirm('Delete habit?')) deleteHabit(id); }
-          });
-
-          journalList.addEventListener('click', (e) => {
-            const target = e.target.closest('[data-action]');
-            if (!target) return;
-            if (target.dataset.action === 'delete-journal') {
-              if (confirm('Delete entry?')) deleteJournal(target.dataset.id);
-            }
-          });
-
-          notifClose.addEventListener('click', () => { notifBanner.classList.remove('show'); if (window.notifTimeout)
-              clearTimeout(window.notifTimeout); });
-
-          toggleCompletedBtn.addEventListener('click', () => {
-            showCompleted = !showCompleted;
-            toggleCompletedBtn.textContent = showCompleted ? 'Hide completed' : 'Show completed';
-            render();
-          });
-
-          document.getElementById('resetDayBtn')?.addEventListener('click', () => {
-            if (confirm('Reset all completed status for today?')) {
-              tasks.forEach(t => { t.completedToday = false;
-                t.startNotifiedToday = false;
-                t.endNotifiedToday = false; });
-              todos.forEach(t => t.completedToday = false);
-              habits.forEach(h => { h.doneToday = false; });
-              saveState();
-              render();
-            }
-          });
-
-          soundEnabledCheck.addEventListener('change', function() {
-            settings.soundEnabled = this.checked;
-            saveState();
-          });
-
-          testNotifBtn.addEventListener('click', () => {
-            const testTask = { id: 'test', title: '🔔 Test Alert', description: 'Test notification!', startTime: '00:00',
-              endTime: '00:01' };
-            showNotification('end', testTask);
-          });
-
-          focusStart.addEventListener('click', focusStart);
-          focusPause.addEventListener('click', focusPause);
-          focusReset.addEventListener('click', focusReset);
-          focusModeToggle.addEventListener('click', toggleFocusMode);
-          focusClose.addEventListener('click', () => {
-            focusOverlay.classList.remove('show');
-            clearInterval(focusInterval);
-            focusRunning = false;
-          });
-          focusModeBtn.addEventListener('click', () => {
-            focusOverlay.classList.add('show');
-            focusReset();
-          });
-
-          pomodoroStart.addEventListener('click', pomodoroStart);
-          pomodoroPause.addEventListener('click', pomodoroPause);
-          pomodoroReset.addEventListener('click', pomodoroReset);
-
-          stopwatchStart.addEventListener('click', function() {
-            if (stopwatchInterval) return;
-            stopwatchInterval = setInterval(stopwatchTick, 1000);
-          });
-          stopwatchPause.addEventListener('click', function() { clearInterval(stopwatchInterval);
-            stopwatchInterval = null; });
-          stopwatchReset.addEventListener('click', function() { clearInterval(stopwatchInterval);
-            stopwatchInterval = null;
-            stopwatchSeconds = 0;
-            stopwatchDisplay.textContent = '00:00:00'; });
-
-          function setCountdownFromInputs() {
-            const min = parseInt(countdownMin.value) || 0;
-            const sec = parseInt(countdownSec.value) || 0;
-            countdownTotal = min * 60 + sec;
-            countdownSeconds = countdownTotal;
-            countdownDisplay.textContent = `${String(Math.floor(countdownSeconds/60)).padStart(2,'0')}:${String(countdownSeconds%60).padStart(2,'0')}`;
-          }
-          countdownMin.addEventListener('change', setCountdownFromInputs);
-          countdownSec.addEventListener('change', setCountdownFromInputs);
-          countdownStart.addEventListener('click', function() {
-            if (countdownInterval) return;
-            if (countdownSeconds <= 0) { setCountdownFromInputs(); if (countdownSeconds <= 0) { alert('Set a time >0.');
-                return; } }
-            countdownInterval = setInterval(countdownTick, 1000);
-          });
-          countdownPause.addEventListener('click', function() { clearInterval(countdownInterval);
-            countdownInterval = null; });
-          countdownReset.addEventListener('click', function() { clearInterval(countdownInterval);
-            countdownInterval = null;
-            setCountdownFromInputs(); });
-          setCountdownFromInputs();
-
-          soundBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-              const sound = this.dataset.sound;
-              if (sound === 'off') {
-                stopAmbient();
-              } else {
-                stopAmbient();
-                playAmbient(sound);
-              }
-            });
-          });
-
-          document.querySelectorAll('[data-mood]').forEach(el => {
-            el.addEventListener('click', function() {
-              const mood = this.dataset.mood;
-              const today = todayStr();
-              const existing = journal.find(e => e.date.slice(0, 10) === today);
-              if (existing) {
-                existing.mood = mood;
-              } else {
-                journal.push({ id: generateId(), text: 'Mood check-in', mood: mood, date: new Date().toISOString() });
-              }
-              saveState();
-              render();
-              playClickSound();
-            });
-          });
-
-          exportDataBtn.addEventListener('click', exportData);
-          importDataBtn.addEventListener('click', () => importFileInput.click());
-          importFileInput.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) importData(this.files[0]);
-            this.value = '';
-          });
-
-          resetAllDataBtn.addEventListener('click', resetAll);
-          refreshStatsBtn.addEventListener('click', renderStats);
-
-          enableNotifBtn.addEventListener('click', function() {
-            if (!('Notification' in window)) return;
-            if (Notification.permission === 'granted' || Notification.permission === 'denied') {
-              updatePermissionUI();
-              return;
-            }
-            Notification.requestPermission().then(perm => {
-              updatePermissionUI();
-              if (perm === 'granted') {
-                try { new Notification('✅ Notifications enabled!', { body: 'You will get desktop alerts.',
-                    icon: '📋' }); } catch (_) {}
-              }
-            });
-          });
-          dismissPermBtn.addEventListener('click', () => permToast.classList.add('hidden'));
-
-          document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.key >= '1' && e.key <= '8') {
-              e.preventDefault();
-              const tabMap = ['dashboard', 'schedule', 'todos', 'habits', 'focus', 'journal', 'stats', 'settings'];
-              const idx = parseInt(e.key) - 1;
-              if (idx < tabMap.length) switchTab(tabMap[idx]);
-            }
-            if (e.ctrlKey && e.key === 'Enter') {
-              const activeTab = document.querySelector('.tab-content.active');
-              if (activeTab && activeTab.id === 'tab-schedule') {
-                document.getElementById('taskTitle').focus();
-              } else {
-                switchTab('schedule');
-                setTimeout(() => document.getElementById('taskTitle').focus(), 100);
-              }
-            }
-          });
-        }
-
-        // ========== PERMISSION UI ==========
+        // ---------- PERMISSION UI ----------
         function updatePermissionUI() {
           if (!('Notification' in window)) {
             permToast.innerHTML = '<p>🔔 Notifications not supported.</p>';
@@ -2517,7 +1428,92 @@
           }
         }
 
-        // ========== TABS ==========
+        // ---------- EVENT DELEGATION ----------
+        function setupEventDelegation() {
+          // Task list
+          taskList.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+            const action = target.dataset.action;
+            const id = target.dataset.id;
+            if (action === 'toggle-task' || action === 'mark-done') toggleTask(id);
+            else if (action === 'delete-task') { if (confirm('Delete?')) deleteTask(id); } else if (action === 'edit-task') {
+              const task = tasks.find(t => t.id === id);
+              if (!task) return;
+              const newTitle = prompt('Title:', task.title);
+              if (newTitle === null) return;
+              const newDesc = prompt('Description:', task.description) || '';
+              const newRepeat = prompt('Repeat (none/daily/weekly):', task.repeat) || 'none';
+              let newDays = task.days;
+              if (newRepeat === 'weekly') {
+                const daysInput = prompt('Days (0-6, comma-separated):', task.days.join(','));
+                if (daysInput !== null) newDays = daysInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+              } else newDays = [];
+              const newStart = prompt('Start time (HH:MM):', task.startTime);
+              if (newStart === null) return;
+              const newEnd = prompt('End time (HH:MM):', task.endTime);
+              if (newEnd === null) return;
+              if (newTitle.trim()) editTask(id, newTitle, newDesc, newRepeat, newDays, newStart, newEnd);
+            }
+          });
+
+          // Todo list
+          todoList.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+            const action = target.dataset.action;
+            const id = target.dataset.id;
+            if (action === 'toggle-todo') toggleTodo(id);
+            else if (action === 'delete-todo') deleteTodo(id);
+          });
+
+          // Notifications
+          notifClose.addEventListener('click', () => { notifBanner.classList.remove('show'); if (window.notifTimeout)
+              clearTimeout(window.notifTimeout); });
+
+          // Toggle completed tasks
+          toggleCompletedBtn.addEventListener('click', () => {
+            showCompleted = !showCompleted;
+            toggleCompletedBtn.textContent = showCompleted ? 'Hide completed' : 'Show completed';
+            render();
+          });
+
+          // Test notification
+          testNotifBtn.addEventListener('click', () => {
+            const testTask = { id: 'test', title: '🔔 Test Alert', description: 'Test notification!', startTime: '00:00',
+              endTime: '00:01' };
+            showNotification('end', testTask);
+          });
+
+          // Refresh stats
+          refreshStatsBtn.addEventListener('click', renderStats);
+
+          // Enable notifications
+          enableNotifBtn.addEventListener('click', function() {
+            if (!('Notification' in window)) return;
+            if (Notification.permission === 'granted' || Notification.permission === 'denied') {
+              updatePermissionUI();
+              return;
+            }
+            Notification.requestPermission().then(perm => {
+              updatePermissionUI();
+              if (perm === 'granted') {
+                try { new Notification('✅ Notifications enabled!', { body: 'You will get desktop alerts.',
+                    icon: '📋' }); } catch (_) {}
+              }
+            });
+          });
+          dismissPermBtn.addEventListener('click', () => permToast.classList.add('hidden'));
+
+          // Mood clicks
+          document.querySelectorAll('[data-mood]').forEach(el => {
+            el.addEventListener('click', function() {
+              setMood(this.dataset.mood);
+            });
+          });
+        }
+
+        // ---------- TABS ----------
         function switchTab(tabId) {
           tabBtns.forEach(b => b.classList.remove('active'));
           document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
@@ -2535,7 +1531,7 @@
           });
         }
 
-        // ========== FORMS ==========
+        // ---------- FORMS ----------
         function setupForms() {
           scheduleForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -2575,34 +1571,25 @@
             todoInput.value = '';
             todoInput.focus();
           });
-
-          habitForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const text = habitInput.value.trim();
-            if (!text) return;
-            addHabit(text);
-            habitInput.value = '';
-            habitInput.focus();
-          });
-
-          journalForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const text = journalEntry.value.trim();
-            if (!text) return;
-            const mood = journalMood.value;
-            addJournalEntry(text, mood);
-            journalEntry.value = '';
-            journalMood.value = '😊';
-            journalEntry.focus();
-          });
         }
 
-        // ========== INIT ==========
+        // ---------- INIT ----------
         function init() {
           loadState();
-          soundEnabledCheck.checked = settings.soundEnabled !== false;
-
           resetDailyIfNeeded();
+
+          if (tasks.length === 0 && todos.length === 0) {
+            const now = new Date();
+            const h = now.getHours();
+            const m = now.getMinutes();
+            const startH = (h + 1) % 24;
+            const endH = (h + 2) % 24;
+            const start = `${String(startH).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+            const end = `${String(endH).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+            addTask('Sample daily task', 'This task repeats daily', 'daily', [], start, end);
+            addTodo('Sample todo (Mon-Fri)', [1, 2, 3, 4, 5]);
+          }
+
           render();
           setupForms();
           setupTabs();
@@ -2630,7 +1617,7 @@
             }
           });
 
-          console.log('🚀 Productivity Suite loaded!');
+          console.log('📋 Smart Scheduler loaded!');
         }
 
         document.addEventListener('DOMContentLoaded', init);
