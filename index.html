@@ -719,7 +719,7 @@
         let focusClaimed = false;
         let quickTaskClaimed = false;
 
-        // ----- PET STATE (with defaults) -----
+        // ----- PET STATE (extended) -----
         let pet = {
           hunger: 70,
           happiness: 60,
@@ -730,7 +730,16 @@
           plantsWatered: 0,
           flowersCollected: 0,
           petsFed: 0,
-          choresCompletedToday: false
+          choresCompletedToday: false,
+          // New extended state
+          cityXp: 0,
+          cityRank: 1,
+          fishCaught: 0,
+          starsFound: [],
+          questsCompleted: 0,
+          libraryBooksRead: 0,
+          arcadeWins: 0,
+          // inventory: { apples: 0, fish: [] } // we'll keep simple for now
         };
 
         let stopwatchInterval = null;
@@ -970,9 +979,8 @@
             if (db) dailyBonusClaimed = JSON.parse(db);
             if (wb) weeklyBonusClaimed = JSON.parse(wb);
             if (ws) weekStartDate = ws;
-            // FIX: Ensure pet has all fields
             if (p) {
-              // Merge with defaults
+              // Merge with defaults for new fields
               pet = {
                 hunger: 70,
                 happiness: 60,
@@ -984,10 +992,17 @@
                 flowersCollected: 0,
                 petsFed: 0,
                 choresCompletedToday: false,
+                cityXp: 0,
+                cityRank: 1,
+                fishCaught: 0,
+                starsFound: [],
+                questsCompleted: 0,
+                libraryBooksRead: 0,
+                arcadeWins: 0,
                 ...p
               };
             } else {
-              pet = { hunger: 70, happiness: 60, energy: 80, coins: 15, bananas: 3, toys: 1, plantsWatered: 0, flowersCollected: 0, petsFed: 0, choresCompletedToday: false };
+              pet = { hunger: 70, happiness: 60, energy: 80, coins: 15, bananas: 3, toys: 1, plantsWatered: 0, flowersCollected: 0, petsFed: 0, choresCompletedToday: false, cityXp: 0, cityRank: 1, fishCaught: 0, starsFound: [], questsCompleted: 0, libraryBooksRead: 0, arcadeWins: 0 };
             }
             if (xb) xpBoosterExpiry = JSON.parse(xb);
             if (gc !== null) giftClaimed = JSON.parse(gc);
@@ -1338,7 +1353,7 @@
         function renderStore() {
           const tasksDone = allTasksDoneToday();
           const items = [
-            { id: 'pet', name: '🌆 Pet City', desc: 'Explore a city, do chores, earn XP!', price: 150, type: 'game', locked: !tasksDone },
+            { id: 'pet', name: '🌆 Pet City', desc: 'Explore a city, do chores, quests, fish, find stars!', price: 150, type: 'game', locked: !tasksDone },
             { id: 'monkey', name: '🌴 Monkey World', desc: 'Explore a jungle, collect bananas!', price: 200, type: 'game', locked: !tasksDone },
             { id: 'theme_gold', name: '✨ Gold Theme', desc: 'Gold accent color.', price: 100, type: 'theme', locked: false },
             { id: 'theme_cosmic', name: '🌌 Cosmic Theme', desc: 'Purple & teal cosmic vibe.', price: 120, type: 'theme', locked: false },
@@ -1466,7 +1481,7 @@
           }
         }
 
-        // ========== PET CITY (FIXED) ==========
+        // ========== PET CITY (EXPANDED) ==========
         function initPetCity() {
           const container = gameContent;
           container.innerHTML = '';
@@ -1477,7 +1492,6 @@
           if (unlockedItems.includes('pet_cat')) petEmojis.push('🐱');
           if (unlockedItems.includes('pet_bird')) petEmojis.push('🐦');
 
-          // Create a mutable copy of pet with defaults
           const p = {
             hunger: pet.hunger ?? 70,
             happiness: pet.happiness ?? 60,
@@ -1488,41 +1502,76 @@
             plantsWatered: pet.plantsWatered ?? 0,
             flowersCollected: pet.flowersCollected ?? 0,
             petsFed: pet.petsFed ?? 0,
-            choresCompletedToday: pet.choresCompletedToday ?? false
+            choresCompletedToday: pet.choresCompletedToday ?? false,
+            cityXp: pet.cityXp ?? 0,
+            cityRank: pet.cityRank ?? 1,
+            fishCaught: pet.fishCaught ?? 0,
+            starsFound: pet.starsFound ?? [],
+            questsCompleted: pet.questsCompleted ?? 0,
+            libraryBooksRead: pet.libraryBooksRead ?? 0,
+            arcadeWins: pet.arcadeWins ?? 0
           };
+
+          // City rank thresholds
+          const cityRankThresholds = [0, 20, 50, 100, 200, 350, 500, 750, 1000, 1500];
 
           // Game state
           const state = {
             player: { x: 400, y: 300 },
             pets: petEmojis.map((e, i) => ({ emoji: e, x: 400 - (i+1)*35, y: 310 })),
             npcs: [
-              { x: 150, y: 150, emoji: '🧑', text: '🌱 Water the plants in the garden for XP!', spoken: false },
-              { x: 650, y: 450, emoji: '👩', text: '🍌 Feed your pets at home!', spoken: false },
-              { x: 400, y: 80, emoji: '🧑‍🌾', text: '🌸 Collect all 5 flowers in the park!', spoken: false }
+              { x: 150, y: 150, emoji: '🧑', text: '🌱 Water 3 plants for +3 City XP!', spoken: false, quest: 'water_plants', questProgress: 0 },
+              { x: 650, y: 450, emoji: '👩', text: '🐾 Feed 2 pets for +3 City XP!', spoken: false, quest: 'feed_pets', questProgress: 0 },
+              { x: 400, y: 80, emoji: '🧑‍🌾', text: '🌸 Collect 5 flowers for +3 City XP!', spoken: false, quest: 'collect_flowers', questProgress: 0 },
+              { x: 200, y: 500, emoji: '👴', text: '🎣 Catch 3 fish for +5 City XP!', spoken: false, quest: 'catch_fish', questProgress: 0 },
+              { x: 700, y: 150, emoji: '🧑‍🏫', text: '📚 Read 2 books for +4 City XP!', spoken: false, quest: 'read_books', questProgress: 0 }
             ],
             buildings: [
-              { x: 50, y: 50, w: 100, h: 80, label: '🏠 Home', color: '#DEB887', action: 'home' },
-              { x: 350, y: 30, w: 100, h: 80, label: '🌱 Garden', color: '#90EE90', action: 'garden' },
-              { x: 650, y: 50, w: 100, h: 80, label: '☕ Café', color: '#D2B48C', action: 'cafe' },
-              { x: 50, y: 450, w: 100, h: 80, label: '🌳 Park', color: '#32CD32', action: 'park' },
-              { x: 650, y: 450, w: 100, h: 80, label: '🛒 Shop', color: '#F4A460', action: 'shop' }
+              { x: 50, y: 50, w: 80, h: 70, label: '🏠 Home', color: '#DEB887', action: 'home' },
+              { x: 180, y: 30, w: 80, h: 70, label: '🌱 Garden', color: '#90EE90', action: 'garden' },
+              { x: 310, y: 40, w: 80, h: 70, label: '📚 Library', color: '#8B7D6B', action: 'library' },
+              { x: 440, y: 30, w: 80, h: 70, label: '☕ Café', color: '#D2B48C', action: 'cafe' },
+              { x: 570, y: 40, w: 80, h: 70, label: '🕹️ Arcade', color: '#9370DB', action: 'arcade' },
+              { x: 700, y: 30, w: 80, h: 70, label: '🛒 Shop', color: '#F4A460', action: 'shop' },
+              { x: 50, y: 450, w: 80, h: 70, label: '🌳 Park', color: '#32CD32', action: 'park' }
             ],
             plants: [
-              { x: 380, y: 80, watered: false }, { x: 400, y: 100, watered: false }, { x: 420, y: 80, watered: false }
+              { x: 210, y: 80, watered: false }, { x: 230, y: 100, watered: false }, { x: 250, y: 80, watered: false }
             ],
             flowers: [
               { x: 80, y: 480, collected: false }, { x: 100, y: 500, collected: false },
               { x: 120, y: 480, collected: false }, { x: 90, y: 520, collected: false },
               { x: 110, y: 510, collected: false }
             ],
+            stars: [
+              { x: 60, y: 60, found: false }, { x: 760, y: 60, found: false },
+              { x: 60, y: 540, found: false }, { x: 760, y: 540, found: false },
+              { x: 400, y: 300, found: false }, { x: 200, y: 400, found: false },
+              { x: 600, y: 200, found: false }, { x: 300, y: 200, found: false },
+              { x: 500, y: 500, found: false }, { x: 150, y: 350, found: false }
+            ],
+            pond: { x: 500, y: 400, w: 80, h: 50 }, // Fishing spot
             worldWidth: 800,
             worldHeight: 600,
             keys: {},
             running: true,
             inBuilding: null,
             message: '',
-            messageTimer: 0
+            fishing: false,
+            fishCaught: 0,
+            arcadeMemory: [],
+            arcadeRevealed: [],
+            arcadeMatches: 0,
+            arcadeAttempts: 0,
+            libraryReading: false
           };
+
+          // Mark stars already found
+          state.stars.forEach(star => {
+            if (p.starsFound.includes(star.x + ',' + star.y)) {
+              star.found = true;
+            }
+          });
 
           // HUD
           const hud = document.createElement('div');
@@ -1533,18 +1582,22 @@
             <span>⚡ <span id="gEnergy">${Math.round(p.energy)}</span>%</span>
             <span>🪙 <span id="gCoins">${p.coins}</span></span>
             <span>🍌 <span id="gBananas">${p.bananas}</span></span>
-            <span>🎾 <span id="gToys">${p.toys}</span></span>
+            <span>🎣 <span id="gFish">${p.fishCaught}</span></span>
+            <span>⭐ <span id="gStars">${p.starsFound.length}</span>/10</span>
+            <span>🏙️ Rank <span id="gRank">${p.cityRank}</span></span>
           `;
 
-          // Chores
+          // Chores + quests
           const choreDiv = document.createElement('div');
           choreDiv.style.cssText =
             'width:100%;max-width:800px;background:rgba(0,0,0,0.4);padding:6px 12px;border-radius:0 0 8px 8px;color:#fff;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;';
           choreDiv.innerHTML = `
-            <span>🌱 Watered: <span id="chorePlants">${p.plantsWatered}</span>/3</span>
-            <span>🐾 Pets fed: <span id="chorePets">${p.petsFed}</span>/2</span>
+            <span>🌱 Water: <span id="chorePlants">${p.plantsWatered}</span>/3</span>
+            <span>🐾 Feed: <span id="chorePets">${p.petsFed}</span>/2</span>
             <span>🌸 Flowers: <span id="choreFlowers">${p.flowersCollected}</span>/5</span>
-            <span id="choreStatus" style="color:#FFD700;">${p.choresCompletedToday ? '✅ All done! +15 XP' : 'Complete all chores for +15 XP!'}</span>
+            <span>🎣 Fish: <span id="choreFish">${p.fishCaught}</span></span>
+            <span>📚 Books: <span id="choreBooks">${p.libraryBooksRead}</span></span>
+            <span id="choreStatus" style="color:#FFD700;">${p.choresCompletedToday ? '✅ All chores done! +15 XP' : 'Complete chores for +15 XP!'}</span>
           `;
 
           const canvas = document.createElement('canvas');
@@ -1554,7 +1607,7 @@
 
           const controls = document.createElement('div');
           controls.className = 'game-controls-hint';
-          controls.textContent = 'Arrow keys: move • Space: interact/enter • ESC: exit building';
+          controls.textContent = 'Arrow keys: move • Space: interact • ESC: exit building | Find 10 stars!';
 
           container.appendChild(hud);
           container.appendChild(choreDiv);
@@ -1573,6 +1626,8 @@
             if (e.key === 'Escape') {
               state.inBuilding = null;
               state.message = '';
+              state.fishing = false;
+              state.libraryReading = false;
             }
           }
 
@@ -1596,10 +1651,14 @@
             document.getElementById('gEnergy').textContent = Math.round(p.energy);
             document.getElementById('gCoins').textContent = p.coins;
             document.getElementById('gBananas').textContent = p.bananas;
-            document.getElementById('gToys').textContent = p.toys;
+            document.getElementById('gFish').textContent = p.fishCaught;
+            document.getElementById('gStars').textContent = p.starsFound.length;
+            document.getElementById('gRank').textContent = p.cityRank;
             document.getElementById('chorePlants').textContent = p.plantsWatered;
             document.getElementById('chorePets').textContent = p.petsFed;
             document.getElementById('choreFlowers').textContent = p.flowersCollected;
+            document.getElementById('choreFish').textContent = p.fishCaught;
+            document.getElementById('choreBooks').textContent = p.libraryBooksRead;
 
             const choresDone = p.plantsWatered >= 3 && p.petsFed >= 2 && p.flowersCollected >= 5;
             if (choresDone && !p.choresCompletedToday) {
@@ -1608,7 +1667,7 @@
               showBonusNotification('🌆 Chores Done!', 'All daily chores complete! +15 XP');
               playNotificationSound();
             }
-            document.getElementById('choreStatus').textContent = p.choresCompletedToday ? '✅ All done! +15 XP' : 'Complete all chores for +15 XP!';
+            document.getElementById('choreStatus').textContent = p.choresCompletedToday ? '✅ All chores done! +15 XP' : 'Complete chores for +15 XP!';
 
             petCity.animationId = requestAnimationFrame(gameLoop);
           }
@@ -1629,6 +1688,13 @@
             pet.flowersCollected = p.flowersCollected;
             pet.petsFed = p.petsFed;
             pet.choresCompletedToday = p.choresCompletedToday;
+            pet.cityXp = p.cityXp;
+            pet.cityRank = p.cityRank;
+            pet.fishCaught = p.fishCaught;
+            pet.starsFound = p.starsFound;
+            pet.questsCompleted = p.questsCompleted;
+            pet.libraryBooksRead = p.libraryBooksRead;
+            pet.arcadeWins = p.arcadeWins;
             saveState();
             gameOverlay.classList.remove('show');
           };
@@ -1651,37 +1717,103 @@
             }
           }
 
-          // Check NPCs
+          // Check NPCs (quest givers)
           for (let npc of state.npcs) {
             const dx = npc.x - bx, dy = npc.y - by;
             if (Math.sqrt(dx*dx + dy*dy) < 50) {
-              showBonusNotification('💬 ' + npc.emoji + ' says:', npc.text);
+              // Show quest progress
+              let questText = npc.text;
+              if (npc.quest) {
+                const progress = npc.questProgress || 0;
+                questText += ` (${progress}/? )`; // We'll manage progress in update
+                // Simple quest completion: we'll check in update
+                // For now just display
+              }
+              showBonusNotification('💬 ' + npc.emoji + ' says:', questText);
               npc.spoken = true;
+              return;
+            }
+          }
+
+          // Check stars
+          for (let star of state.stars) {
+            if (!star.found) {
+              const dx = star.x - bx, dy = star.y - by;
+              if (Math.sqrt(dx*dx + dy*dy) < 25) {
+                star.found = true;
+                p.starsFound.push(star.x + ',' + star.y);
+                addCityXP(2);
+                playClickSound();
+                showBonusNotification('⭐ Star found!', '+2 City XP');
+                // Check if all stars found
+                if (p.starsFound.length === 10) {
+                  addXP(25);
+                  showBonusNotification('🌟 All Stars Found!', 'You found all 10 stars! +25 XP');
+                  playNotificationSound();
+                }
+                return;
+              }
+            }
+          }
+
+          // Check pond (fishing)
+          const pond = state.pond;
+          if (bx > pond.x - 10 && bx < pond.x + pond.w + 10 && by > pond.y - 10 && by < pond.y + pond.h + 10) {
+            if (p.energy >= 5) {
+              // Fishing mini-game: random catch
+              const rand = Math.random();
+              let fish = '🐟 Common';
+              let xpGain = 1;
+              let coinGain = 1;
+              if (rand < 0.6) { fish = '🐟 Common'; xpGain = 1; coinGain = 1; }
+              else if (rand < 0.85) { fish = '🐠 Rare'; xpGain = 2; coinGain = 3; }
+              else { fish = '🐡 Legendary'; xpGain = 5; coinGain = 10; }
+              p.fishCaught++;
+              p.energy = Math.max(0, p.energy - 5);
+              p.coins += coinGain;
+              addCityXP(xpGain);
+              playClickSound();
+              showBonusNotification('🎣 Fishing!', `Caught ${fish}! +${xpGain} City XP, +${coinGain} coins`);
+              // Check quest progress for fish
+              // We'll track in update
+              return;
+            } else {
+              showBonusNotification('⚡ Low energy!', 'Rest at Café or sleep at home.');
               return;
             }
           }
 
           // In building interactions
           if (state.inBuilding === 'home') {
-            // Feed pets
+            // Feed pets (bananas, apples, fish)
             for (let petObj of state.pets) {
               const dx = petObj.x - bx, dy = petObj.y - by;
-              if (Math.sqrt(dx*dx + dy*dy) < 40 && p.bananas >= 1 && p.petsFed < 2) {
-                p.bananas--;
-                p.petsFed = Math.min(2, p.petsFed + 1);
-                p.happiness = Math.min(100, p.happiness + 10);
-                p.hunger = Math.min(100, p.hunger + 5);
-                p.energy = Math.max(0, p.energy - 3);
-                playClickSound();
-                showBonusNotification('🍌 Pet fed!', '+happiness!');
-                return;
+              if (Math.sqrt(dx*dx + dy*dy) < 40) {
+                if (p.bananas >= 1 && p.petsFed < 2) {
+                  p.bananas--;
+                  p.petsFed = Math.min(2, p.petsFed + 1);
+                  p.happiness = Math.min(100, p.happiness + 15);
+                  p.hunger = Math.min(100, p.hunger + 10);
+                  p.energy = Math.max(0, p.energy - 3);
+                  playClickSound();
+                  showBonusNotification('🍌 Pet fed!', '+happiness!');
+                  return;
+                } else if (p.fishCaught >= 1 && p.petsFed < 2) {
+                  p.fishCaught--;
+                  p.petsFed = Math.min(2, p.petsFed + 1);
+                  p.happiness = Math.min(100, p.happiness + 20);
+                  p.hunger = Math.min(100, p.hunger + 15);
+                  p.energy = Math.max(0, p.energy - 3);
+                  playClickSound();
+                  showBonusNotification('🐟 Pet fed with fish!', '+happiness!');
+                  return;
+                } else {
+                  showBonusNotification('🐾 Need bananas or fish!', 'Get more from shop or fishing.');
+                  return;
+                }
               }
             }
-            if (p.petsFed < 2) {
-              showBonusNotification('🐾 Feed pets', 'Walk near a pet and press Space (need bananas).');
-            } else {
-              showBonusNotification('🐾 All fed!', 'Your pets are full and happy.');
-            }
+            showBonusNotification('🏠 Home', 'Walk near a pet to feed it.');
             return;
           }
 
@@ -1692,9 +1824,9 @@
                 plant.watered = true;
                 p.plantsWatered = Math.min(3, p.plantsWatered + 1);
                 p.energy = Math.max(0, p.energy - 5);
-                addXP(2);
+                addCityXP(2);
                 playClickSound();
-                showBonusNotification('💧 Plant watered!', '+2 XP');
+                showBonusNotification('💧 Plant watered!', '+2 City XP');
                 return;
               }
             }
@@ -1709,9 +1841,9 @@
                 flower.collected = true;
                 p.flowersCollected = Math.min(5, p.flowersCollected + 1);
                 p.energy = Math.max(0, p.energy - 2);
-                addXP(1);
+                addCityXP(1);
                 playClickSound();
-                showBonusNotification('🌸 Flower collected!', '+1 XP');
+                showBonusNotification('🌸 Flower collected!', '+1 City XP');
                 return;
               }
             }
@@ -1724,9 +1856,9 @@
               p.coins -= 2;
               p.energy = Math.min(100, p.energy + 30);
               p.happiness = Math.min(100, p.happiness + 5);
-              addXP(1);
+              addCityXP(1);
               playClickSound();
-              showBonusNotification('☕ Coffee!', 'Energy restored! +1 XP');
+              showBonusNotification('☕ Coffee!', 'Energy restored! +1 City XP');
               return;
             } else {
               showBonusNotification('☕ Not enough coins!', 'Coffee costs 2 coins.');
@@ -1735,6 +1867,7 @@
           }
 
           if (state.inBuilding === 'shop') {
+            // Simple shop: buy bananas (2 coins), buy toys (4 coins), sell fish (1 coin each)
             if (p.coins >= 2) {
               p.coins -= 2;
               p.bananas += 1;
@@ -1747,13 +1880,74 @@
               playClickSound();
               showBonusNotification('🛒 Bought toy!', '+1 toy');
               return;
+            } else if (p.fishCaught >= 1) {
+              p.fishCaught--;
+              p.coins += 1;
+              playClickSound();
+              showBonusNotification('🛒 Sold fish!', '+1 coin');
+              return;
             } else {
-              showBonusNotification('🛒 Not enough coins!', 'Banana: 2 coins, Toy: 4 coins');
+              showBonusNotification('🛒 Not enough coins or fish!', 'Banana: 2 coins, Toy: 4 coins, Sell fish: 1 coin');
             }
             return;
           }
 
-          showBonusNotification('👀 Nothing here.', 'Walk to a building, NPC, or object and press Space.');
+          if (state.inBuilding === 'library') {
+            if (p.coins >= 2) {
+              p.coins -= 2;
+              p.libraryBooksRead++;
+              addCityXP(2);
+              playClickSound();
+              showBonusNotification('📚 Read a book!', '+2 City XP');
+              // Could also add a mini-quiz later
+              return;
+            } else {
+              showBonusNotification('📚 Need 2 coins to read.', 'Visit café or sell fish.');
+            }
+            return;
+          }
+
+          if (state.inBuilding === 'arcade') {
+            // Simple memory game
+            if (p.coins < 1) {
+              showBonusNotification('🕹️ Need 1 coin to play.', 'Get coins from fishing or selling.');
+              return;
+            }
+            p.coins -= 1;
+            // Simple memory card game - we'll just give random reward
+            const win = Math.random() < 0.5;
+            if (win) {
+              const reward = Math.floor(Math.random() * 3) + 1;
+              p.coins += reward;
+              p.arcadeWins++;
+              addCityXP(1);
+              playClickSound();
+              showBonusNotification('🕹️ Arcade Win!', `You won ${reward} coins! +1 City XP`);
+            } else {
+              showBonusNotification('🕹️ Arcade Lose!', 'Better luck next time.');
+            }
+            return;
+          }
+
+          showBonusNotification('👀 Nothing here.', 'Walk to a building, NPC, star, or pond and press Space.');
+        }
+
+        function addCityXP(amount) {
+          const p = pet; // we'll use global pet for city rank
+          p.cityXp = (p.cityXp || 0) + amount;
+          // Update rank
+          const ranks = [0, 20, 50, 100, 200, 350, 500, 750, 1000, 1500];
+          let newRank = 1;
+          for (let i = ranks.length - 1; i >= 0; i--) {
+            if (p.cityXp >= ranks[i]) { newRank = i + 1; break; }
+          }
+          if (newRank > p.cityRank) {
+            p.cityRank = newRank;
+            showBonusNotification('🏙️ City Rank Up!', `You are now Rank ${p.cityRank}!`);
+            playNotificationSound();
+          }
+          // Save state
+          saveState();
         }
 
         function updatePetCity(state, dt, p) {
@@ -1813,6 +2007,9 @@
           p.hunger = Math.max(0, p.hunger - 0.3 * dt);
           p.happiness = Math.max(0, p.happiness - 0.2 * dt);
           if (p.hunger < 20) p.happiness -= 0.5 * dt;
+
+          // Update quest progress automatically (simple)
+          // We'll check conditions in interaction
         }
 
         function renderPetCity(state, ctx, p) {
@@ -1841,18 +2038,27 @@
             ctx.fillRect(b.x, b.y, b.w, b.h);
             ctx.shadowBlur = 0;
             ctx.fillStyle = '#000';
-            ctx.font = '18px sans-serif';
+            ctx.font = '16px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(b.label, b.x + b.w/2, b.y + b.h/2 - 6);
+            ctx.fillText(b.label, b.x + b.w/2, b.y + b.h/2 - 4);
             ctx.fillStyle = '#fff';
-            ctx.font = '12px sans-serif';
-            ctx.fillText('Press Space', b.x + b.w/2, b.y + b.h/2 + 20);
+            ctx.font = '10px sans-serif';
+            ctx.fillText('Space', b.x + b.w/2, b.y + b.h/2 + 16);
             ctx.strokeStyle = '#8B7355';
             ctx.lineWidth = 2;
             ctx.strokeRect(b.x, b.y, b.w, b.h);
           });
 
+          // Pond
+          ctx.fillStyle = 'rgba(30,144,255,0.6)';
+          ctx.fillRect(state.pond.x, state.pond.y, state.pond.w, state.pond.h);
+          ctx.fillStyle = '#fff';
+          ctx.font = '14px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🎣 Pond', state.pond.x + state.pond.w/2, state.pond.y + state.pond.h/2);
+
+          // Plants
           state.plants.forEach(plant => {
             ctx.font = '24px sans-serif';
             ctx.textAlign = 'center';
@@ -1860,6 +2066,7 @@
             ctx.fillText(plant.watered ? '🌿' : '🌱', plant.x, plant.y);
           });
 
+          // Flowers
           state.flowers.forEach(flower => {
             ctx.font = '22px sans-serif';
             ctx.textAlign = 'center';
@@ -1867,6 +2074,17 @@
             ctx.fillText(flower.collected ? '🌿' : '🌸', flower.x, flower.y);
           });
 
+          // Stars
+          state.stars.forEach(star => {
+            if (!star.found) {
+              ctx.font = '24px sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText('⭐', star.x, star.y);
+            }
+          });
+
+          // NPCs
           state.npcs.forEach(npc => {
             ctx.font = '34px sans-serif';
             ctx.textAlign = 'center';
@@ -1881,6 +2099,7 @@
             }
           });
 
+          // Pets
           state.pets.forEach(pet => {
             ctx.font = '28px serif';
             ctx.textAlign = 'center';
@@ -1888,11 +2107,13 @@
             ctx.fillText(pet.emoji, pet.x, pet.y);
           });
 
+          // Player
           ctx.font = '34px serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText('🧑', state.player.x, state.player.y);
 
+          // Building entry hint
           let nearBuilding = false;
           for (let b of state.buildings) {
             if (state.player.x > b.x - 20 && state.player.x < b.x + b.w + 20 &&
@@ -1922,21 +2143,26 @@
             ctx.font = '18px sans-serif';
 
             if (state.inBuilding === 'home') {
-              ctx.fillText(`🍌 Bananas: ${p.bananas}   🐾 Feed pets (walk near them, press Space)`, 400, 90);
-              ctx.fillText('❤️ Happiness: ' + Math.round(p.happiness) + '%', 400, 130);
-              ctx.fillText('🐒 Your pets follow you!', 400, 170);
+              ctx.fillText(`🍌 Bananas: ${p.bananas}  🎣 Fish: ${p.fishCaught}  ❤️ Happiness: ${Math.round(p.happiness)}%`, 400, 90);
+              ctx.fillText('Walk near a pet and press Space to feed (banana or fish).', 400, 130);
             } else if (state.inBuilding === 'garden') {
-              ctx.fillText(`🌱 Water plants (walk near them, press Space)   ⚡ Energy: ${Math.round(p.energy)}%`, 400, 90);
-              ctx.fillText(`Plants watered: ${p.plantsWatered}/3   +2 XP each`, 400, 130);
+              ctx.fillText(`🌱 Plants watered: ${p.plantsWatered}/3  ⚡ Energy: ${Math.round(p.energy)}%`, 400, 90);
+              ctx.fillText('Walk near a plant and press Space to water.', 400, 130);
             } else if (state.inBuilding === 'park') {
-              ctx.fillText(`🌸 Collect flowers (walk near them, press Space)`, 400, 90);
-              ctx.fillText(`Flowers: ${p.flowersCollected}/5   +1 XP each`, 400, 130);
+              ctx.fillText(`🌸 Flowers: ${p.flowersCollected}/5`, 400, 90);
+              ctx.fillText('Walk near a flower and press Space to collect.', 400, 130);
             } else if (state.inBuilding === 'cafe') {
-              ctx.fillText(`☕ Coffee: 2 coins   🪙 Coins: ${p.coins}`, 400, 90);
-              ctx.fillText('Walk to the counter and press Space to buy', 400, 130);
+              ctx.fillText(`☕ Coffee: 2 coins  🪙 Coins: ${p.coins}`, 400, 90);
+              ctx.fillText('Walk to the counter and press Space to buy.', 400, 130);
             } else if (state.inBuilding === 'shop') {
-              ctx.fillText(`🛒 Banana: 2 coins   Toy: 4 coins   🪙 Coins: ${p.coins}`, 400, 90);
-              ctx.fillText('Walk to the counter and press Space to buy', 400, 130);
+              ctx.fillText(`🛒 Buy: Banana 2 coins, Toy 4 coins  |  Sell: Fish 1 coin`, 400, 90);
+              ctx.fillText('Walk to the counter and press Space.', 400, 130);
+            } else if (state.inBuilding === 'library') {
+              ctx.fillText(`📚 Read a book: 2 coins  📖 Books read: ${p.libraryBooksRead}`, 400, 90);
+              ctx.fillText('Press Space at the desk to read.', 400, 130);
+            } else if (state.inBuilding === 'arcade') {
+              ctx.fillText(`🕹️ Play memory game: 1 coin  🏆 Wins: ${p.arcadeWins}`, 400, 90);
+              ctx.fillText('Press Space at the machine to play.', 400, 130);
             }
 
             if (b) {
@@ -1951,22 +2177,23 @@
             }
           }
 
+          // Chore progress on canvas
           const choresDone = p.plantsWatered >= 3 && p.petsFed >= 2 && p.flowersCollected >= 5;
           if (!state.inBuilding) {
             ctx.fillStyle = 'rgba(0,0,0,0.5)';
-            ctx.fillRect(10, 550, 300, 40);
+            ctx.fillRect(10, 550, 350, 40);
             ctx.fillStyle = '#fff';
             ctx.font = '13px sans-serif';
             ctx.textAlign = 'left';
-            ctx.fillText(`🌱 ${p.plantsWatered}/3  🐾 ${p.petsFed}/2  🌸 ${p.flowersCollected}/5`, 20, 575);
+            ctx.fillText(`🌱 ${p.plantsWatered}/3  🐾 ${p.petsFed}/2  🌸 ${p.flowersCollected}/5  ⭐ ${p.starsFound.length}/10  🎣 ${p.fishCaught}`, 20, 575);
             if (choresDone && !p.choresCompletedToday) {
               ctx.fillStyle = '#FFD700';
-              ctx.fillText('✅ All chores! Press Space to claim +15 XP', 190, 575);
+              ctx.fillText('✅ All chores! Press Space to claim +15 XP', 220, 575);
             }
           }
         }
 
-        // ========== MONKEY WORLD ==========
+        // ========== MONKEY WORLD (unchanged) ==========
         function initMonkeyWorld() {
           const container = gameContent;
           container.innerHTML = '';
@@ -2855,7 +3082,7 @@
             if (e.key.startsWith('smart_')) { loadState(); render(); }
           });
 
-          console.log('📋 Smart Scheduler + Pet City (fixed) loaded!');
+          console.log('📋 Smart Scheduler + Pet City (expanded) loaded!');
         }
 
         document.addEventListener('DOMContentLoaded', init);
