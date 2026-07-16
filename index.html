@@ -493,6 +493,69 @@
       font-weight: 600;
     }
 
+    /* ---------- TIMER ---------- */
+    .timer-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+    .timer-box {
+      background: var(--bg-input);
+      border-radius: var(--radius-sm);
+      padding: 20px 30px;
+      text-align: center;
+      min-width: 200px;
+      flex: 1;
+    }
+    .timer-box h3 {
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+    }
+    .timer-display {
+      font-size: 48px;
+      font-weight: 700;
+      font-family: monospace;
+      letter-spacing: 2px;
+      margin: 10px 0;
+    }
+    .timer-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .timer-controls .btn {
+      min-width: 70px;
+    }
+    .countdown-input {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .countdown-input input {
+      width: 70px;
+      padding: 8px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      text-align: center;
+      outline: none;
+      background: #fff;
+      color: var(--text);
+    }
+    .countdown-input input:focus {
+      border-color: var(--primary);
+    }
+    .countdown-input label {
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
     /* ---------- NOTIFICATION BANNER ---------- */
     .notification-banner {
       display: none !important;
@@ -623,6 +686,9 @@
         font-size: 13px;
         padding: 6px 14px;
       }
+      .timer-display {
+        font-size: 32px;
+      }
     }
   </style>
 </head>
@@ -636,6 +702,7 @@
       </div>
       <div class="header-actions">
         <div class="stats">
+          <span>⭐ <span id="pointsDisplay">0</span> XP</span>
           <span>📌 <span id="taskCount">0</span></span>
           <span>✅ <span id="doneCount">0</span></span>
         </div>
@@ -670,6 +737,7 @@
       <button class="tab-btn" data-tab="schedule">📅 Schedule</button>
       <button class="tab-btn" data-tab="todos">✅ Todos</button>
       <button class="tab-btn" data-tab="stats">📊 Stats</button>
+      <button class="tab-btn" data-tab="timer">⏱️ Timer</button>
     </div>
 
     <!-- ========== TAB: DASHBOARD ========== -->
@@ -787,6 +855,43 @@
       </div>
     </div>
 
+    <!-- ========== TAB: TIMER ========== -->
+    <div class="tab-content" id="tab-timer">
+      <div class="card">
+        <div class="card-header">
+          <h2>⏱️ Timer & Stopwatch</h2>
+        </div>
+        <div class="timer-container">
+          <!-- Stopwatch -->
+          <div class="timer-box">
+            <h3>⏱️ Stopwatch</h3>
+            <div class="timer-display" id="stopwatchDisplay">00:00:00</div>
+            <div class="timer-controls">
+              <button class="btn btn-primary" id="stopwatchStart">Start</button>
+              <button class="btn btn-outline" id="stopwatchPause">Pause</button>
+              <button class="btn btn-outline" id="stopwatchReset">Reset</button>
+            </div>
+          </div>
+          <!-- Countdown -->
+          <div class="timer-box">
+            <h3>⏳ Countdown</h3>
+            <div class="timer-display" id="countdownDisplay">00:00</div>
+            <div class="countdown-input">
+              <label>Min:</label>
+              <input type="number" id="countdownMin" value="0" min="0" max="99" />
+              <label>Sec:</label>
+              <input type="number" id="countdownSec" value="30" min="0" max="59" />
+            </div>
+            <div class="timer-controls">
+              <button class="btn btn-primary" id="countdownStart">Start</button>
+              <button class="btn btn-outline" id="countdownPause">Pause</button>
+              <button class="btn btn-outline" id="countdownReset">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ========== SCRIPT ========== -->
     <script>
       (function() {
@@ -796,10 +901,16 @@
         let tasks = [];
         let todos = [];
         let mood = '';
-        let showCompleted = false;
         let lastResetDate = '';
         let settings = { soundEnabled: true };
+        let points = 0;
         let audioCtx = null;
+
+        // Timer states
+        let stopwatchInterval = null;
+        let stopwatchSeconds = 0;
+        let countdownInterval = null;
+        let countdownSeconds = 0;
 
         // ---------- DOM REFS ----------
         const $ = id => document.getElementById(id);
@@ -810,13 +921,15 @@
           dashboard: $('tab-dashboard'),
           schedule: $('tab-schedule'),
           todos: $('tab-todos'),
-          stats: $('tab-stats')
+          stats: $('tab-stats'),
+          timer: $('tab-timer')
         };
 
         // Header
         const currentDateEl = $('currentDate');
         const taskCountEl = $('taskCount');
         const doneCountEl = $('doneCount');
+        const pointsDisplay = $('pointsDisplay');
 
         // Dashboard
         const dashProgress = $('dashProgress');
@@ -850,6 +963,18 @@
         // Stats
         const statsContent = $('statsContent');
         const refreshStatsBtn = $('refreshStatsBtn');
+
+        // Timer
+        const stopwatchDisplay = $('stopwatchDisplay');
+        const stopwatchStart = $('stopwatchStart');
+        const stopwatchPause = $('stopwatchPause');
+        const stopwatchReset = $('stopwatchReset');
+        const countdownDisplay = $('countdownDisplay');
+        const countdownMin = $('countdownMin');
+        const countdownSec = $('countdownSec');
+        const countdownStart = $('countdownStart');
+        const countdownPause = $('countdownPause');
+        const countdownReset = $('countdownReset');
 
         // Notifications
         const notifBanner = $('notifBanner');
@@ -930,6 +1055,7 @@
             localStorage.setItem('smart_mood', mood);
             localStorage.setItem('smart_lastReset', lastResetDate);
             localStorage.setItem('smart_settings', JSON.stringify(settings));
+            localStorage.setItem('smart_points', JSON.stringify(points));
           } catch (_) {}
         }
 
@@ -940,15 +1066,22 @@
             const m = localStorage.getItem('smart_mood');
             const r = localStorage.getItem('smart_lastReset');
             const s = localStorage.getItem('smart_settings');
+            const p = localStorage.getItem('smart_points');
             if (t) tasks = JSON.parse(t);
             if (d) todos = JSON.parse(d);
             if (m) mood = m;
             if (r) lastResetDate = r;
             if (s) settings = JSON.parse(s);
+            if (p) points = parseInt(p, 10) || 0;
+            else points = 0;
+
+            // Ensure each task has all required properties
             tasks.forEach(task => {
               if (!task.completedDates) task.completedDates = [];
               if (task.startNotifiedToday === undefined) task.startNotifiedToday = false;
               if (task.endNotifiedToday === undefined) task.endNotifiedToday = false;
+              // Critical for XP: ensure pointsAwardedToday exists
+              if (task.pointsAwardedToday === undefined) task.pointsAwardedToday = false;
             });
           } catch (_) {}
         }
@@ -961,6 +1094,7 @@
               t.completedToday = false;
               t.startNotifiedToday = false;
               t.endNotifiedToday = false;
+              t.pointsAwardedToday = false;   // Reset XP flag daily
             });
             todos.forEach(t => t.completedToday = false);
             lastResetDate = today;
@@ -978,6 +1112,7 @@
           updateDashboard();
           updateHeader();
           updateBadges();
+          updatePointsDisplay();
           saveState();
         }
 
@@ -1190,6 +1325,10 @@
           todoBadge.textContent = todoPending;
         }
 
+        function updatePointsDisplay() {
+          pointsDisplay.textContent = points;
+        }
+
         // ---------- SOUND ----------
         function playNotificationSound() {
           if (!settings.soundEnabled) return;
@@ -1212,6 +1351,24 @@
               osc.start(t);
               osc.stop(t + 0.15);
             }
+          } catch (_) {}
+        }
+
+        function playClickSound() {
+          if (!settings.soundEnabled) return;
+          try {
+            if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.connect(g);
+            g.connect(audioCtx.destination);
+            osc.frequency.value = 800;
+            osc.type = 'sine';
+            g.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.08);
           } catch (_) {}
         }
 
@@ -1307,7 +1464,7 @@
           });
         }
 
-        // ---------- TASKS CRUD ----------
+        // ---------- TASKS CRUD (with XP) ----------
         function addTask(title, description, repeat, days, startTime, endTime) {
           const task = {
             id: generateId(),
@@ -1321,6 +1478,7 @@
             completedToday: false,
             startNotifiedToday: false,
             endNotifiedToday: false,
+            pointsAwardedToday: false,   // XP flag
             date: todayStr(),
             completedDates: []
           };
@@ -1334,13 +1492,32 @@
         function toggleTask(id) {
           const task = tasks.find(t => t.id === id);
           if (!task || !isTaskActiveToday(task)) return;
+
           const today = todayStr();
+          const wasCompleted = task.completedToday;
+
+          // Toggle completion
           task.completedToday = !task.completedToday;
+
           if (task.completedToday) {
+            // Add to completed dates for stats
             if (!task.completedDates.includes(today)) task.completedDates.push(today);
+
+            // Award XP only once per day
+            if (!task.pointsAwardedToday) {
+              task.pointsAwardedToday = true;
+              points += 10;
+              playClickSound();
+              // Update display immediately
+              updatePointsDisplay();
+              saveState();
+            }
           } else {
+            // Remove from completed dates for stats
             task.completedDates = task.completedDates.filter(d => d !== today);
+            // Do NOT deduct XP
           }
+
           saveState();
           render();
         }
@@ -1396,6 +1573,37 @@
           mood = emoji;
           saveState();
           updateDashboard();
+        }
+
+        // ---------- TIMER FUNCTIONS ----------
+        function stopwatchTick() {
+          stopwatchSeconds++;
+          const hrs = Math.floor(stopwatchSeconds / 3600);
+          const mins = Math.floor((stopwatchSeconds % 3600) / 60);
+          const secs = stopwatchSeconds % 60;
+          stopwatchDisplay.textContent =
+            `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+        }
+
+        function countdownTick() {
+          if (countdownSeconds <= 0) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            playNotificationSound();
+            alert('⏰ Countdown finished!');
+            return;
+          }
+          countdownSeconds--;
+          const mins = Math.floor(countdownSeconds / 60);
+          const secs = countdownSeconds % 60;
+          countdownDisplay.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+        }
+
+        function setCountdownFromInputs() {
+          const min = parseInt(countdownMin.value) || 0;
+          const sec = parseInt(countdownSec.value) || 0;
+          countdownSeconds = min * 60 + sec;
+          countdownDisplay.textContent = `${String(Math.floor(countdownSeconds/60)).padStart(2,'0')}:${String(countdownSeconds%60).padStart(2,'0')}`;
         }
 
         // ---------- PERMISSION UI ----------
@@ -1511,6 +1719,51 @@
               setMood(this.dataset.mood);
             });
           });
+
+          // ---------- TIMER CONTROLS ----------
+          // Stopwatch
+          stopwatchStart.addEventListener('click', function() {
+            if (stopwatchInterval) return;
+            stopwatchInterval = setInterval(stopwatchTick, 1000);
+          });
+          stopwatchPause.addEventListener('click', function() {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = null;
+          });
+          stopwatchReset.addEventListener('click', function() {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = null;
+            stopwatchSeconds = 0;
+            stopwatchDisplay.textContent = '00:00:00';
+          });
+
+          // Countdown
+          countdownMin.addEventListener('change', setCountdownFromInputs);
+          countdownSec.addEventListener('change', setCountdownFromInputs);
+
+          countdownStart.addEventListener('click', function() {
+            if (countdownInterval) return;
+            if (countdownSeconds <= 0) {
+              setCountdownFromInputs();
+              if (countdownSeconds <= 0) {
+                alert('Please set a time greater than 0.');
+                return;
+              }
+            }
+            countdownInterval = setInterval(countdownTick, 1000);
+          });
+          countdownPause.addEventListener('click', function() {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+          });
+          countdownReset.addEventListener('click', function() {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            setCountdownFromInputs();
+          });
+
+          // Set initial countdown display
+          setCountdownFromInputs();
         }
 
         // ---------- TABS ----------
