@@ -53,23 +53,10 @@
       transition: background 0.5s;
       border-radius: var(--radius);
     }
-
     /* ---------- BACKGROUND THEMES ---------- */
-    .bg-forest .app {
-      background: linear-gradient(135deg, #2d5016, #4a7c2e);
-      padding: 20px;
-      border-radius: var(--radius);
-    }
-    .bg-sunset .app {
-      background: linear-gradient(135deg, #f7971e, #ffd200);
-      padding: 20px;
-      border-radius: var(--radius);
-    }
-    .bg-midnight .app {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      padding: 20px;
-      border-radius: var(--radius);
-    }
+    .bg-forest .app { background: linear-gradient(135deg, #2d5016, #4a7c2e); padding: 20px; border-radius: var(--radius); }
+    .bg-sunset .app { background: linear-gradient(135deg, #f7971e, #ffd200); padding: 20px; border-radius: var(--radius); }
+    .bg-midnight .app { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); padding: 20px; border-radius: var(--radius); }
 
     /* ---------- HEADER ---------- */
     .header {
@@ -121,25 +108,11 @@
       align-items: center;
       gap: 10px;
     }
-    .header-actions .stats span {
-      font-weight: 600;
-      color: var(--text);
-    }
+    .header-actions .stats span { font-weight: 600; color: var(--text); }
     .level-bar {
-      width: 80px;
-      height: 6px;
-      background: var(--bg);
-      border-radius: 4px;
-      overflow: hidden;
-      display: inline-block;
-      vertical-align: middle;
+      width: 80px; height: 6px; background: var(--bg); border-radius: 4px; overflow: hidden; display: inline-block; vertical-align: middle;
     }
-    .level-bar .fill {
-      height: 100%;
-      background: var(--primary);
-      border-radius: 4px;
-      transition: width 0.5s ease;
-    }
+    .level-bar .fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.5s ease; }
 
     .btn {
       padding: 6px 16px;
@@ -156,43 +129,15 @@
       gap: 6px;
       border: 2px solid transparent;
     }
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-    }
-    .btn-primary:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35);
-    }
-    .btn-danger {
-      background: #fee2e2;
-      color: #dc2626;
-      border-color: #fecaca;
-    }
-    .btn-danger:hover {
-      background: #fecaca;
-    }
-    .btn-success {
-      background: #dcfce7;
-      color: #16a34a;
-      border-color: #bbf7d0;
-    }
-    .btn-success:hover {
-      background: #bbf7d0;
-    }
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--border);
-    }
-    .btn-outline:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-    .btn-sm {
-      padding: 3px 10px;
-      font-size: 12px;
-    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,99,255,0.35); }
+    .btn-danger { background: #fee2e2; color: #dc2626; border-color: #fecaca; }
+    .btn-danger:hover { background: #fecaca; }
+    .btn-success { background: #dcfce7; color: #16a34a; border-color: #bbf7d0; }
+    .btn-success:hover { background: #bbf7d0; }
+    .btn-outline { background: transparent; border: 2px solid var(--border); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-sm { padding: 3px 10px; font-size: 12px; }
 
     /* ---------- TABS ---------- */
     .tabs {
@@ -216,19 +161,10 @@
       color: var(--text-secondary);
       transition: var(--transition);
     }
-    .tab-btn:hover {
-      background: var(--bg);
-    }
-    .tab-btn.active {
-      background: var(--primary);
-      color: #fff;
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
+    .tab-btn:hover { background: var(--bg); }
+    .tab-btn.active { background: var(--primary); color: #fff; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
     /* ---------- CARDS ---------- */
     .card {
@@ -246,20 +182,9 @@
       flex-wrap: wrap;
       gap: 8px;
     }
-    .card-header h2 {
-      font-size: 20px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .card-header h2 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
     .card-header h2 .badge {
-      font-size: 13px;
-      font-weight: 600;
-      background: var(--bg);
-      padding: 2px 12px;
-      border-radius: 20px;
-      color: var(--text-secondary);
+      font-size: 13px; font-weight: 600; background: var(--bg); padding: 2px 12px; border-radius: 20px; color: var(--text-secondary);
     }
 
     /* ---------- FORMS ---------- */
@@ -272,9 +197,7 @@
       flex-wrap: wrap;
       gap: 8px;
     }
-    .form-inline input,
-    .form-inline select,
-    .form-inline textarea {
+    .form-inline input, .form-inline select, .form-inline textarea {
       border: 2px solid var(--border);
       border-radius: var(--radius-sm);
       padding: 8px 12px;
@@ -287,419 +210,112 @@
       min-width: 100px;
       color: var(--text);
     }
-    .form-inline input:focus,
-    .form-inline select:focus,
-    .form-inline textarea:focus {
+    .form-inline input:focus, .form-inline select:focus, .form-inline textarea:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.12);
+      box-shadow: 0 0 0 4px rgba(108,99,255,0.12);
     }
-    .form-inline textarea {
-      flex-basis: 100%;
-      resize: vertical;
-      min-height: 40px;
-    }
+    .form-inline textarea { flex-basis: 100%; resize: vertical; min-height: 40px; }
     .form-inline .days-checkboxes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      align-items: center;
-      flex: 1 1 100%;
+      display: flex; flex-wrap: wrap; gap: 4px; align-items: center; flex: 1 1 100%;
     }
     .form-inline .days-checkboxes label {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 13px;
-      background: #fff;
-      padding: 2px 10px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: var(--transition);
+      display: flex; align-items: center; gap: 4px; font-size: 13px; background: #fff; padding: 2px 10px;
+      border-radius: 20px; border: 1px solid var(--border); cursor: pointer; transition: var(--transition);
     }
-    .form-inline .days-checkboxes label:hover {
-      border-color: var(--primary);
-    }
+    .form-inline .days-checkboxes label:hover { border-color: var(--primary); }
 
-    /* ---------- ITEMS (Task & Todo) ---------- */
+    /* ---------- ITEMS ---------- */
     .item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
-      background: var(--bg-input);
-      margin-bottom: 8px;
-      transition: var(--transition);
-      border-left: 4px solid var(--primary);
-      flex-wrap: wrap;
+      display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: var(--radius-sm);
+      background: var(--bg-input); margin-bottom: 8px; transition: var(--transition); border-left: 4px solid var(--primary); flex-wrap: wrap;
     }
-    .item.completed {
-      opacity: 0.6;
-      border-left-color: #16a34a;
-    }
+    .item.completed { opacity: 0.6; border-left-color: #16a34a; }
     .item .check {
-      margin-top: 2px;
-      flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      background: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-      flex-shrink: 0;
+      margin-top: 2px; flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border);
+      background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition);
     }
-    .item .check:hover {
-      border-color: var(--primary);
-    }
-    .item .check.checked {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-    }
-    .item .check.checked::after {
-      content: "✓";
-      font-size: 13px;
-      font-weight: 700;
-    }
-    .item .info {
-      flex: 1;
-      min-width: 0;
-    }
-    .item .info .title {
-      font-weight: 600;
-      font-size: 15px;
-      word-break: break-word;
-    }
-    .item .info .desc {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 2px;
-      word-break: break-word;
-    }
-    .item .info .meta {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-top: 6px;
-      flex-wrap: wrap;
-    }
-    .item .info .meta .tag {
-      font-size: 12px;
-      color: var(--text-muted);
-      background: var(--bg);
-      padding: 0 10px;
-      border-radius: 12px;
-    }
+    .item .check:hover { border-color: var(--primary); }
+    .item .check.checked { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .item .check.checked::after { content: "✓"; font-size: 13px; font-weight: 700; }
+    .item .info { flex: 1; min-width: 0; }
+    .item .info .title { font-weight: 600; font-size: 15px; word-break: break-word; }
+    .item .info .desc { font-size: 13px; color: var(--text-secondary); margin-top: 2px; word-break: break-word; }
+    .item .info .meta { display: flex; align-items: center; gap: 14px; margin-top: 6px; flex-wrap: wrap; }
+    .item .info .meta .tag { font-size: 12px; color: var(--text-muted); background: var(--bg); padding: 0 10px; border-radius: 12px; }
     .item .actions {
-      display: flex;
-      gap: 6px;
-      flex-shrink: 0;
-      align-items: center;
-      margin-left: auto;
+      display: flex; gap: 6px; flex-shrink: 0; align-items: center; margin-left: auto;
     }
     .item .actions .btn-done {
-      background: #dcfce7;
-      color: #16a34a;
-      border: 1px solid #bbf7d0;
-      padding: 2px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
+      background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; padding: 2px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition);
     }
-    .item .actions .btn-done:hover {
-      background: #bbf7d0;
-    }
-    .item .actions .btn-done:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-    .empty-state {
-      text-align: center;
-      padding: 32px 16px;
-      color: var(--text-muted);
-    }
-    .empty-state .icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .scroll-area {
-      max-height: 500px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-    .scroll-area::-webkit-scrollbar {
-      width: 5px;
-    }
-    .scroll-area::-webkit-scrollbar-track {
-      background: var(--bg);
-      border-radius: 10px;
-    }
-    .scroll-area::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 10px;
-    }
+    .item .actions .btn-done:hover { background: #bbf7d0; }
+    .item .actions .btn-done:disabled { opacity: 0.4; cursor: not-allowed; }
+    .empty-state { text-align: center; padding: 32px 16px; color: var(--text-muted); }
+    .empty-state .icon { font-size: 40px; margin-bottom: 10px; display: block; }
+    .scroll-area { max-height: 500px; overflow-y: auto; padding-right: 4px; }
+    .scroll-area::-webkit-scrollbar { width: 5px; }
+    .scroll-area::-webkit-scrollbar-track { background: var(--bg); border-radius: 10px; }
+    .scroll-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
     /* ---------- DASHBOARD ---------- */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    @media (max-width: 800px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .dash-card {
-      background: var(--bg-input);
-      border-radius: var(--radius-sm);
-      padding: 16px;
-    }
-    .dash-card h3 {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 800px) { .dashboard-grid { grid-template-columns: 1fr; } }
+    .dash-card { background: var(--bg-input); border-radius: var(--radius-sm); padding: 16px; }
+    .dash-card h3 { font-size: 16px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
     .dash-card .progress-circle {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: conic-gradient(var(--primary) var(--pct, 0%), var(--bg) var(--pct, 0%));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
-      margin: 0 auto 8px;
+      width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(var(--primary) var(--pct,0%), var(--bg) var(--pct,0%));
+      display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; margin: 0 auto 8px;
     }
-    .level-progress-bar {
-      width: 100%;
-      height: 12px;
-      background: var(--bg);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 4px;
-    }
-    .level-progress-bar .fill {
-      height: 100%;
-      background: var(--primary);
-      border-radius: 10px;
-      transition: width 0.5s ease;
-    }
-    .streak-display {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--primary);
-      text-align: center;
-    }
-    .daily-bonus-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .daily-bonus-item {
-      background: var(--bg);
-      border-radius: var(--radius-sm);
-      padding: 6px 12px;
-      flex: 1;
-      min-width: 100px;
-      text-align: center;
-    }
-    .daily-bonus-item .btn {
-      width: 100%;
-      margin-top: 4px;
-    }
-    .daily-bonus-item .claimed {
-      color: #16a34a;
-      font-weight: 600;
-    }
-    .daily-bonus-item .value {
-      font-weight: 700;
-      color: var(--primary);
-    }
+    .level-progress-bar { width: 100%; height: 12px; background: var(--bg); border-radius: 10px; overflow: hidden; margin-top: 4px; }
+    .level-progress-bar .fill { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.5s ease; }
+    .streak-display { font-size: 32px; font-weight: 700; color: var(--primary); text-align: center; }
+    .daily-bonus-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .daily-bonus-item { background: var(--bg); border-radius: var(--radius-sm); padding: 6px 12px; flex: 1; min-width: 100px; text-align: center; }
+    .daily-bonus-item .btn { width: 100%; margin-top: 4px; }
+    .daily-bonus-item .claimed { color: #16a34a; font-weight: 600; }
+    .daily-bonus-item .value { font-weight: 700; color: var(--primary); }
 
     /* ---------- STATS ---------- */
-    .stats-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    .stats-table th,
-    .stats-table td {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-    }
-    .stats-table th {
-      background: var(--bg);
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-    .stats-table .bar-container {
-      width: 100%;
-      height: 20px;
-      background: var(--bg);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .stats-table .bar-fill {
-      height: 100%;
-      border-radius: 10px;
-      transition: width 0.5s ease;
-    }
-    .stats-table .completed-badge {
-      background: #dcfce7;
-      color: #16a34a;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .stats-table .pending-badge {
-      background: #fee2e2;
-      color: #dc2626;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
+    .stats-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .stats-table th, .stats-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); text-align: left; }
+    .stats-table th { background: var(--bg); font-weight: 600; color: var(--text-secondary); }
+    .stats-table .bar-container { width: 100%; height: 20px; background: var(--bg); border-radius: 10px; overflow: hidden; }
+    .stats-table .bar-fill { height: 100%; border-radius: 10px; transition: width 0.5s ease; }
+    .stats-table .completed-badge { background: #dcfce7; color: #16a34a; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .stats-table .pending-badge { background: #fee2e2; color: #dc2626; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
 
     /* ---------- TIMER ---------- */
-    .timer-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      justify-content: center;
-    }
-    .timer-box {
-      background: var(--bg-input);
-      border-radius: var(--radius-sm);
-      padding: 20px 30px;
-      text-align: center;
-      min-width: 200px;
-      flex: 1;
-    }
-    .timer-box h3 {
-      margin-bottom: 12px;
-      color: var(--text-secondary);
-    }
-    .timer-display {
-      font-size: 48px;
-      font-weight: 700;
-      font-family: monospace;
-      letter-spacing: 2px;
-      margin: 10px 0;
-    }
-    .timer-controls {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-    .timer-controls .btn {
-      min-width: 70px;
-    }
-    .countdown-input {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      align-items: center;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-    .countdown-input input {
-      width: 70px;
-      padding: 8px;
-      border: 2px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 16px;
-      text-align: center;
-      outline: none;
-      background: #fff;
-      color: var(--text);
-    }
-    .countdown-input input:focus {
-      border-color: var(--primary);
-    }
-    .countdown-input label {
-      font-weight: 500;
-      color: var(--text-secondary);
-    }
+    .timer-container { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+    .timer-box { background: var(--bg-input); border-radius: var(--radius-sm); padding: 20px 30px; text-align: center; min-width: 200px; flex: 1; }
+    .timer-box h3 { margin-bottom: 12px; color: var(--text-secondary); }
+    .timer-display { font-size: 48px; font-weight: 700; font-family: monospace; letter-spacing: 2px; margin: 10px 0; }
+    .timer-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+    .timer-controls .btn { min-width: 70px; }
+    .countdown-input { display: flex; gap: 10px; justify-content: center; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+    .countdown-input input { width: 70px; padding: 8px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 16px; text-align: center; outline: none; background: #fff; color: var(--text); }
+    .countdown-input input:focus { border-color: var(--primary); }
+    .countdown-input label { font-weight: 500; color: var(--text-secondary); }
 
     /* ---------- STORE ---------- */
-    .store-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-top: 10px;
-    }
-    .store-item {
-      background: var(--bg-input);
-      border-radius: var(--radius-sm);
-      padding: 16px;
-      text-align: center;
-      transition: var(--transition);
-    }
-    .store-item h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .store-item p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin: 6px 0;
-    }
-    .store-item .price {
-      font-weight: 700;
-      color: var(--primary);
-    }
-    .store-item .btn {
-      margin-top: 10px;
-    }
-    .store-item .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .store-item.unlocked {
-      border: 2px solid #16a34a;
-    }
-    .store-item.locked {
-      opacity: 0.6;
-    }
-    .store-item.locked .btn {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .store-top-bar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
+    .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 10px; }
+    .store-item { background: var(--bg-input); border-radius: var(--radius-sm); padding: 16px; text-align: center; transition: var(--transition); }
+    .store-item h3 { font-size: 18px; margin-bottom: 8px; }
+    .store-item p { font-size: 14px; color: var(--text-secondary); margin: 6px 0; }
+    .store-item .price { font-weight: 700; color: var(--primary); }
+    .store-item .btn { margin-top: 10px; }
+    .store-item .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .store-item.unlocked { border: 2px solid #16a34a; }
+    .store-item.locked { opacity: 0.6; }
+    .store-item.locked .btn { opacity: 0.5; cursor: not-allowed; }
+    .store-top-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
 
     /* ---------- GAME OVERLAY ---------- */
     .game-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
       z-index: 99999;
       justify-content: center;
       align-items: center;
@@ -707,9 +323,7 @@
       color: white;
       font-family: var(--font);
     }
-    .game-overlay.show {
-      display: flex;
-    }
+    .game-overlay.show { display: flex; }
     .game-overlay .game-container {
       background: #2d2d2d;
       border-radius: var(--radius);
@@ -735,54 +349,19 @@
       image-rendering: pixelated;
     }
     .game-overlay .close-game {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 28px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      transition: var(--transition);
+      position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; background: none; border: none;
+      color: var(--text-muted); transition: var(--transition);
     }
-    .game-overlay .close-game:hover {
-      color: var(--text);
-    }
+    .game-overlay .close-game:hover { color: var(--text); }
     .game-hud {
-      width: 100%;
-      max-width: 800px;
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 4px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 8px 8px 0 0;
-      margin-top: 4px;
-      flex-wrap: wrap;
+      width: 100%; max-width: 800px; display: flex; justify-content: space-between; padding: 8px 4px;
+      color: #fff; font-size: 14px; font-weight: 600; background: rgba(0,0,0,0.5); border-radius: 8px 8px 0 0; margin-top: 4px; flex-wrap: wrap;
     }
-    .game-hud span {
-      padding: 4px 12px;
-    }
-    .game-controls-hint {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 13px;
-      padding: 6px 0;
-      text-align: center;
-    }
-    .game-locked-msg {
-      color: #FF6B6B;
-      font-size: 18px;
-      font-weight: 700;
-      text-align: center;
-      padding: 20px;
-      background: rgba(0,0,0,0.5);
-      border-radius: var(--radius-sm);
-      margin: 20px 0;
-    }
+    .game-hud span { padding: 4px 12px; }
+    .game-controls-hint { color: rgba(255,255,255,0.6); font-size: 13px; padding: 6px 0; text-align: center; }
+    .game-locked-msg { color: #FF6B6B; font-size: 18px; font-weight: 700; text-align: center; padding: 20px; background: rgba(0,0,0,0.5); border-radius: var(--radius-sm); margin: 20px 0; }
 
-    /* ---------- NOTIFICATION BANNER ---------- */
+    /* ---------- NOTIFICATIONS ---------- */
     .notification-banner {
       display: none !important;
       position: fixed !important;
@@ -790,7 +369,7 @@
       left: 50% !important;
       transform: translateX(-50%) !important;
       background: var(--card-bg) !important;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25) !important;
       border-radius: var(--radius) !important;
       padding: 18px 24px !important;
       max-width: 600px !important;
@@ -800,57 +379,20 @@
       animation: slideDown 0.4s ease !important;
       border: 3px solid #FF6584 !important;
     }
-    .notification-banner.show {
-      display: block !important;
-    }
+    .notification-banner.show { display: block !important; }
     @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
+      from { opacity: 0; transform: translateX(-50%) translateY(-40px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
-    .notification-banner .notif-content {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-    }
-    .notification-banner .notif-icon {
-      font-size: 32px;
-      flex-shrink: 0;
-    }
-    .notification-banner .notif-text {
-      flex: 1;
-    }
-    .notification-banner .notif-text strong {
-      display: block;
-      font-size: 18px;
-    }
-    .notification-banner .notif-text p {
-      font-size: 15px;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-    .notification-banner .notif-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-      flex-wrap: wrap;
-    }
+    .notification-banner .notif-content { display: flex; align-items: flex-start; gap: 14px; }
+    .notification-banner .notif-icon { font-size: 32px; flex-shrink: 0; }
+    .notification-banner .notif-text { flex: 1; }
+    .notification-banner .notif-text strong { display: block; font-size: 18px; }
+    .notification-banner .notif-text p { font-size: 15px; color: var(--text-secondary); margin-top: 4px; }
+    .notification-banner .notif-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
     .notification-banner .notif-close {
-      background: none;
-      border: none;
-      font-size: 24px;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 0 4px;
-      line-height: 1;
-      position: absolute;
-      top: 12px;
-      right: 16px;
+      background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; padding: 0 4px;
+      line-height: 1; position: absolute; top: 12px; right: 16px;
     }
 
     /* ---------- PERMISSION TOAST ---------- */
@@ -866,64 +408,23 @@
       border: 1px solid var(--border);
       flex-wrap: wrap;
     }
-    .perm-toast p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      flex: 1;
-    }
-    .perm-toast .diagnostic {
-      font-size: 13px;
-      color: var(--text-muted);
-      background: var(--bg);
-      padding: 6px 12px;
-      border-radius: 8px;
-      width: 100%;
-      margin-top: 4px;
-    }
+    .perm-toast p { font-size: 14px; color: var(--text-secondary); flex: 1; }
+    .perm-toast .diagnostic { font-size: 13px; color: var(--text-muted); background: var(--bg); padding: 6px 12px; border-radius: 8px; width: 100%; margin-top: 4px; }
 
     /* ---------- RESPONSIVE ---------- */
     @media (max-width: 600px) {
-      body {
-        padding: 12px;
-      }
-      .header {
-        padding: 12px 16px;
-      }
-      .header-left h1 {
-        font-size: 20px;
-      }
-      .card {
-        padding: 16px 14px;
-      }
-      .form-inline {
-        padding: 12px;
-        flex-direction: column;
-      }
-      .item {
-        flex-wrap: wrap;
-        padding: 10px 12px;
-      }
-      .item .actions {
-        margin-top: 6px;
-        width: 100%;
-        justify-content: flex-end;
-      }
-      .tabs .tab-btn {
-        font-size: 13px;
-        padding: 6px 14px;
-      }
-      .timer-display {
-        font-size: 32px;
-      }
-      .store-grid {
-        grid-template-columns: 1fr;
-      }
-      .game-overlay .game-container {
-        padding: 14px;
-      }
-      .game-overlay .game-container canvas {
-        max-width: 100%;
-      }
+      body { padding: 12px; }
+      .header { padding: 12px 16px; }
+      .header-left h1 { font-size: 20px; }
+      .card { padding: 16px 14px; }
+      .form-inline { padding: 12px; flex-direction: column; }
+      .item { flex-wrap: wrap; padding: 10px 12px; }
+      .item .actions { margin-top: 6px; width: 100%; justify-content: flex-end; }
+      .tabs .tab-btn { font-size: 13px; padding: 6px 14px; }
+      .timer-display { font-size: 32px; }
+      .store-grid { grid-template-columns: 1fr; }
+      .game-overlay .game-container { padding: 14px; }
+      .game-overlay .game-container canvas { max-width: 100%; }
     }
   </style>
 </head>
@@ -1219,18 +720,17 @@
         let focusClaimed = false;
         let quickTaskClaimed = false;
 
-        // Pet city state
+        // Pet city state (simple, no NaN)
         let pet = {
-          hunger: 50,
-          happiness: 50,
+          hunger: 70,
+          happiness: 60,
+          energy: 80,
+          coins: 15,
           bananas: 3,
           toys: 1,
-          coins: 10,
-          energy: 80,
           plantsWatered: 0,
           flowersCollected: 0,
           petsFed: 0,
-          dailyChoresDone: false,
           choresCompletedToday: false
         };
 
@@ -1341,26 +841,21 @@
 
         // ---------- HELPERS ----------
         function generateId() { return Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7); }
-
         function todayStr() { return new Date().toISOString().slice(0, 10); }
-
         function getTodayDay() { return new Date().getDay(); }
-
         function formatTime(timeStr) {
           if (!timeStr) return '';
           const [h, m] = timeStr.split(':').map(Number);
           const ampm = h >= 12 ? 'PM' : 'AM';
           const h12 = h % 12 || 12;
-          return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
+          return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
         }
-
         function getDaysLabel(days) {
           if (!days || days.length === 0) return 'All days';
           if (days.length === 7) return 'Every day';
-          const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-          return days.map(d => names[d]).join(', ');
+          const names = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+          return days.map(d=>names[d]).join(', ');
         }
-
         function isTodayTask(task) {
           const today = getTodayDay();
           if (task.repeat === 'none') return task.date === todayStr();
@@ -1371,17 +866,15 @@
           }
           return false;
         }
-
         function isTaskActiveToday(task) {
           if (!task.active) return false;
           return isTodayTask(task);
         }
-
         function getTaskStatus(task) {
           if (task.completedToday) return 'completed';
           const now = new Date();
-          const [sh, sm] = task.startTime.split(':').map(Number);
-          const [eh, em] = task.endTime.split(':').map(Number);
+          const [sh,sm] = task.startTime.split(':').map(Number);
+          const [eh,em] = task.endTime.split(':').map(Number);
           const nowMinutes = now.getHours() * 60 + now.getMinutes();
           const startMinutes = sh * 60 + sm;
           const endMinutes = eh * 60 + em;
@@ -1389,7 +882,6 @@
           if (nowMinutes >= startMinutes && nowMinutes < endMinutes) return 'ongoing';
           return 'ended';
         }
-
         function escapeHtml(text) {
           if (!text) return '';
           const div = document.createElement('div');
@@ -1397,21 +889,17 @@
           return div.innerHTML;
         }
 
-        // ---------- ALL TASKS DONE CHECK ----------
         function allTasksDoneToday() {
           const todayTasks = tasks.filter(t => isTaskActiveToday(t));
-          if (todayTasks.length === 0) return true; // No tasks = done
+          if (todayTasks.length === 0) return true;
           const doneTasks = todayTasks.filter(t => t.completedToday);
           return doneTasks.length === todayTasks.length;
         }
 
         // ---------- LEVEL HELPERS ----------
         function getLevel(xpAmount) { return Math.floor(xpAmount / 100) + 1; }
-
         function getXPForLevel(lvl) { return (lvl - 1) * 100; }
-
         function getXPForNextLevel(lvl) { return lvl * 100; }
-
         function getLevelProgress(xpAmount) {
           const currentLevel = getLevel(xpAmount);
           const currentLevelXP = getXPForLevel(currentLevel);
@@ -1420,9 +908,7 @@
           return Math.min(100, Math.max(0, progress));
         }
 
-        // ---------- XP BOOSTER ----------
         function isBoosterActive() { return Date.now() < xpBoosterExpiry; }
-
         function getBoosterRemaining() {
           if (!isBoosterActive()) return 0;
           return Math.max(0, Math.floor((xpBoosterExpiry - Date.now()) / 1000));
@@ -1502,7 +988,6 @@
           } catch (_) {}
         }
 
-        // ========== THEME ==========
         function applyTheme(themeName) {
           const root = document.documentElement;
           const themes = {
@@ -1522,9 +1007,7 @@
         function applyBackground(bgName) {
           const body = document.body;
           body.classList.remove('bg-forest', 'bg-sunset', 'bg-midnight');
-          if (bgName && bgName !== 'default') {
-            body.classList.add(`bg-${bgName}`);
-          }
+          if (bgName && bgName !== 'default') body.classList.add(`bg-${bgName}`);
           settings.background = bgName;
           saveState();
         }
@@ -1545,7 +1028,7 @@
             giftClaimed = false;
             focusClaimed = false;
             quickTaskClaimed = false;
-            // Reset pet daily chores
+            // Reset pet chores
             pet.plantsWatered = 0;
             pet.flowersCollected = 0;
             pet.petsFed = 0;
@@ -1569,7 +1052,6 @@
           const yesterday = new Date();
           yesterday.setDate(yesterday.getDate() - 1);
           const yStr = yesterday.toISOString().slice(0, 10);
-
           let tasksYesterday = tasks.filter(task => {
             let active = false;
             if (task.repeat === 'none') active = (task.date === yStr);
@@ -1581,17 +1063,14 @@
             }
             return active;
           });
-
           let allDone = true;
           if (tasksYesterday.length > 0) {
             for (let task of tasksYesterday) {
               if (!task.completedDates || !task.completedDates.includes(yStr)) { allDone = false; break; }
             }
             if (allDone) {
-              if (lastStreakDate !== yStr) { streak += 1;
-                lastStreakDate = yStr; }
-            } else { streak = 0;
-              lastStreakDate = yStr; }
+              if (lastStreakDate !== yStr) { streak += 1; lastStreakDate = yStr; }
+            } else { streak = 0; lastStreakDate = yStr; }
           } else {
             if (lastStreakDate !== yStr) lastStreakDate = yStr;
           }
@@ -1604,7 +1083,7 @@
           streakHeader.textContent = streak;
         }
 
-        // ---------- XP SYSTEM ----------
+        // ---------- XP ----------
         function addXP(amount) {
           if (isBoosterActive()) amount = Math.floor(amount * 2);
           const oldLevel = getLevel(xp);
@@ -1645,8 +1124,7 @@
 
         // ---------- DAILY BONUS ----------
         function claimDailyBonus(type) {
-          let amount = 0;
-          let name = '';
+          let amount = 0, name = '';
           if (type === 'gift') {
             if (giftClaimed) return;
             amount = Math.floor(Math.random() * 11) + 5;
@@ -1676,30 +1154,15 @@
         }
 
         function updateDailyBonusUI() {
-          if (giftClaimed) {
-            giftClaimedEl.classList.remove('hidden');
-            claimGiftBtn.classList.add('hidden');
-          } else {
-            giftClaimedEl.classList.add('hidden');
-            claimGiftBtn.classList.remove('hidden');
-            dailyGiftValue.textContent = `+${Math.floor(Math.random() * 11) + 5} XP`;
-          }
-          if (focusClaimed) {
-            focusClaimedEl.classList.remove('hidden');
-            claimFocusBtn.classList.add('hidden');
-          } else {
-            focusClaimedEl.classList.add('hidden');
-            claimFocusBtn.classList.remove('hidden');
-            focusBonusValue.textContent = '+15 XP';
-          }
-          if (quickTaskClaimed) {
-            quickTaskClaimedEl.classList.remove('hidden');
-            claimQuickTaskBtn.classList.add('hidden');
-          } else {
-            quickTaskClaimedEl.classList.add('hidden');
-            claimQuickTaskBtn.classList.remove('hidden');
-            quickTaskValue.textContent = '+10 XP';
-          }
+          if (giftClaimed) { giftClaimedEl.classList.remove('hidden'); claimGiftBtn.classList.add('hidden'); }
+          else { giftClaimedEl.classList.add('hidden'); claimGiftBtn.classList.remove('hidden');
+            dailyGiftValue.textContent = `+${Math.floor(Math.random()*11)+5} XP`; }
+          if (focusClaimed) { focusClaimedEl.classList.remove('hidden'); claimFocusBtn.classList.add('hidden'); }
+          else { focusClaimedEl.classList.add('hidden'); claimFocusBtn.classList.remove('hidden');
+            focusBonusValue.textContent = '+15 XP'; }
+          if (quickTaskClaimed) { quickTaskClaimedEl.classList.remove('hidden'); claimQuickTaskBtn.classList.add('hidden'); }
+          else { quickTaskClaimedEl.classList.add('hidden'); claimQuickTaskBtn.classList.remove('hidden');
+            quickTaskValue.textContent = '+10 XP'; }
         }
 
         // ---------- RENDER ----------
@@ -1720,7 +1183,7 @@
           saveState();
         }
 
-        // ---------- TASKS & TODOS ----------
+        // ---------- TASKS ----------
         function renderTasks() {
           let todayTasks = tasks.filter(t => isTaskActiveToday(t));
           if (!showCompleted) todayTasks = todayTasks.filter(t => !t.completedToday);
@@ -1734,10 +1197,10 @@
             const status = getTaskStatus(task);
             let cls = 'item';
             let statusLabel = '';
-            if (task.completedToday) { cls += ' completed';
-              statusLabel = '✅ Done'; } else if (status === 'ongoing') { cls += ' ongoing';
-              statusLabel = '⏳ Ongoing'; } else if (status === 'ended') { cls += ' ended';
-              statusLabel = '⏰ Ended'; } else { statusLabel = '⏱ Waiting'; }
+            if (task.completedToday) { cls += ' completed'; statusLabel = '✅ Done'; }
+            else if (status === 'ongoing') { cls += ' ongoing'; statusLabel = '⏳ Ongoing'; }
+            else if (status === 'ended') { cls += ' ended'; statusLabel = '⏰ Ended'; }
+            else { statusLabel = '⏱ Waiting'; }
             const timeRange = `${formatTime(task.startTime)} – ${formatTime(task.endTime)}`;
             const repeatLabel = task.repeat === 'none' ? '' : (task.repeat === 'daily' ? '🔁 Daily' : `📅 ${getDaysLabel(task.days)}`);
             const isCompleted = task.completedToday;
@@ -1768,7 +1231,7 @@
             return t.days.includes(today);
           });
           if (!showCompleted) todayTodos = todayTodos.filter(t => !t.completedToday);
-          todayTodos.sort((a, b) => a.text.localeCompare(b.text));
+          todayTodos.sort((a,b) => a.text.localeCompare(b.text));
           if (todayTodos.length === 0) {
             todoList.innerHTML = `<div class="empty-state"><span class="icon">✅</span><p>No todos today.</p></div>`;
             return;
@@ -1794,20 +1257,16 @@
           const mondayOffset = (currentDay === 0 ? 6 : currentDay - 1);
           const monday = new Date(today);
           monday.setDate(today.getDate() - mondayOffset);
-          monday.setHours(0, 0, 0, 0);
-
+          monday.setHours(0,0,0,0);
           let html = `<div style="overflow-x:auto;"><table class="stats-table" style="width:100%;border-collapse:collapse;">
             <thead><tr><th>Day</th><th>Tasks</th><th>Completed</th><th>Progress</th></tr></thead><tbody>`;
-          let totalTasks = 0,
-            totalCompleted = 0;
+          let totalTasks = 0, totalCompleted = 0;
           for (let i = 0; i < 7; i++) {
             const d = new Date(monday);
             d.setDate(monday.getDate() + i);
             const dateStr = d.toISOString().slice(0, 10);
             const dayNum = d.getDay();
-            let tasksScheduled = 0,
-              tasksDone = 0;
-
+            let tasksScheduled = 0, tasksDone = 0;
             tasks.forEach(task => {
               let active = false;
               if (task.repeat === 'none') active = (task.date === dateStr);
@@ -1821,10 +1280,8 @@
                 if (task.completedDates && task.completedDates.includes(dateStr)) tasksDone++;
               }
             });
-
             totalTasks += tasksScheduled;
             totalCompleted += tasksDone;
-
             const taskPercent = tasksScheduled > 0 ? Math.round((tasksDone / tasksScheduled) * 100) : 0;
             const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
             const isToday = dateStr === todayStr();
@@ -1860,101 +1317,24 @@
           statsContent.innerHTML = html;
         }
 
-        // ---------- STORE (with locking) ----------
+        // ---------- STORE ----------
         function renderStore() {
           const tasksDone = allTasksDoneToday();
-          const items = [{
-            id: 'pet',
-            name: '🌆 Pet City',
-            description: 'Explore a city, do daily chores, earn XP!',
-            price: 150,
-            type: 'game',
-            locked: !tasksDone
-          }, {
-            id: 'monkey',
-            name: '🌴 Monkey World',
-            description: 'Explore a jungle, collect bananas, chase the thief!',
-            price: 200,
-            type: 'game',
-            locked: !tasksDone
-          }, {
-            id: 'theme_gold',
-            name: '✨ Gold Theme',
-            description: 'Change the accent color to gold.',
-            price: 100,
-            type: 'theme',
-            locked: false
-          }, {
-            id: 'theme_cosmic',
-            name: '🌌 Cosmic Theme',
-            description: 'Purple and teal cosmic vibe.',
-            price: 120,
-            type: 'theme',
-            locked: false
-          }, {
-            id: 'theme_ocean',
-            name: '🌊 Ocean Theme',
-            description: 'Calming ocean blues and greens.',
-            price: 110,
-            type: 'theme',
-            locked: false
-          }, {
-            id: 'sound_pack',
-            name: '🎵 Custom Sound Pack',
-            description: 'Changes notification sounds to a fun melody.',
-            price: 80,
-            type: 'sound',
-            locked: false
-          }, {
-            id: 'extra_pet',
-            name: '🐶 Extra Pet (Dog)',
-            description: 'Unlock a dog companion in Pet City.',
-            price: 180,
-            type: 'pet_skin',
-            locked: !tasksDone
-          }, {
-            id: 'pet_cat',
-            name: '🐱 Pet Cat',
-            description: 'Unlock a cat companion in Pet City.',
-            price: 150,
-            type: 'pet_skin',
-            locked: !tasksDone
-          }, {
-            id: 'pet_bird',
-            name: '🐦 Pet Bird',
-            description: 'Unlock a bird companion in Pet City.',
-            price: 120,
-            type: 'pet_skin',
-            locked: !tasksDone
-          }, {
-            id: 'bg_forest',
-            name: '🌲 Forest Background',
-            description: 'Change the app background to a forest green gradient.',
-            price: 80,
-            type: 'background',
-            locked: false
-          }, {
-            id: 'bg_sunset',
-            name: '🌅 Sunset Background',
-            description: 'Change the app background to a warm sunset gradient.',
-            price: 90,
-            type: 'background',
-            locked: false
-          }, {
-            id: 'bg_midnight',
-            name: '🌙 Midnight Background',
-            description: 'Change the app background to a deep night gradient.',
-            price: 100,
-            type: 'background',
-            locked: false
-          }, {
-            id: 'xp_booster',
-            name: '🚀 XP Booster (24h)',
-            description: 'Double all XP gains for 24 hours!',
-            price: 200,
-            type: 'booster',
-            locked: false
-          }];
+          const items = [
+            { id: 'pet', name: '🌆 Pet City', desc: 'Explore a city, do chores, earn XP!', price: 150, type: 'game', locked: !tasksDone },
+            { id: 'monkey', name: '🌴 Monkey World', desc: 'Explore a jungle, collect bananas!', price: 200, type: 'game', locked: !tasksDone },
+            { id: 'theme_gold', name: '✨ Gold Theme', desc: 'Gold accent color.', price: 100, type: 'theme', locked: false },
+            { id: 'theme_cosmic', name: '🌌 Cosmic Theme', desc: 'Purple & teal cosmic vibe.', price: 120, type: 'theme', locked: false },
+            { id: 'theme_ocean', name: '🌊 Ocean Theme', desc: 'Calming ocean blues.', price: 110, type: 'theme', locked: false },
+            { id: 'sound_pack', name: '🎵 Custom Sound Pack', desc: 'Fun melody instead of beeps.', price: 80, type: 'sound', locked: false },
+            { id: 'extra_pet', name: '🐶 Extra Pet (Dog)', desc: 'Dog companion in Pet City.', price: 180, type: 'pet_skin', locked: !tasksDone },
+            { id: 'pet_cat', name: '🐱 Pet Cat', desc: 'Cat companion in Pet City.', price: 150, type: 'pet_skin', locked: !tasksDone },
+            { id: 'pet_bird', name: '🐦 Pet Bird', desc: 'Bird companion in Pet City.', price: 120, type: 'pet_skin', locked: !tasksDone },
+            { id: 'bg_forest', name: '🌲 Forest Background', desc: 'Forest green gradient.', price: 80, type: 'background', locked: false },
+            { id: 'bg_sunset', name: '🌅 Sunset Background', desc: 'Warm sunset gradient.', price: 90, type: 'background', locked: false },
+            { id: 'bg_midnight', name: '🌙 Midnight Background', desc: 'Deep night gradient.', price: 100, type: 'background', locked: false },
+            { id: 'xp_booster', name: '🚀 XP Booster (24h)', desc: 'Double all XP gains for 24h!', price: 200, type: 'booster', locked: false }
+          ];
 
           let html = '';
           items.forEach(item => {
@@ -1988,13 +1368,12 @@
               const canAfford = xp >= item.price;
               const buyDisabled = !canAfford || isLocked;
               const label = isLocked ? '🔒 Locked (finish tasks)' : `Buy (${item.price} XP)`;
-              buttonHtml =
-                `<button class="btn btn-primary" data-action="buy" data-id="${item.id}" ${buyDisabled ? 'disabled' : ''}>${label}</button>`;
+              buttonHtml = `<button class="btn btn-primary" data-action="buy" data-id="${item.id}" ${buyDisabled ? 'disabled' : ''}>${label}</button>`;
             }
             const lockClass = isLocked && !isUnlocked ? 'locked' : '';
             html += `<div class="store-item ${isUnlocked ? 'unlocked' : ''} ${lockClass}">
               <h3>${item.name}</h3>
-              <p>${item.description}</p>
+              <p>${item.desc}</p>
               <div class="price">${isUnlocked ? '✅ Unlocked' : `${item.price} XP`}</div>
               ${buttonHtml}
             </div>`;
@@ -2005,8 +1384,7 @@
           storeGrid.addEventListener('click', function(e) {
             const btn = e.target.closest('button');
             if (!btn) return;
-            const action = btn.dataset.action;
-            const id = btn.dataset.id;
+            const action = btn.dataset.action, id = btn.dataset.id;
             if (action === 'buy') {
               const item = items.find(i => i.id === id);
               if (!item) return;
@@ -2071,7 +1449,7 @@
           }
         }
 
-        // ========== PET CITY (NEW) ==========
+        // ========== PET CITY (REWRITTEN - WORKING & FUN) ==========
         function initPetCity() {
           const container = gameContent;
           container.innerHTML = '';
@@ -2082,61 +1460,70 @@
           if (unlockedItems.includes('pet_cat')) petEmojis.push('🐱');
           if (unlockedItems.includes('pet_bird')) petEmojis.push('🐦');
 
-          // City state
+          // Game state
           const state = {
-            player: { x: 400, y: 300, w: 20, h: 28 },
-            pets: petEmojis.map((e, i) => ({ emoji: e, x: 400 - (i + 1) * 30, y: 330, targetX: 400, targetY: 330 })),
+            player: { x: 400, y: 300 },
+            pets: petEmojis.map((e, i) => ({ emoji: e, x: 400 - (i+1)*35, y: 310 })),
             npcs: [
-              { x: 100, y: 150, emoji: '🧑', text: '🌱 Water the plants in the garden!', spoken: false },
-              { x: 700, y: 500, emoji: '👩', text: '🍌 Feed your pets at home!', spoken: false },
-              { x: 500, y: 80, emoji: '🧑‍🌾', text: '🌸 Collect flowers in the park!', spoken: false }
+              { x: 150, y: 150, emoji: '🧑', text: '🌱 Water the plants in the garden for XP!', spoken: false },
+              { x: 650, y: 450, emoji: '👩', text: '🍌 Feed your pets at home!', spoken: false },
+              { x: 400, y: 80, emoji: '🧑‍🌾', text: '🌸 Collect all 5 flowers in the park!', spoken: false }
             ],
             buildings: [
-              { x: 80, y: 80, w: 100, h: 80, label: '🏠 Home', color: '#DEB887', action: 'home' },
-              { x: 350, y: 50, w: 100, h: 80, label: '🌱 Garden', color: '#90EE90', action: 'garden' },
-              { x: 620, y: 80, w: 100, h: 80, label: '☕ Café', color: '#D2B48C', action: 'cafe' },
-              { x: 80, y: 450, w: 100, h: 80, label: '🌳 Park', color: '#32CD32', action: 'park' },
-              { x: 620, y: 450, w: 100, h: 80, label: '🛒 Shop', color: '#F4A460', action: 'shop' }
+              { x: 50, y: 50, w: 100, h: 80, label: '🏠 Home', color: '#DEB887', action: 'home' },
+              { x: 350, y: 30, w: 100, h: 80, label: '🌱 Garden', color: '#90EE90', action: 'garden' },
+              { x: 650, y: 50, w: 100, h: 80, label: '☕ Café', color: '#D2B48C', action: 'cafe' },
+              { x: 50, y: 450, w: 100, h: 80, label: '🌳 Park', color: '#32CD32', action: 'park' },
+              { x: 650, y: 450, w: 100, h: 80, label: '🛒 Shop', color: '#F4A460', action: 'shop' }
             ],
-            // In-game items
-            plants: [{ x: 380, y: 120, watered: false }, { x: 400, y: 140, watered: false }, { x: 420, y: 120,
-              watered: false }],
-            flowers: [{ x: 110, y: 480, collected: false }, { x: 130, y: 500, collected: false }, { x: 150, y: 480,
-              collected: false }, { x: 120, y: 520, collected: false }, { x: 140, y: 510, collected: false }],
+            plants: [
+              { x: 380, y: 80, watered: false }, { x: 400, y: 100, watered: false }, { x: 420, y: 80, watered: false }
+            ],
+            flowers: [
+              { x: 80, y: 480, collected: false }, { x: 100, y: 500, collected: false },
+              { x: 120, y: 480, collected: false }, { x: 90, y: 520, collected: false },
+              { x: 110, y: 510, collected: false }
+            ],
             worldWidth: 800,
             worldHeight: 600,
             keys: {},
             running: true,
-            inBuilding: null, // 'home', 'garden', 'cafe', 'park', 'shop'
-            interactionMessage: '',
-            showMessage: false,
+            inBuilding: null,
+            message: '',
             messageTimer: 0,
             shopItems: [
-              { name: '🍌 Banana', price: 3, action: 'buy_banana' },
-              { name: '🎾 Toy', price: 5, action: 'buy_toy' }
+              { name: '🍌 Banana (2 coins)', price: 2, action: 'buy_banana' },
+              { name: '🎾 Toy (4 coins)', price: 4, action: 'buy_toy' }
             ]
           };
 
-          // Load saved state into game
-          state.player.x = 400;
-          state.player.y = 300;
-          // Copy pet data
-          const p = pet;
-          // We'll use pet data for persistence
+          // Copy pet data into local mutable object
+          const p = {
+            hunger: pet.hunger,
+            happiness: pet.happiness,
+            energy: pet.energy,
+            coins: pet.coins,
+            bananas: pet.bananas,
+            toys: pet.toys,
+            plantsWatered: pet.plantsWatered,
+            flowersCollected: pet.flowersCollected,
+            petsFed: pet.petsFed,
+            choresCompletedToday: pet.choresCompletedToday
+          };
 
           // HUD
           const hud = document.createElement('div');
           hud.className = 'game-hud';
           hud.innerHTML = `
-            <span>❤️ <span id="petHunger">${p.hunger}</span>%</span>
-            <span>😊 <span id="petHappiness">${p.happiness}</span>%</span>
-            <span>⚡ <span id="petEnergy">${p.energy}</span>%</span>
-            <span>🪙 <span id="petCoins">${p.coins}</span></span>
-            <span>🍌 <span id="petBananas">${p.bananas}</span></span>
-            <span>🎾 <span id="petToys">${p.toys}</span></span>
+            <span>❤️ <span id="gHunger">${Math.round(p.hunger)}</span>%</span>
+            <span>😊 <span id="gHappiness">${Math.round(p.happiness)}</span>%</span>
+            <span>⚡ <span id="gEnergy">${Math.round(p.energy)}</span>%</span>
+            <span>🪙 <span id="gCoins">${p.coins}</span></span>
+            <span>🍌 <span id="gBananas">${p.bananas}</span></span>
+            <span>🎾 <span id="gToys">${p.toys}</span></span>
           `;
 
-          // Chores progress
+          // Chores
           const choreDiv = document.createElement('div');
           choreDiv.style.cssText =
             'width:100%;max-width:800px;background:rgba(0,0,0,0.4);padding:6px 12px;border-radius:0 0 8px 8px;color:#fff;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;';
@@ -2144,7 +1531,7 @@
             <span>🌱 Watered: <span id="chorePlants">${p.plantsWatered}</span>/3</span>
             <span>🐾 Pets fed: <span id="chorePets">${p.petsFed}</span>/2</span>
             <span>🌸 Flowers: <span id="choreFlowers">${p.flowersCollected}</span>/5</span>
-            <span id="choreStatus" style="color:#FFD700;">${p.choresCompletedToday ? '✅ All chores done! +15 XP' : 'Complete all chores for +15 XP!'}</span>
+            <span id="choreStatus" style="color:#FFD700;">${p.choresCompletedToday ? '✅ All done! +15 XP' : 'Complete all chores for +15 XP!'}</span>
           `;
 
           const canvas = document.createElement('canvas');
@@ -2154,7 +1541,7 @@
 
           const controls = document.createElement('div');
           controls.className = 'game-controls-hint';
-          controls.textContent = 'Arrow keys to move • Space: interact/enter building • ESC: exit building';
+          controls.textContent = 'Arrow keys: move • Space: interact/enter • ESC: exit building';
 
           container.appendChild(hud);
           container.appendChild(choreDiv);
@@ -2168,11 +1555,11 @@
             state.keys[e.key] = true;
             if (e.key === ' ' || e.key === 'Space') {
               e.preventDefault();
-              handleInteraction(state);
+              handleInteraction(state, p);
             }
             if (e.key === 'Escape') {
               state.inBuilding = null;
-              state.showMessage = false;
+              state.message = '';
             }
           }
 
@@ -2191,24 +1578,24 @@
             renderPetCity(state, ctx, p);
 
             // Update HUD
-            document.getElementById('petHunger').textContent = Math.round(p.hunger);
-            document.getElementById('petHappiness').textContent = Math.round(p.happiness);
-            document.getElementById('petEnergy').textContent = Math.round(p.energy);
-            document.getElementById('petCoins').textContent = p.coins;
-            document.getElementById('petBananas').textContent = p.bananas;
-            document.getElementById('petToys').textContent = p.toys;
+            document.getElementById('gHunger').textContent = Math.round(p.hunger);
+            document.getElementById('gHappiness').textContent = Math.round(p.happiness);
+            document.getElementById('gEnergy').textContent = Math.round(p.energy);
+            document.getElementById('gCoins').textContent = p.coins;
+            document.getElementById('gBananas').textContent = p.bananas;
+            document.getElementById('gToys').textContent = p.toys;
             document.getElementById('chorePlants').textContent = p.plantsWatered;
             document.getElementById('chorePets').textContent = p.petsFed;
             document.getElementById('choreFlowers').textContent = p.flowersCollected;
+
             const choresDone = p.plantsWatered >= 3 && p.petsFed >= 2 && p.flowersCollected >= 5;
             if (choresDone && !p.choresCompletedToday) {
               p.choresCompletedToday = true;
               addXP(15);
-              showBonusNotification('🌆 City Chores Done!', 'You completed all daily chores! +15 XP');
+              showBonusNotification('🌆 Chores Done!', 'All daily chores complete! +15 XP');
               playNotificationSound();
             }
-            document.getElementById('choreStatus').textContent = p.choresCompletedToday ? '✅ All chores done! +15 XP' :
-              'Complete all chores for +15 XP!';
+            document.getElementById('choreStatus').textContent = p.choresCompletedToday ? '✅ All done! +15 XP' : 'Complete all chores for +15 XP!';
 
             petCity.animationId = requestAnimationFrame(gameLoop);
           }
@@ -2218,7 +1605,7 @@
             if (petCity.animationId) cancelAnimationFrame(petCity.animationId);
             document.removeEventListener('keydown', keyDown);
             document.removeEventListener('keyup', keyUp);
-            // Save pet data back
+            // Save back
             pet.hunger = p.hunger;
             pet.happiness = p.happiness;
             pet.energy = p.energy;
@@ -2226,8 +1613,8 @@
             pet.bananas = p.bananas;
             pet.toys = p.toys;
             pet.plantsWatered = p.plantsWatered;
-            pet.petsFed = p.petsFed;
             pet.flowersCollected = p.flowersCollected;
+            pet.petsFed = p.petsFed;
             pet.choresCompletedToday = p.choresCompletedToday;
             saveState();
             gameOverlay.classList.remove('show');
@@ -2237,38 +1624,57 @@
           petCity.animationId = requestAnimationFrame(gameLoop);
         }
 
-        function handleInteraction(state) {
-          const p = pet;
+        function handleInteraction(state, p) {
           const player = state.player;
-          const bx = player.x,
-            by = player.y;
+          const bx = player.x, by = player.y;
 
-          // Check if near a building
+          // Check buildings
           for (let b of state.buildings) {
             if (bx > b.x - 20 && bx < b.x + b.w + 20 && by > b.y - 20 && by < b.y + b.h + 20) {
               state.inBuilding = b.action;
-              state.showMessage = false;
+              state.message = `Entered ${b.label}`;
               return;
             }
           }
 
-          // Check if near NPC
+          // Check NPCs
           for (let npc of state.npcs) {
-            const dx = npc.x - bx;
-            const dy = npc.y - by;
-            if (Math.sqrt(dx * dx + dy * dy) < 40) {
-              showBonusNotification('💬 NPC says:', npc.text);
+            const dx = npc.x - bx, dy = npc.y - by;
+            if (Math.sqrt(dx*dx + dy*dy) < 50) {
+              showBonusNotification('💬 ' + npc.emoji + ' says:', npc.text);
               npc.spoken = true;
               return;
             }
           }
 
-          // Check if near plants (garden)
-          if (state.inBuilding === 'garden' || state.inBuilding === null) {
+          // In building interactions
+          if (state.inBuilding === 'home') {
+            // Feed pets
+            for (let petObj of state.pets) {
+              const dx = petObj.x - bx, dy = petObj.y - by;
+              if (Math.sqrt(dx*dx + dy*dy) < 40 && p.bananas >= 1 && p.petsFed < 2) {
+                p.bananas--;
+                p.petsFed = Math.min(2, p.petsFed + 1);
+                p.happiness = Math.min(100, p.happiness + 10);
+                p.hunger = Math.min(100, p.hunger + 5);
+                p.energy = Math.max(0, p.energy - 3);
+                playClickSound();
+                showBonusNotification('🍌 Pet fed!', '+happiness!');
+                return;
+              }
+            }
+            if (p.petsFed < 2) {
+              showBonusNotification('🐾 Feed pets', 'Walk near a pet and press Space (need bananas).');
+            } else {
+              showBonusNotification('🐾 All fed!', 'Your pets are full and happy.');
+            }
+            return;
+          }
+
+          if (state.inBuilding === 'garden') {
             for (let plant of state.plants) {
-              const dx = plant.x - bx;
-              const dy = plant.y - by;
-              if (Math.sqrt(dx * dx + dy * dy) < 30 && !plant.watered && p.energy >= 5) {
+              const dx = plant.x - bx, dy = plant.y - by;
+              if (Math.sqrt(dx*dx + dy*dy) < 30 && !plant.watered && p.energy >= 5) {
                 plant.watered = true;
                 p.plantsWatered = Math.min(3, p.plantsWatered + 1);
                 p.energy = Math.max(0, p.energy - 5);
@@ -2278,14 +1684,14 @@
                 return;
               }
             }
+            showBonusNotification('🌱 Garden', 'Walk near a plant and press Space to water it.');
+            return;
           }
 
-          // Check if near flowers (park)
-          if (state.inBuilding === 'park' || state.inBuilding === null) {
+          if (state.inBuilding === 'park') {
             for (let flower of state.flowers) {
-              const dx = flower.x - bx;
-              const dy = flower.y - by;
-              if (Math.sqrt(dx * dx + dy * dy) < 30 && !flower.collected) {
+              const dx = flower.x - bx, dy = flower.y - by;
+              if (Math.sqrt(dx*dx + dy*dy) < 30 && !flower.collected) {
                 flower.collected = true;
                 p.flowersCollected = Math.min(5, p.flowersCollected + 1);
                 p.energy = Math.max(0, p.energy - 2);
@@ -2295,98 +1701,66 @@
                 return;
               }
             }
+            showBonusNotification('🌸 Park', 'Walk near a flower and press Space to collect it.');
+            return;
           }
 
-          // Check if near pets (home)
-          if (state.inBuilding === 'home' || state.inBuilding === null) {
-            for (let petObj of state.pets) {
-              const dx = petObj.x - bx;
-              const dy = petObj.y - by;
-              if (Math.sqrt(dx * dx + dy * dy) < 40 && p.bananas >= 1 && p.petsFed < 2) {
-                p.bananas--;
-                p.petsFed = Math.min(2, p.petsFed + 1);
-                p.happiness = Math.min(100, p.happiness + 10);
-                p.hunger = Math.min(100, p.hunger + 5);
-                p.energy = Math.max(0, p.energy - 3);
-                playClickSound();
-                showBonusNotification('🍌 Pet fed!', 'Your pet is happy!');
-                return;
-              }
+          if (state.inBuilding === 'cafe') {
+            if (p.coins >= 2) {
+              p.coins -= 2;
+              p.energy = Math.min(100, p.energy + 30);
+              p.happiness = Math.min(100, p.happiness + 5);
+              addXP(1);
+              playClickSound();
+              showBonusNotification('☕ Coffee!', 'Energy restored! +1 XP');
+              return;
+            } else {
+              showBonusNotification('☕ Not enough coins!', 'Coffee costs 2 coins.');
             }
+            return;
           }
 
-          // Café
-          if (state.inBuilding === 'cafe' || state.inBuilding === null) {
-            // Check if near café counter
-            const cafe = state.buildings.find(b => b.action === 'cafe');
-            if (cafe && bx > cafe.x && bx < cafe.x + cafe.w && by > cafe.y && by < cafe.y + cafe.h) {
-              if (p.coins >= 2) {
-                p.coins -= 2;
-                p.energy = Math.min(100, p.energy + 30);
-                p.happiness = Math.min(100, p.happiness + 5);
-                addXP(1);
-                playClickSound();
-                showBonusNotification('☕ Coffee!', 'Energy restored! +1 XP');
-                return;
-              } else {
-                showBonusNotification('☕ Not enough coins!', 'You need 2 coins for coffee.');
-                return;
-              }
+          if (state.inBuilding === 'shop') {
+            if (p.coins >= 2) {
+              p.coins -= 2;
+              p.bananas += 1;
+              playClickSound();
+              showBonusNotification('🛒 Bought banana!', '+1 banana');
+              return;
+            } else if (p.coins >= 4) {
+              p.coins -= 4;
+              p.toys += 1;
+              playClickSound();
+              showBonusNotification('🛒 Bought toy!', '+1 toy');
+              return;
+            } else {
+              showBonusNotification('🛒 Not enough coins!', 'Banana: 2 coins, Toy: 4 coins');
             }
+            return;
           }
 
-          // Shop
-          if (state.inBuilding === 'shop' || state.inBuilding === null) {
-            const shop = state.buildings.find(b => b.action === 'shop');
-            if (shop && bx > shop.x && bx < shop.x + shop.w && by > shop.y && by < shop.y + shop.h) {
-              // Show shop UI in a simple way
-              if (p.coins >= 3) {
-                p.coins -= 3;
-                p.bananas += 2;
-                playClickSound();
-                showBonusNotification('🛒 Bought bananas!', '+2 bananas');
-                return;
-              } else if (p.coins >= 5) {
-                p.coins -= 5;
-                p.toys += 1;
-                playClickSound();
-                showBonusNotification('🛒 Bought toy!', '+1 toy');
-                return;
-              } else {
-                showBonusNotification('🛒 Not enough coins!', 'Bananas: 3 coins, Toys: 5 coins');
-                return;
-              }
-            }
-          }
-
-          showBonusNotification('👀 Nothing here.', 'Walk to a building and press Space.');
+          showBonusNotification('👀 Nothing here.', 'Walk to a building, NPC, or object and press Space.');
         }
 
         function updatePetCity(state, dt, p) {
           const speed = 120;
-          let dx = 0,
-            dy = 0;
+          let dx = 0, dy = 0;
           if (state.keys['ArrowLeft']) dx = -speed;
           if (state.keys['ArrowRight']) dx = speed;
           if (state.keys['ArrowUp']) dy = -speed;
           if (state.keys['ArrowDown']) dy = speed;
-          if (dx && dy) { dx *= 0.707;
-            dy *= 0.707; }
+          if (dx && dy) { dx *= 0.707; dy *= 0.707; }
 
           // If in building, limit movement
           if (state.inBuilding) {
             const building = state.buildings.find(b => b.action === state.inBuilding);
             if (building) {
-              // Allow movement inside building area
-              const cx = building.x + building.w / 2;
-              const cy = building.y + building.h / 2;
               state.player.x += dx * dt;
               state.player.y += dy * dt;
               state.player.x = Math.max(building.x + 10, Math.min(building.x + building.w - 10, state.player.x));
               state.player.y = Math.max(building.y + 10, Math.min(building.y + building.h - 10, state.player.y));
-              // Pets follow in building
               state.pets.forEach((pet, i) => {
-                const targetX = state.player.x - (i + 1) * 25;
+                const targetX = state.player.x - (i+1)*25;
                 const targetY = state.player.y + 10;
                 pet.x += (targetX - pet.x) * 0.05;
                 pet.y += (targetY - pet.y) * 0.05;
@@ -2400,9 +1774,9 @@
           state.player.x = Math.max(20, Math.min(state.worldWidth - 20, state.player.x));
           state.player.y = Math.max(20, Math.min(state.worldHeight - 20, state.player.y));
 
-          // Pets follow player
+          // Pets follow
           state.pets.forEach((pet, i) => {
-            const targetX = state.player.x - (i + 1) * 28;
+            const targetX = state.player.x - (i+1)*30;
             const targetY = state.player.y + 15;
             pet.x += (targetX - pet.x) * 0.04;
             pet.y += (targetY - pet.y) * 0.04;
@@ -2410,78 +1784,80 @@
 
           // NPCs wander
           state.npcs.forEach(npc => {
-            if (!npc.targetX || Math.random() < 0.002) {
+            if (!npc.targetX || Math.random() < 0.003) {
               npc.targetX = 50 + Math.random() * 700;
               npc.targetY = 50 + Math.random() * 500;
             }
             const dx2 = npc.targetX - npc.x;
             const dy2 = npc.targetY - npc.y;
-            const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+            const dist = Math.sqrt(dx2*dx2 + dy2*dy2);
             if (dist > 5) {
-              npc.x += (dx2 / dist) * 30 * dt;
-              npc.y += (dy2 / dist) * 30 * dt;
+              npc.x += (dx2 / dist) * 35 * dt;
+              npc.y += (dy2 / dist) * 35 * dt;
             }
             npc.x = Math.max(20, Math.min(780, npc.x));
             npc.y = Math.max(20, Math.min(580, npc.y));
           });
+
+          // Decay hunger and happiness slowly
+          p.hunger = Math.max(0, p.hunger - 0.3 * dt);
+          p.happiness = Math.max(0, p.happiness - 0.2 * dt);
+          if (p.hunger < 20) p.happiness -= 0.5 * dt;
         }
 
         function renderPetCity(state, ctx, p) {
           ctx.clearRect(0, 0, 800, 600);
 
-          // Sky / background
+          // Sky
           const grad = ctx.createLinearGradient(0, 0, 0, 600);
           grad.addColorStop(0, '#87CEEB');
-          grad.addColorStop(0.8, '#90EE90');
+          grad.addColorStop(0.6, '#90EE90');
           ctx.fillStyle = grad;
           ctx.fillRect(0, 0, 800, 600);
 
           // Ground
           ctx.fillStyle = '#7CCD7C';
-          ctx.fillRect(0, 380, 800, 220);
+          ctx.fillRect(0, 370, 800, 230);
           // Paths
           ctx.fillStyle = '#C4A882';
-          ctx.fillRect(350, 0, 20, 380);
-          ctx.fillRect(0, 350, 350, 20);
-          ctx.fillRect(450, 350, 350, 20);
-          ctx.fillRect(350, 380, 20, 220);
-          ctx.fillRect(0, 380, 350, 20);
-          ctx.fillRect(450, 380, 350, 20);
+          ctx.fillRect(350, 0, 20, 370);
+          ctx.fillRect(0, 340, 350, 20);
+          ctx.fillRect(450, 340, 350, 20);
+          ctx.fillRect(350, 370, 20, 230);
+          ctx.fillRect(0, 370, 350, 20);
+          ctx.fillRect(450, 370, 350, 20);
 
           // Buildings
           state.buildings.forEach(b => {
             ctx.fillStyle = b.color;
             ctx.shadowColor = 'rgba(0,0,0,0.2)';
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = 8;
             ctx.fillRect(b.x, b.y, b.w, b.h);
             ctx.shadowBlur = 0;
             ctx.fillStyle = '#000';
-            ctx.font = '20px sans-serif';
+            ctx.font = '18px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(b.label, b.x + b.w / 2, b.y + b.h / 2);
+            ctx.fillText(b.label, b.x + b.w/2, b.y + b.h/2 - 6);
             ctx.fillStyle = '#fff';
-            ctx.font = '14px sans-serif';
-            ctx.fillText(b.label.split(' ')[0], b.x + b.w / 2, b.y + b.h / 2 + 22);
-            // Building outline
+            ctx.font = '12px sans-serif';
+            ctx.fillText('Press Space', b.x + b.w/2, b.y + b.h/2 + 20);
             ctx.strokeStyle = '#8B7355';
             ctx.lineWidth = 2;
             ctx.strokeRect(b.x, b.y, b.w, b.h);
           });
 
-          // Garden plants
+          // Plants (garden)
           state.plants.forEach(plant => {
-            ctx.fillStyle = plant.watered ? '#228B22' : '#8B4513';
             ctx.font = '24px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(plant.watered ? '🌿' : '🌱', plant.x, plant.y);
           });
 
-          // Park flowers
+          // Flowers (park)
           state.flowers.forEach(flower => {
-            ctx.fillStyle = '#FF1493';
-            ctx.font = '20px sans-serif';
+            ctx.font = '22px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(flower.collected ? '🌿' : '🌸', flower.x, flower.y);
@@ -2489,21 +1865,21 @@
 
           // NPCs
           state.npcs.forEach(npc => {
-            ctx.font = '32px sans-serif';
+            ctx.font = '34px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(npc.emoji, npc.x, npc.y);
             if (!npc.spoken) {
               ctx.fillStyle = 'rgba(0,0,0,0.5)';
-              ctx.fillRect(npc.x - 30, npc.y - 30, 60, 20);
+              ctx.fillRect(npc.x - 35, npc.y - 32, 70, 18);
               ctx.fillStyle = '#fff';
               ctx.font = '10px sans-serif';
-              ctx.fillText('💬 Space', npc.x, npc.y - 20);
+              ctx.fillText('💬 Space', npc.x, npc.y - 22);
             }
           });
 
           // Pets
-          state.pets.forEach((pet, i) => {
+          state.pets.forEach(pet => {
             ctx.font = '28px serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -2520,7 +1896,7 @@
           let nearBuilding = false;
           for (let b of state.buildings) {
             if (state.player.x > b.x - 20 && state.player.x < b.x + b.w + 20 &&
-              state.player.y > b.y - 20 && state.player.y < b.y + b.h + 20) {
+                state.player.y > b.y - 20 && state.player.y < b.y + b.h + 20) {
               nearBuilding = true;
               break;
             }
@@ -2531,9 +1907,10 @@
             ctx.fillStyle = '#fff';
             ctx.font = '14px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('Press Space to enter building', 400, 28);
+            ctx.fillText('Press Space to enter', 400, 28);
           }
 
+          // Building interior overlay
           if (state.inBuilding) {
             ctx.fillStyle = 'rgba(0,0,0,0.7)';
             ctx.fillRect(0, 0, 800, 600);
@@ -2544,23 +1921,25 @@
             ctx.fillText(`🏠 ${b ? b.label : ''} (Press ESC to exit)`, 400, 40);
             ctx.fillStyle = '#ddd';
             ctx.font = '18px sans-serif';
-            // Building specific info
+
             if (state.inBuilding === 'home') {
-              ctx.fillText(`🍌 Bananas: ${p.bananas}   🐾 Feed pets (walk near them)`, 400, 90);
+              ctx.fillText(`🍌 Bananas: ${p.bananas}   🐾 Feed pets (walk near them, press Space)`, 400, 90);
               ctx.fillText('❤️ Happiness: ' + Math.round(p.happiness) + '%', 400, 130);
+              ctx.fillText('🐒 Your pets follow you!', 400, 170);
             } else if (state.inBuilding === 'garden') {
-              ctx.fillText(`🌱 Water plants (walk near them)   Energy: ${Math.round(p.energy)}%`, 400, 90);
-              ctx.fillText(`Plants watered: ${p.plantsWatered}/3`, 400, 130);
+              ctx.fillText(`🌱 Water plants (walk near them, press Space)   ⚡ Energy: ${Math.round(p.energy)}%`, 400, 90);
+              ctx.fillText(`Plants watered: ${p.plantsWatered}/3   +2 XP each`, 400, 130);
             } else if (state.inBuilding === 'park') {
-              ctx.fillText(`🌸 Collect flowers (walk near them)`, 400, 90);
-              ctx.fillText(`Flowers: ${p.flowersCollected}/5`, 400, 130);
+              ctx.fillText(`🌸 Collect flowers (walk near them, press Space)`, 400, 90);
+              ctx.fillText(`Flowers: ${p.flowersCollected}/5   +1 XP each`, 400, 130);
             } else if (state.inBuilding === 'cafe') {
               ctx.fillText(`☕ Coffee: 2 coins   🪙 Coins: ${p.coins}`, 400, 90);
               ctx.fillText('Walk to the counter and press Space to buy', 400, 130);
             } else if (state.inBuilding === 'shop') {
-              ctx.fillText(`🛒 Bananas: 3 coins   Toys: 5 coins   🪙 Coins: ${p.coins}`, 400, 90);
+              ctx.fillText(`🛒 Banana: 2 coins   Toy: 4 coins   🪙 Coins: ${p.coins}`, 400, 90);
               ctx.fillText('Walk to the counter and press Space to buy', 400, 130);
             }
+
             // Draw building interior mini-map
             if (b) {
               ctx.strokeStyle = '#888';
@@ -2568,23 +1947,44 @@
               ctx.strokeRect(b.x + 50, b.y + 50, b.w - 100, b.h - 100);
               ctx.fillStyle = '#aaa';
               ctx.fillRect(b.x + 60, b.y + 60, b.w - 120, b.h - 120);
+              ctx.fillStyle = '#fff';
+              ctx.font = '14px sans-serif';
+              ctx.fillText('📍 You are here', b.x + b.w/2, b.y + b.h/2);
+            }
+          }
+
+          // Chore progress inside the game view
+          const choresDone = p.plantsWatered >= 3 && p.petsFed >= 2 && p.flowersCollected >= 5;
+          if (!state.inBuilding) {
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillRect(10, 550, 300, 40);
+            ctx.fillStyle = '#fff';
+            ctx.font = '13px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(`🌱 ${p.plantsWatered}/3  🐾 ${p.petsFed}/2  🌸 ${p.flowersCollected}/5`, 20, 575);
+            if (choresDone && !p.choresCompletedToday) {
+              ctx.fillStyle = '#FFD700';
+              ctx.fillText('✅ All chores! Press Space to claim +15 XP', 190, 575);
             }
           }
         }
 
-        // ========== MONKEY WORLD (unchanged) ==========
+        // ========== MONKEY WORLD ==========
         function initMonkeyWorld() {
           const container = gameContent;
           container.innerHTML = '';
 
           const state = {
-            player: { x: 400, y: 300, w: 24, h: 32 },
+            player: { x: 400, y: 300 },
             bananas: [],
             collected: 0,
             target: 15,
             thief: null,
-            thiefCaught: false,
-            npcs: [],
+            npcs: [
+              { x: 300, y: 400, emoji: '🐒', text: '🍌 Bananas are near the river!', spoken: false },
+              { x: 800, y: 800, emoji: '🐒', text: '👀 The thief is scared of water!', spoken: false },
+              { x: 1200, y: 300, emoji: '🐒', text: '🌳 Check under the big trees!', spoken: false }
+            ],
             worldWidth: 1500,
             worldHeight: 1000,
             trees: [],
@@ -2597,34 +1997,22 @@
           };
 
           for (let i = 0; i < 35; i++) {
-            state.trees.push({
-              x: Math.random() * state.worldWidth,
-              y: Math.random() * state.worldHeight,
-              r: 20 + Math.random() * 25
-            });
+            state.trees.push({ x: Math.random() * state.worldWidth, y: Math.random() * state.worldHeight, r: 20 + Math.random() * 25 });
           }
-
           for (let i = 0; i < 25; i++) {
-            let x, y, valid;
-            let attempts = 0;
+            let x, y, valid, attempts = 0;
             do {
               x = 50 + Math.random() * (state.worldWidth - 100);
               y = 50 + Math.random() * (state.worldHeight - 100);
               valid = true;
               if (x > state.village.x - 30 && x < state.village.x + state.village.w + 30 &&
-                y > state.village.y - 30 && y < state.village.y + state.village.h + 30) valid = false;
+                  y > state.village.y - 30 && y < state.village.y + state.village.h + 30) valid = false;
               if (x > state.river.x - 20 && x < state.river.x + state.river.w + 20 &&
-                y > state.river.y - 20 && y < state.river.y + state.river.h + 20) valid = false;
+                  y > state.river.y - 20 && y < state.river.y + state.river.h + 20) valid = false;
               attempts++;
             } while (!valid && attempts < 50);
-            state.bananas.push({ x, y, collected: false, w: 16, h: 16 });
+            state.bananas.push({ x, y, collected: false });
           }
-
-          state.npcs = [
-            { x: 300, y: 400, emoji: '🐒', text: '🍌 Bananas are near the river!', spoken: false },
-            { x: 800, y: 800, emoji: '🐒', text: '👀 The thief is scared of water!', spoken: false },
-            { x: 1200, y: 300, emoji: '🐒', text: '🌳 Check under the big trees!', spoken: false }
-          ];
 
           state.thief = { x: 1300, y: 500, speed: 80, active: false };
 
@@ -2652,10 +2040,8 @@
 
           function keyDown(e) {
             state.keys[e.key] = true;
-            if (e.key === ' ' || e.key === 'Space') { e.preventDefault();
-              talkToNPC(state); }
+            if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); talkToNPC(state); }
           }
-
           function keyUp(e) { state.keys[e.key] = false; }
 
           document.addEventListener('keydown', keyDown);
@@ -2678,8 +2064,7 @@
             } else if (state.thief.active) {
               document.getElementById('monkeyStatus').textContent = '🕵️ The thief is running! Chase them!';
             } else {
-              document.getElementById('monkeyStatus').textContent =
-                `🍌 ${state.collected}/${state.target} bananas - find more!`;
+              document.getElementById('monkeyStatus').textContent = `🍌 ${state.collected}/${state.target} bananas - find more!`;
             }
 
             monkeyWorld.animationId = requestAnimationFrame(gameLoop);
@@ -2701,9 +2086,8 @@
           const player = state.player;
           let talked = false;
           state.npcs.forEach(npc => {
-            const dx = npc.x - player.x;
-            const dy = npc.y - player.y;
-            if (Math.sqrt(dx * dx + dy * dy) < 80) {
+            const dx = npc.x - player.x, dy = npc.y - player.y;
+            if (Math.sqrt(dx*dx + dy*dy) < 80) {
               showBonusNotification('🐒 NPC says:', npc.text);
               npc.spoken = true;
               talked = true;
@@ -2716,14 +2100,12 @@
 
         function updateMonkeyWorld(state, dt) {
           const speed = 150;
-          let dx = 0,
-            dy = 0;
+          let dx = 0, dy = 0;
           if (state.keys['ArrowLeft']) dx = -speed;
           if (state.keys['ArrowRight']) dx = speed;
           if (state.keys['ArrowUp']) dy = -speed;
           if (state.keys['ArrowDown']) dy = speed;
-          if (dx && dy) { dx *= 0.707;
-            dy *= 0.707; }
+          if (dx && dy) { dx *= 0.707; dy *= 0.707; }
 
           state.player.x += dx * dt;
           state.player.y += dy * dt;
@@ -2732,9 +2114,8 @@
 
           state.bananas.forEach(b => {
             if (!b.collected) {
-              const dx2 = b.x - state.player.x;
-              const dy2 = b.y - state.player.y;
-              if (Math.sqrt(dx2 * dx2 + dy2 * dy2) < 30) {
+              const dx2 = b.x - state.player.x, dy2 = b.y - state.player.y;
+              if (Math.sqrt(dx2*dx2 + dy2*dy2) < 30) {
                 b.collected = true;
                 state.collected++;
                 playClickSound();
@@ -2756,7 +2137,7 @@
             }
             const dxT = state.thief.targetX - state.thief.x;
             const dyT = state.thief.targetY - state.thief.y;
-            const distT = Math.sqrt(dxT * dxT + dyT * dyT);
+            const distT = Math.sqrt(dxT*dxT + dyT*dyT);
             if (distT > 5) {
               state.thief.x += (dxT / distT) * speed2 * dt;
               state.thief.y += (dyT / distT) * speed2 * dt;
@@ -2766,7 +2147,7 @@
 
             const dxP = state.thief.x - state.player.x;
             const dyP = state.thief.y - state.player.y;
-            if (Math.sqrt(dxP * dxP + dyP * dyP) < 30) {
+            if (Math.sqrt(dxP*dxP + dyP*dyP) < 30) {
               state.gameWon = true;
               state.thief.active = false;
               addXP(25);
@@ -2787,8 +2168,7 @@
           const camY = state.player.y - 300;
 
           ctx.clearRect(0, 0, 800, 600);
-
-          const grad = ctx.createLinearGradient(0, 0, 0, 600);
+          const grad = ctx.createLinearGradient(0,0,0,600);
           grad.addColorStop(0, '#87CEEB');
           grad.addColorStop(0.6, '#90EE90');
           ctx.fillStyle = grad;
@@ -2799,44 +2179,43 @@
 
           ctx.fillStyle = '#2E8B57';
           ctx.fillRect(0, 0, state.worldWidth, state.worldHeight);
-
-          for (let i = 0; i < 300; i++) {
-            ctx.fillStyle = i % 2 === 0 ? '#32CD32' : '#228B22';
-            ctx.fillRect((i * 40) % state.worldWidth, (i * 25) % state.worldHeight, 20, 12);
+          for (let i=0; i<300; i++) {
+            ctx.fillStyle = i%2===0 ? '#32CD32' : '#228B22';
+            ctx.fillRect((i*40)%state.worldWidth, (i*25)%state.worldHeight, 20, 12);
           }
 
           state.trees.forEach(tree => {
             ctx.fillStyle = '#8B4513';
-            ctx.fillRect(tree.x - 5, tree.y - 12, 10, 24);
+            ctx.fillRect(tree.x-5, tree.y-12, 10, 24);
             ctx.fillStyle = '#1a6b1a';
             ctx.beginPath();
-            ctx.arc(tree.x, tree.y - 25, tree.r, 0, Math.PI * 2);
+            ctx.arc(tree.x, tree.y-25, tree.r, 0, Math.PI*2);
             ctx.fill();
             ctx.fillStyle = '#228B22';
             ctx.beginPath();
-            ctx.arc(tree.x - 12, tree.y - 18, tree.r * 0.7, 0, Math.PI * 2);
+            ctx.arc(tree.x-12, tree.y-18, tree.r*0.7, 0, Math.PI*2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(tree.x + 12, tree.y - 18, tree.r * 0.7, 0, Math.PI * 2);
+            ctx.arc(tree.x+12, tree.y-18, tree.r*0.7, 0, Math.PI*2);
             ctx.fill();
           });
 
           ctx.fillStyle = '#DEB887';
           ctx.fillRect(state.village.x, state.village.y, state.village.w, state.village.h);
           ctx.fillStyle = '#A0522D';
-          for (let i = 0; i < 4; i++) {
-            ctx.fillRect(state.village.x + 20 + i * 50, state.village.y + 20, 30, 30);
-            ctx.fillRect(state.village.x + 20 + i * 50, state.village.y + 70, 30, 30);
+          for (let i=0; i<4; i++) {
+            ctx.fillRect(state.village.x+20+i*50, state.village.y+20, 30, 30);
+            ctx.fillRect(state.village.x+20+i*50, state.village.y+70, 30, 30);
           }
           ctx.fillStyle = '#8B0000';
-          ctx.fillRect(state.village.x + state.village.w / 2 - 15, state.village.y - 30, 30, 30);
+          ctx.fillRect(state.village.x+state.village.w/2-15, state.village.y-30, 30, 30);
 
-          ctx.fillStyle = 'rgba(30, 144, 255, 0.5)';
+          ctx.fillStyle = 'rgba(30,144,255,0.5)';
           ctx.fillRect(state.river.x, state.river.y, state.river.w, state.river.h);
-          for (let i = 0; i < 10; i++) {
+          for (let i=0; i<10; i++) {
             ctx.fillStyle = 'rgba(255,255,255,0.2)';
             ctx.beginPath();
-            ctx.arc(state.river.x + 20 + i * 40, state.river.y + 30 + Math.sin(i) * 20, 10, 0, Math.PI * 2);
+            ctx.arc(state.river.x+20+i*40, state.river.y+30+Math.sin(i)*20, 10, 0, Math.PI*2);
             ctx.fill();
           }
 
@@ -2844,16 +2223,16 @@
             if (!b.collected) {
               ctx.fillStyle = '#FFD700';
               ctx.beginPath();
-              ctx.arc(b.x, b.y, 9, 0, Math.PI * 2);
+              ctx.arc(b.x, b.y, 9, 0, Math.PI*2);
               ctx.fill();
               ctx.fillStyle = '#8B4513';
-              ctx.fillRect(b.x - 2, b.y - 11, 4, 5);
-              ctx.fillRect(b.x - 5, b.y - 7, 10, 4);
+              ctx.fillRect(b.x-2, b.y-11, 4, 5);
+              ctx.fillRect(b.x-5, b.y-7, 10, 4);
               ctx.shadowColor = '#FFD700';
               ctx.shadowBlur = 10;
               ctx.fillStyle = 'rgba(255,215,0,0.1)';
               ctx.beginPath();
-              ctx.arc(b.x, b.y, 15, 0, Math.PI * 2);
+              ctx.arc(b.x, b.y, 15, 0, Math.PI*2);
               ctx.fill();
               ctx.shadowBlur = 0;
             }
@@ -2867,7 +2246,7 @@
             if (!npc.spoken) {
               ctx.font = '12px sans-serif';
               ctx.fillStyle = '#fff';
-              ctx.fillText('💬 Press Space', npc.x, npc.y + 30);
+              ctx.fillText('💬 Press Space', npc.x, npc.y+30);
             }
           });
 
@@ -2878,7 +2257,7 @@
             ctx.fillText('🕵️', state.thief.x, state.thief.y);
             ctx.font = '20px sans-serif';
             ctx.fillStyle = '#FF0000';
-            ctx.fillText('❗', state.thief.x + 25, state.thief.y - 25);
+            ctx.fillText('❗', state.thief.x+25, state.thief.y-25);
           }
 
           ctx.font = '34px serif';
@@ -2948,18 +2327,16 @@
           const dayIndex = new Date().getDate();
           dailyQuote.textContent = quotes[dayIndex % quotes.length];
 
-          const upcoming = todayTasks.filter(t => !t.completedToday).sort((a, b) => a.startTime.localeCompare(b.startTime));
+          const upcoming = todayTasks.filter(t => !t.completedToday).sort((a,b) => a.startTime.localeCompare(b.startTime));
           if (upcoming.length > 0) {
             const next = upcoming[0];
-            dashNextTask.innerHTML =
-              `<strong>${escapeHtml(next.title)}</strong> at ${formatTime(next.startTime)} – ${formatTime(next.endTime)}`;
+            dashNextTask.innerHTML = `<strong>${escapeHtml(next.title)}</strong> at ${formatTime(next.startTime)} – ${formatTime(next.endTime)}`;
           } else {
             dashNextTask.textContent = 'All tasks done! 🎉';
           }
           moodToday.textContent = mood ? `Today's mood: ${mood}` : 'Today\'s mood: —';
         }
 
-        // ---------- HEADER ----------
         function updateHeader() {
           const now = new Date();
           currentDateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
@@ -2977,7 +2354,6 @@
           todoBadge.textContent = todoPending;
         }
 
-        // ---------- BONUS CHECKS ----------
         function checkDailyBonus() {
           const todayTasks = tasks.filter(t => isTaskActiveToday(t));
           const doneTasks = todayTasks.filter(t => t.completedToday);
@@ -3033,22 +2409,19 @@
             if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const now = audioCtx.currentTime;
-            let freq = 1200,
-              duration = 0.15;
+            let freq = 1200, duration = 0.15;
             if (unlockedItems.includes('sound_pack')) {
               const notes = [523, 659, 784, 659];
               notes.forEach((f, i) => {
                 const t = now + i * 0.15;
                 const osc = audioCtx.createOscillator();
                 const g = audioCtx.createGain();
-                osc.connect(g);
-                g.connect(audioCtx.destination);
+                osc.connect(g); g.connect(audioCtx.destination);
                 osc.frequency.value = f;
                 osc.type = 'sine';
                 g.gain.setValueAtTime(0.15, t);
                 g.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
-                osc.start(t);
-                osc.stop(t + 0.2);
+                osc.start(t); osc.stop(t + 0.2);
               });
               return;
             }
@@ -3056,14 +2429,12 @@
               const t = now + i * 0.25;
               const osc = audioCtx.createOscillator();
               const g = audioCtx.createGain();
-              osc.connect(g);
-              g.connect(audioCtx.destination);
+              osc.connect(g); g.connect(audioCtx.destination);
               osc.frequency.value = freq;
               osc.type = 'square';
               g.gain.setValueAtTime(0.4, t);
               g.gain.exponentialRampToValueAtTime(0.01, t + duration);
-              osc.start(t);
-              osc.stop(t + duration);
+              osc.start(t); osc.stop(t + duration);
             }
           } catch (_) {}
         }
@@ -3075,8 +2446,7 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const g = audioCtx.createGain();
-            osc.connect(g);
-            g.connect(audioCtx.destination);
+            osc.connect(g); g.connect(audioCtx.destination);
             osc.frequency.value = 800;
             osc.type = 'sine';
             g.gain.setValueAtTime(0.08, audioCtx.currentTime);
@@ -3106,8 +2476,7 @@
         function showTaskNotification(type, task) {
           const title = type === 'start' ? `▶️ Started: ${task.title}` : `⏹️ Ended: ${task.title}`;
           const timeRange = `${formatTime(task.startTime)} – ${formatTime(task.endTime)}`;
-          const desc = type === 'start' ? `📅 ${timeRange}\n${task.description || ''}` : `⏰ Time is up! (${timeRange})\n${task
-              .description || ''}`;
+          const desc = type === 'start' ? `📅 ${timeRange}\n${task.description || ''}` : `⏰ Time is up! (${timeRange})\n${task.description || ''}`;
 
           notifIcon.textContent = type === 'start' ? '▶️' : '⏹️';
           notifTitle.textContent = title;
@@ -3118,8 +2487,7 @@
             doneBtn.className = 'btn btn-success btn-sm';
             doneBtn.textContent = '✅ Mark Done';
             doneBtn.dataset.taskId = task.id;
-            doneBtn.addEventListener('click', () => { toggleTask(task.id);
-              notifBanner.classList.remove('show'); });
+            doneBtn.addEventListener('click', () => { toggleTask(task.id); notifBanner.classList.remove('show'); });
             notifActions.appendChild(doneBtn);
           }
           const dismissBtn = document.createElement('button');
@@ -3134,18 +2502,10 @@
 
           if ('Notification' in window && Notification.permission === 'granted') {
             try {
-              const options = {
-                body: desc,
-                icon: '📋',
-                tag: task.id + type,
-                requireInteraction: true,
-                silent: false,
-                data: { taskId: task.id, type: type }
-              };
+              const options = { body: desc, icon: '📋', tag: task.id + type, requireInteraction: true, silent: false, data: { taskId: task.id, type: type } };
               if (type === 'end') options.actions = [{ action: 'done', title: '✅ Mark Done' }];
               const n = new Notification(title, options);
-              n.onclick = () => { window.focus();
-                n.close(); };
+              n.onclick = () => { window.focus(); n.close(); };
               n.onaction = (e) => {
                 if (e.action === 'done') {
                   const taskId = e.target.data?.taskId;
@@ -3238,9 +2598,7 @@
           render();
         }
 
-        function deleteTask(id) { tasks = tasks.filter(t => t.id !== id);
-          saveState();
-          render(); }
+        function deleteTask(id) { tasks = tasks.filter(t => t.id !== id); saveState(); render(); }
 
         function editTask(id, newTitle, newDesc, newRepeat, newDays, newStart, newEnd) {
           const task = tasks.find(t => t.id === id);
@@ -3256,7 +2614,6 @@
           }
         }
 
-        // ---------- TODOS CRUD ----------
         function addTodo(text, days) {
           const todo = { id: generateId(), text: text.trim(), days: days || [], completedToday: false };
           todos.push(todo);
@@ -3271,51 +2628,36 @@
           const today = getTodayDay();
           if (todo.days.length === 0 || todo.days.includes(today)) {
             todo.completedToday = !todo.completedToday;
-            if (todo.completedToday) { addXP(5);
-              playClickSound(); }
+            if (todo.completedToday) { addXP(5); playClickSound(); }
             saveState();
             render();
           }
         }
 
-        function deleteTodo(id) { todos = todos.filter(t => t.id !== id);
-          saveState();
-          render(); }
+        function deleteTodo(id) { todos = todos.filter(t => t.id !== id); saveState(); render(); }
 
-        // ---------- MOOD ----------
-        function setMood(emoji) { mood = emoji;
-          saveState();
-          updateDashboard(); }
+        function setMood(emoji) { mood = emoji; saveState(); updateDashboard(); }
 
-        // ---------- TIMER FUNCTIONS ----------
+        // ---------- TIMER ----------
         function stopwatchTick() {
           stopwatchSeconds++;
-          const h = Math.floor(stopwatchSeconds / 3600),
-            m = Math.floor((stopwatchSeconds % 3600) / 60),
-            s = stopwatchSeconds % 60;
+          const h = Math.floor(stopwatchSeconds / 3600), m = Math.floor((stopwatchSeconds % 3600) / 60), s = stopwatchSeconds % 60;
           stopwatchDisplay.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }
 
         function countdownTick() {
-          if (countdownSeconds <= 0) { clearInterval(countdownInterval);
-            countdownInterval = null;
-            playNotificationSound();
-            alert('⏰ Countdown finished!'); return; }
+          if (countdownSeconds <= 0) { clearInterval(countdownInterval); countdownInterval = null; playNotificationSound(); alert('⏰ Countdown finished!'); return; }
           countdownSeconds--;
-          const m = Math.floor(countdownSeconds / 60),
-            s = countdownSeconds % 60;
+          const m = Math.floor(countdownSeconds / 60), s = countdownSeconds % 60;
           countdownDisplay.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
         }
 
         function setCountdownFromInputs() {
-          const min = parseInt(countdownMin.value) || 0,
-            sec = parseInt(countdownSec.value) || 0;
+          const min = parseInt(countdownMin.value) || 0, sec = parseInt(countdownSec.value) || 0;
           countdownSeconds = min * 60 + sec;
-          countdownDisplay.textContent =
-            `${String(Math.floor(countdownSeconds/60)).padStart(2,'0')}:${String(countdownSeconds%60).padStart(2,'0')}`;
+          countdownDisplay.textContent = `${String(Math.floor(countdownSeconds/60)).padStart(2,'0')}:${String(countdownSeconds%60).padStart(2,'0')}`;
         }
 
-        // ---------- PERMISSION UI ----------
         function updatePermissionUI() {
           if (!('Notification' in window)) {
             permToast.innerHTML = '<p>🔔 Notifications not supported.</p>';
@@ -3324,21 +2666,11 @@
             return;
           }
           switch (Notification.permission) {
-            case 'granted':
-              permToast.classList.add('hidden');
-              enableNotifBtn.disabled = true;
-              enableNotifBtn.textContent = '✅ Enabled';
-              break;
-            case 'denied':
-              permToast.classList.remove('hidden');
-              enableNotifBtn.disabled = true;
-              enableNotifBtn.textContent = '🚫 Blocked';
+            case 'granted': permToast.classList.add('hidden'); enableNotifBtn.disabled = true; enableNotifBtn.textContent = '✅ Enabled'; break;
+            case 'denied': permToast.classList.remove('hidden'); enableNotifBtn.disabled = true; enableNotifBtn.textContent = '🚫 Blocked';
               permDiagnostic.textContent = '⚠️ Notifications blocked. Click lock icon → Site settings → Notifications → Allow.';
               break;
-            default:
-              permToast.classList.remove('hidden');
-              enableNotifBtn.disabled = false;
-              enableNotifBtn.textContent = '🔔 Enable';
+            default: permToast.classList.remove('hidden'); enableNotifBtn.disabled = false; enableNotifBtn.textContent = '🔔 Enable';
               permDiagnostic.textContent = 'Click Enable to allow notifications.';
               break;
           }
@@ -3349,10 +2681,10 @@
           taskList.addEventListener('click', (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
-            const action = target.dataset.action,
-              id = target.dataset.id;
+            const action = target.dataset.action, id = target.dataset.id;
             if (action === 'toggle-task' || action === 'mark-done') toggleTask(id);
-            else if (action === 'delete-task') { if (confirm('Delete?')) deleteTask(id); } else if (action === 'edit-task') {
+            else if (action === 'delete-task') { if (confirm('Delete?')) deleteTask(id); }
+            else if (action === 'edit-task') {
               const task = tasks.find(t => t.id === id);
               if (!task) return;
               const newTitle = prompt('Title:', task.title);
@@ -3362,7 +2694,7 @@
               let newDays = task.days;
               if (newRepeat === 'weekly') {
                 const daysInput = prompt('Days (0-6, comma-separated):', task.days.join(','));
-                if (daysInput !== null) newDays = daysInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+                if (daysInput !== null) newDays = daysInput.split(',').map(s=>parseInt(s.trim())).filter(n=>!isNaN(n));
               } else newDays = [];
               const newStart = prompt('Start time (HH:MM):', task.startTime);
               if (newStart === null) return;
@@ -3379,8 +2711,7 @@
             else if (target.dataset.action === 'delete-todo') deleteTodo(target.dataset.id);
           });
 
-          notifClose.addEventListener('click', () => { notifBanner.classList.remove('show'); if (window.notifTimeout)
-              clearTimeout(window.notifTimeout); });
+          notifClose.addEventListener('click', () => { notifBanner.classList.remove('show'); if (window.notifTimeout) clearTimeout(window.notifTimeout); });
 
           toggleCompletedBtn.addEventListener('click', () => {
             showCompleted = !showCompleted;
@@ -3389,8 +2720,7 @@
           });
 
           testNotifBtn.addEventListener('click', () => {
-            const testTask = { id: 'test', title: '🔔 Test Alert', description: 'Test notification!', startTime: '00:00',
-              endTime: '00:01' };
+            const testTask = { id: 'test', title: '🔔 Test Alert', description: 'Test notification!', startTime: '00:00', endTime: '00:01' };
             showTaskNotification('end', testTask);
           });
 
@@ -3398,12 +2728,10 @@
 
           enableNotifBtn.addEventListener('click', function() {
             if (!('Notification' in window)) return;
-            if (Notification.permission === 'granted' || Notification.permission === 'denied') { updatePermissionUI();
-              return; }
+            if (Notification.permission === 'granted' || Notification.permission === 'denied') { updatePermissionUI(); return; }
             Notification.requestPermission().then(perm => {
               updatePermissionUI();
-              if (perm === 'granted') { try { new Notification('✅ Notifications enabled!', { body: 'You will get desktop alerts.',
-                    icon: '📋' }); } catch (_) {} }
+              if (perm === 'granted') { try { new Notification('✅ Notifications enabled!', { body: 'You will get desktop alerts.', icon: '📋' }); } catch (_) {} }
             });
           });
           dismissPermBtn.addEventListener('click', () => permToast.classList.add('hidden'));
@@ -3413,28 +2741,19 @@
           });
 
           // Timer
-          stopwatchStart.addEventListener('click', function() { if (stopwatchInterval) return;
-            stopwatchInterval = setInterval(stopwatchTick, 1000); });
-          stopwatchPause.addEventListener('click', function() { clearInterval(stopwatchInterval);
-            stopwatchInterval = null; });
-          stopwatchReset.addEventListener('click', function() { clearInterval(stopwatchInterval);
-            stopwatchInterval = null;
-            stopwatchSeconds = 0;
-            stopwatchDisplay.textContent = '00:00:00'; });
+          stopwatchStart.addEventListener('click', function() { if (stopwatchInterval) return; stopwatchInterval = setInterval(stopwatchTick, 1000); });
+          stopwatchPause.addEventListener('click', function() { clearInterval(stopwatchInterval); stopwatchInterval = null; });
+          stopwatchReset.addEventListener('click', function() { clearInterval(stopwatchInterval); stopwatchInterval = null; stopwatchSeconds = 0; stopwatchDisplay.textContent = '00:00:00'; });
 
           countdownMin.addEventListener('change', setCountdownFromInputs);
           countdownSec.addEventListener('change', setCountdownFromInputs);
           countdownStart.addEventListener('click', function() {
             if (countdownInterval) return;
-            if (countdownSeconds <= 0) { setCountdownFromInputs(); if (countdownSeconds <= 0) { alert('Set a time >0.');
-                return; } }
+            if (countdownSeconds <= 0) { setCountdownFromInputs(); if (countdownSeconds <= 0) { alert('Set a time >0.'); return; } }
             countdownInterval = setInterval(countdownTick, 1000);
           });
-          countdownPause.addEventListener('click', function() { clearInterval(countdownInterval);
-            countdownInterval = null; });
-          countdownReset.addEventListener('click', function() { clearInterval(countdownInterval);
-            countdownInterval = null;
-            setCountdownFromInputs(); });
+          countdownPause.addEventListener('click', function() { clearInterval(countdownInterval); countdownInterval = null; });
+          countdownReset.addEventListener('click', function() { clearInterval(countdownInterval); countdownInterval = null; setCountdownFromInputs(); });
           setCountdownFromInputs();
 
           closeGameBtn.addEventListener('click', function() {
@@ -3443,7 +2762,6 @@
             gameOverlay.classList.remove('show');
           });
 
-          // Daily bonus buttons
           claimGiftBtn.addEventListener('click', function() { claimDailyBonus('gift'); });
           claimFocusBtn.addEventListener('click', function() { claimDailyBonus('focus'); });
           claimQuickTaskBtn.addEventListener('click', function() { claimDailyBonus('quickTask'); });
@@ -3467,7 +2785,6 @@
           });
         }
 
-        // ---------- FORMS ----------
         function setupForms() {
           scheduleForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -3484,15 +2801,13 @@
             addTask(title, desc, repeat, days, startTime, endTime);
             this.reset();
             const now = new Date();
-            const h = now.getHours(),
-              m = now.getMinutes();
+            const h = now.getHours(), m = now.getMinutes();
             const start = new Date(now);
-            start.setHours(h, m + 1, 0, 0);
+            start.setHours(h, m+1, 0, 0);
             const end = new Date(start);
-            end.setHours(start.getHours() + 1);
-            taskStartTime.value = String(start.getHours()).padStart(2, '0') + ':' + String(start.getMinutes()).padStart(2,
-            '0');
-            taskEndTime.value = String(end.getHours()).padStart(2, '0') + ':' + String(end.getMinutes()).padStart(2, '0');
+            end.setHours(start.getHours()+1);
+            taskStartTime.value = String(start.getHours()).padStart(2,'0') + ':' + String(start.getMinutes()).padStart(2,'0');
+            taskEndTime.value = String(end.getHours()).padStart(2,'0') + ':' + String(end.getMinutes()).padStart(2,'0');
             taskRepeat.value = 'none';
             daysCheckboxes.forEach(cb => cb.checked = true);
             taskTitle.focus();
@@ -3516,12 +2831,11 @@
 
           if (tasks.length === 0 && todos.length === 0) {
             const now = new Date();
-            const h = now.getHours(),
-              m = now.getMinutes();
+            const h = now.getHours(), m = now.getMinutes();
             const start = `${String((h+1)%24).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
             const end = `${String((h+2)%24).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
             addTask('Sample daily task', 'This task repeats daily', 'daily', [], start, end);
-            addTodo('Sample todo (Mon-Fri)', [1, 2, 3, 4, 5]);
+            addTodo('Sample todo (Mon-Fri)', [1,2,3,4,5]);
           }
 
           render();
@@ -3532,9 +2846,7 @@
           startReminderChecker();
 
           document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) { resetDailyIfNeeded();
-              render();
-              checkReminders(); }
+            if (!document.hidden) { resetDailyIfNeeded(); render(); checkReminders(); }
           });
 
           setInterval(() => {
@@ -3543,11 +2855,10 @@
           }, 60000);
 
           window.addEventListener('storage', (e) => {
-            if (e.key.startsWith('smart_')) { loadState();
-              render(); }
+            if (e.key.startsWith('smart_')) { loadState(); render(); }
           });
 
-          console.log('📋 Smart Scheduler + Pet City + Locking + Themes loaded!');
+          console.log('📋 Smart Scheduler + Pet City (fixed) loaded!');
         }
 
         document.addEventListener('DOMContentLoaded', init);
